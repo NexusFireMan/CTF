@@ -1,4 +1,4 @@
-![[../../Pasted image 20260205084855.png]]
+<img width="355" height="374" alt="Pasted image 20260205084855" src="https://github.com/user-attachments/assets/855a466c-c049-4a1d-82a8-57041b5b4e7e" />
 
 Lo primero que tenemos que hacer es encontrar la IP de la maquina dentro de la red con el siguiente comando.
 
@@ -51,7 +51,7 @@ Así mismo notamos que hay un posible dominio configurado **logan.hmv**, lo comp
 
 Al poner la IP en el navegador comprobamos que necesitamos indicar el dominio:
 
-![[../../Pasted image 20260205102034.png]]
+<img width="565" height="240" alt="Pasted image 20260205102034" src="https://github.com/user-attachments/assets/5938adf4-46e5-43f7-8103-b15b675ed61b" />
 
 Para esto editaremos el fichero **hosts** del sistema y añadiremos la IP y el dominio.
 
@@ -73,7 +73,7 @@ ff02::2 ip6-allrouters
 
 Ahora si podemos entrar a la web desde la url http://logan.hmv
 
-![[../../Pasted image 20260205102401.png]]
+<img width="1045" height="531" alt="Pasted image 20260205102401" src="https://github.com/user-attachments/assets/f8263fcd-735a-4792-84f0-c50702f25c82" />
 
 En la web no vemos ningún dato interesante que podamos utilizar, así que procederemos a buscar desde consola.
 
@@ -115,7 +115,7 @@ ff02::2 ip6-allrouters
 10.0.11.10 logan.hmv admin.logan.hmv
 ```
 
-![[../../Pasted image 20260205105010.png]]
+<img width="979" height="525" alt="Pasted image 20260205105010" src="https://github.com/user-attachments/assets/0467cee2-e95e-44de-bf96-f85d10e1edd5" />
 
 Al ver que tenemos una opción para subir ficheros intentaremos realizar un RFI (Remote File Inclusion) para así obtener una Rever Shell.
 
@@ -127,7 +127,7 @@ penelope -p 443
 
 Con el pluging de navegador **Hack-Tools** descargamos el código de Reverse Shell de Pentestmonkey's.
 
-![[../../Pasted image 20260205105448.png]]
+<img width="759" height="598" alt="Pasted image 20260205105448" src="https://github.com/user-attachments/assets/6c434aab-624a-484b-8bf7-50e4886392c3" />
 
 Una vez descargado probamos a subirlo desde el panel.
 
@@ -141,7 +141,7 @@ Pero tampoco encontramos nada, lo que nos indica que no hay subida de ficheros.
 
 En la sección de *logs* tampoco encontramos nada así que solo nos queda la opción de *payments*.
 
-![[../../Pasted image 20260205113247.png]]
+<img width="414" height="92" alt="Pasted image 20260205113247" src="https://github.com/user-attachments/assets/a806411b-b3d0-43d3-a9e7-fa5ef005a8bc" />
 
 Se intenta con SQLi pero no hay resultados, esto nos da a pensar que es posible que podamos obtener un Path Traversal ya que los datos los tiene que leer de un fichero.
 
@@ -151,7 +151,7 @@ Al probar a introducir la secuencia para ver el fichero *passwd* obtenemos el fi
 ....//....//....//....//....//etc/passwd
 ```
 
-![[../../Pasted image 20260205114041.png]]
+<img width="718" height="589" alt="Pasted image 20260205114041" src="https://github.com/user-attachments/assets/2f0f9638-1bc0-4822-b3e9-f98d2b17ffe0" />
 
 Teniendo la opción de leer ficheros nos da mas posibilidades y teniendo en cuenta que el puerto 25 esta abierto y es usado para el correo veamos si podemos leer el fichero de log del correo para hacer un Log Poisoning.
 
@@ -159,7 +159,7 @@ Teniendo la opción de leer ficheros nos da mas posibilidades y teniendo en cuen
 ....//....//....//....//....//var/log/mail.log
 ```
 
-![[../../Pasted image 20260205122035.png]]
+<img width="1199" height="837" alt="Pasted image 20260205122035" src="https://github.com/user-attachments/assets/2d020e5a-b13c-4ed7-93f5-474ee2e45a47" />
 
 Bien, ahora solo nos queda intentar un Reverse Shell inyectando código.
 
@@ -339,7 +339,7 @@ Ahora solo tenemos que usar el campo de búsqueda para lanzar el *payload* y com
 ....//....//....//....//....//var/mail/www-data
 ```
 
-![[../../Pasted image 20260205124435.png]]
+<img width="931" height="705" alt="Pasted image 20260205124435" src="https://github.com/user-attachments/assets/ba0a49d5-3eee-4e04-8424-f856f82f58d7" />
 
 Ahora  tendremos que buscar flags y escalar privilegios.
 
