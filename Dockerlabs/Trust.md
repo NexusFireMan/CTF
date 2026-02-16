@@ -1,3 +1,12 @@
+---
+Estado: Completado
+Plataforma: DockerLabs
+SO: Linux
+Dificultad: Muy Facil
+VectorInicial: Fuerza bruta SSH
+Privesc: Sudo vim
+Fecha: 2026-02-04
+---
 <img width="916" height="556" alt="Pasted image 20260204102207" src="https://github.com/user-attachments/assets/342001e1-3ffc-4e36-9aa7-52793bbdd4ca" />
 
 Lo primero que realizaremos sera un escaneo para ver que puertos y servicios tiene abiertos.
