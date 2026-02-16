@@ -1,5 +1,13 @@
+---
+Estado: Completado
+Plataforma: DockerLabs
+SO: Linux
+Dificultad: Facil
+VectorInicial: Unrestricted File Upload → RCE
+Privesc: sudo env
+Fecha: 2026-02-04
+---
 <img width="927" height="559" alt="Pasted image 20260203193639" src="https://github.com/user-attachments/assets/b76b81e7-698a-4d05-b63b-587e78048c8e" />
-
 
 Lo primero que realizaremos es un escaneo de puertos hacia la IP de la maquina para ver que servicios corren:
 
