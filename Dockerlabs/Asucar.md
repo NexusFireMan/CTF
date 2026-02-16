@@ -1,3 +1,12 @@
+---
+Estado: Completado
+Plataforma: DockerLabs
+SO: Linux
+Dificultad: Medio
+VectorInicial: LFI en plugin vulnerable de WordPress (site-editor <= 1.1.1)
+Privesc: Abuso de sudo NOPASSWD con puttygen para escribir authorized_keys de root
+Fecha: 2026-02-12
+---
 <img width="913" height="530" alt="Pasted image 20260211154801" src="https://github.com/user-attachments/assets/3af77b1c-72e2-42e3-845d-dae5b840d97d" />
 
 Lo primero que realizaremos sera un escaneo para identificar puertos y servicios abiertos:
