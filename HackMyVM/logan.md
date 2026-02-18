@@ -403,3 +403,7 @@ Ahora solo queda obtener la flag.
 ```
 root@logan:/# cat /root/root.tx
 ```
+
+---
+Si te gusto puedes invitarme a un cafe.
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C61UHTB1)
