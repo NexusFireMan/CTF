@@ -680,3 +680,7 @@ Mientras escuchamos en el puerto 443 desde penelope y obtenemos el acceso a la m
 # Conclusión
 
 Con este CTF vemos como se puede realizar un RFI (Remote File Inclusion) al no encontrase sanitizado el formulario de subida de archivos y los peligros que esto puede conllevar.
+
+---
+Si te gusto puedes invitarme a un cafe.
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C61UHTB1)
