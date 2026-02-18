@@ -95,3 +95,7 @@ Con este laboratorio aprendemos a buscar mas aya de lo evidente en los directori
 Así mismo vemos una mala gestión de los privilegios del comando **sudo** con la aplicación de **vim** nos da acceso a conseguir acceso como administrador.
 
 Este tipo de errores hay que evitarlos ya que pueden llevar a grandes problemas.
+
+---
+Si te gusto puedes invitarme a un cafe.
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C61UHTB1)
