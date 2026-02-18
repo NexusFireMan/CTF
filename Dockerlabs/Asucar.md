@@ -316,3 +316,7 @@ Posteriormente, una **configuración insegura de sudo**, permitiendo ejecutar bi
 - El impacto real de un **LFI** bien aprovechado.    
 - El riesgo de conceder permisos `NOPASSWD` a binarios no controlados.
 - Cómo el abuso de **authorized_keys** sigue siendo una técnica muy efectiva en entornos mal configurados.
+
+---
+Si te gusto puedes invitarme a un cafe.
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C61UHTB1)
