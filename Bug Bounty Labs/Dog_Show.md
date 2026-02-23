@@ -1,5 +1,5 @@
 ---
-Estado: En Curso
+Estado: Completado
 Plataforma: Bug Bounty Labs
 SO: Linux
 Dificultad: Facil
