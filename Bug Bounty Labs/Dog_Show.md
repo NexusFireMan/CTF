@@ -86,12 +86,12 @@ Hay un filtro para no mostrar las alertas, así que intentaremos otro método.
 ```javascript
 " onmouseover=confirm(1) "
 ```
-<img width="528" height="487" alt="Pasted image 20260223162627" src="https://github.com/user-attachments/assets/be11ffe8-c1d7-4e33-87c3-67bc598921d8" />
 
 Este payload permite el XSS y por consiguiente ya tenemos una vulnerabilidad y esta parte finaliza aquí.
 
 Ahora vamos a por el puerto *5000* el cual tiene una web de perritos.
 
+<img width="528" height="487" alt="Pasted image 20260223162627" src="https://github.com/user-attachments/assets/be11ffe8-c1d7-4e33-87c3-67bc598921d8" />
 
 Vamos a registrarnos a ver que podemos encontrar.
 
