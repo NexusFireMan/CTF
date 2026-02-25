@@ -168,6 +168,8 @@ http://[host]/wp-content/plugins/gwolle-gb/frontend/captcha/ajaxresponse.php?abs
 
 Así mismo hay exploit en *GitHub* que ayudan a automatizar esta explotación.
 
+[CVE-2015-8351](https://github.com/NexusFireMan/Exploits/tree/main/CVE-2015-8351)
+
 Pero yo utilizare el siguiente código.
 
 ```python
