@@ -35,7 +35,7 @@ Herramientas:
  - mysql
 Fecha: 2026-03-05
 ---
-![Uploading Pasted image 20260305084513.png…]()
+<img width="800" height="800" alt="Pasted image 20260305084513" src="https://github.com/user-attachments/assets/c5017655-7887-42c9-b1bd-8f8924da6b6a" />
 
 Empezaremos con el descubrimiento de la red para ver donde se encuentra la maquina objetivo.
 
