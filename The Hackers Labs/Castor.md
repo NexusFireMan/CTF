@@ -25,7 +25,7 @@ Herramientas:
   - gobuster
   - burp suite
   - hydra
-Fecha: 2026-02-26
+Fecha: 2026-03-04
 ---
 <img width="800" height="800" alt="Pasted image 20260304125815" src="https://github.com/user-attachments/assets/78971801-a627-423c-aa85-25b1361d0b4c" />
 
