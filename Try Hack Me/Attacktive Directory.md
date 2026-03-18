@@ -33,6 +33,7 @@ Herramientas:
   - evil-winrm
 Fecha: 2026-03-15
 ---
+<img width="940" height="257" alt="Pasted image 20260315151219" src="https://github.com/user-attachments/assets/6cf25b5f-b31a-4883-90a3-a079f1b18a20" />
 
 Lo primero que realizaremos sera una enumeración de los puertos abiertos y de los servicios que corren en la maquina.
 
