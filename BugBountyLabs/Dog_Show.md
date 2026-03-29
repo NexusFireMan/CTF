@@ -129,3 +129,4 @@ Esto es un gran fallo puesto que permite inyecciones sin la necesidad de hacer a
 
 
 Laboratorios en https://github.com/CuriosidadesDeHackers/Bug-Bounty-Labs-Plataforma/
+

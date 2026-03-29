@@ -412,3 +412,4 @@ Ahora solo queda obtener la flag.
 ```
 root@logan:/# cat /root/root.tx
 ```
+

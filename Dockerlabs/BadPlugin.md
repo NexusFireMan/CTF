@@ -346,3 +346,4 @@ Con este comando hemos podido quitar la **X** al usuario *root* y podemos hacer 
 Ademas en la carpeta */tmp* nos encontramos un fichero curioso con una contraseña cifrada en *base64*.
 
 Esta contraseña seguramente sea del usuario *ubuntu* o del *root* pero como ya tenemos la escalada lo dejaremos estar.
+

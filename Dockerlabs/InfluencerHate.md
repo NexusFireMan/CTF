@@ -294,3 +294,4 @@ root@4cf1f32d9e59:/tmp#
 Con esto ya hemos comprometido el laboratorio y lo hemos finalizado.
 
 La verdad que has esta un poco liado el tema de acceder como root pero ha sido interesante el poder usar varias técnicas hasta conseguirlo.
+

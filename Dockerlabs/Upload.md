@@ -680,3 +680,4 @@ Mientras escuchamos en el puerto 443 desde penelope y obtenemos el acceso a la m
 # Conclusión
 
 Con este CTF vemos como se puede realizar una vulnerabilidad de subida de archivos sin validación que permite la ejecución remota de código (RCE) mediante una webshell al no encontrase sanitizado el formulario de subida de archivos y los peligros que esto puede conllevar.
+
