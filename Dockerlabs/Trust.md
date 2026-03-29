@@ -97,3 +97,4 @@ Así mismo vemos una mala gestión de los privilegios del comando **sudo** con l
 Este tipo de errores hay que evitarlos ya que pueden llevar a grandes problemas.
 
 
+

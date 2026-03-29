@@ -264,3 +264,4 @@ congrats.txt  root.txt
 
 Y con esto hemos conseguido acceder como **root** al sistema y comprometerlo.
 
+

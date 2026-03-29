@@ -753,3 +753,4 @@ congrats.txt  root.txt
 
 Y con esto obtenemos acceso como **root** y comprometemos la maquina.
 
+

@@ -233,3 +233,4 @@ Y con este ultimo paso ya somos administradores del sistema.
 
 Aunque el plugin theme-editor presenta vulnerabilidades conocidas, en este caso no fue necesario explotarlas directamente, ya que conseguimos acceso como administrador mediante credenciales débiles y pudimos modificar el código del plugin para obtener ejecución remota de comandos.
 
+
