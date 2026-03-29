@@ -118,7 +118,7 @@ Nos encontramos con este panel de inicio de sesión bastante curioso.
 
 Ahora es el paso de entrar en *Burp Suit* para capturar las peticiones y ver como podemos continuar.
 
-Lo primero sera fijar el Tarjet para que solo capture las peticiones de este servidor.
+Lo primero será fijar el Tarjet para que solo capture las peticiones de este servidor.
 
 <img width="908" height="623" alt="Pasted image 20260226160725" src="https://github.com/user-attachments/assets/f6457bfc-6e65-42e4-a96b-f22583b25042" />
 
@@ -294,3 +294,4 @@ root@4cf1f32d9e59:/tmp#
 Con esto ya hemos comprometido el laboratorio y lo hemos finalizado.
 
 La verdad que has esta un poco liado el tema de acceder como root pero ha sido interesante el poder usar varias técnicas hasta conseguirlo.
+

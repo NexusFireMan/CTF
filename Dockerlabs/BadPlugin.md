@@ -350,3 +350,4 @@ Esta contraseña seguramente sea del usuario *ubuntu* o del *root* pero como ya 
 ---
 Si te gusto puedes invitarme a un cafe.
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C61UHTB1)
+

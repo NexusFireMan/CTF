@@ -236,3 +236,4 @@ Aunque el plugin theme-editor presenta vulnerabilidades conocidas, en este caso 
 ---
 Si te gusto puedes invitarme a un cafe.
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C61UHTB1)
+

@@ -390,7 +390,7 @@ OpenJDK 64-Bit Server VM (build 21.0.9+10-Ubuntu-124.04, mixed mode, sharing)
 
 Esta versión nos permite realizar esta acción.
 
-El código que usaremos sera el siguiente:
+El código que usaremos será el siguiente:
 
 ```java
 import java.io.*;
@@ -421,3 +421,4 @@ congrats.txt  root.txt
 Con esto ya hemos terminado el laboratorio.
 
 Ha sido interesante llegar a escalar los privilegios a través de los distintos usuarios y la posibilidad de tener directamente un `Web Shell`, lo cual es una falla de seguridad.
+

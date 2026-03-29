@@ -9,7 +9,7 @@ Fecha: 2026-02-12
 ---
 <img width="913" height="530" alt="Pasted image 20260211154801" src="https://github.com/user-attachments/assets/3af77b1c-72e2-42e3-845d-dae5b840d97d" />
 
-Lo primero que realizaremos sera un escaneo para identificar puertos y servicios abiertos:
+Lo primero que realizaremos será un escaneo para identificar puertos y servicios abiertos:
 
 ```bash
  settarget 172.17.0.2
@@ -320,3 +320,4 @@ Posteriormente, una **configuración insegura de sudo**, permitiendo ejecutar bi
 ---
 Si te gusto puedes invitarme a un cafe.
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C61UHTB1)
+
