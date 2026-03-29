@@ -7,7 +7,7 @@ VectorInicial: WordPress login + plugin edit RCE
 Privesc: SUID env
 Fecha: 2026-02-16
 ---
-![[../../attachments/Pasted image 20260216150558.png]]
+![](..\attachments/Pasted%20image%2020260216150558.png)
 
 Para empezar realizaremos un reconocimiento para ver que podemos encontrar.
 
@@ -184,7 +184,7 @@ Con estos datos entraremos al panel de control de Wordpress.
 
 Una vez dentro nos dirigiremos al plugin vulnerable que encontramos antes para inyectar código y conseguir una revershell.
 
-![[../../attachments/Pasted image 20260216160309.png]]
+![](..\attachments/Pasted%20image%2020260216160309.png)
 
 Usaremos el código PHP de Pentestmonkey's reverse shell y nos pondremos a la escucha.
 

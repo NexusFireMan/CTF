@@ -7,7 +7,7 @@ VectorInicial: Basic Auth Default Credentials → Login Bruteforce → SSH
 Privesc: Password reuse + su brute force
 Fecha: 2026-02-26
 ---
-![[../../attachments/Pasted image 20260226125648.png]]
+![](..\attachments/Pasted%20image%2020260226125648.png)
 
 Comenzaremos por realizar un escaneo a la maquina para ver los vectores de entrada.
 
@@ -112,7 +112,7 @@ Como este servidor tiene Basi Auth necesitamos indicar a Gobuster el usuario y l
 
 Observamos que hay un fichero llamado *login.php* así que vamos a ver que nos encontramos en el.
 
-![[../../attachments/Pasted image 20260226154316.png]]
+![](..\attachments/Pasted%20image%2020260226154316.png)
 
 No encontramos con este panel de inicio de sesión bastante curioso.
 
@@ -120,11 +120,11 @@ Ahora es el paso de entrar en *Burp Suit* para capturar las peticiones y ver com
 
 Lo primero sera fijar el Tarjet para que solo capture las peticiones de este servidor.
 
-![[../../attachments/Pasted image 20260226160321.png]]
+![](..\attachments/Pasted%20image%2020260226160321.png)
 
 Ahora capturamos las peticiones de la pagina para ver como solicita el ingreso, las cabeceras y lo que ocurre si ingresamos un usuario erróneo.
 
-![[../../attachments/Pasted image 20260226160826.png]]
+![](..\attachments/Pasted%20image%2020260226160826.png)
 
 Como podemos ver la petición se hace con el método **POST**, en la cabecera se añade **Authorization: Basic aHR0cGFkbWluOmZodHRwYWRtaW4=**, los datos de inicio de sesión se pasan de manera muy clara **username=admin&password=admin** y al no ser correctos los datos nos indica el texto **Credenciales incorrectas.**.
 
@@ -154,7 +154,7 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2026-02-26 16:26:
 
 Bien, con estos credenciales vamos a por el siguiente paso.
 
-![[../../attachments/Pasted image 20260226162857.png]]
+![](..\attachments/Pasted%20image%2020260226162857.png)
 
 Después de iniciar sesión vemos este mensaje del usuario **balutin** y dicho esto, vamos por el *SSH* a ver si tenemos suerte.
 

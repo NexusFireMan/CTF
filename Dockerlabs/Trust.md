@@ -7,7 +7,7 @@ VectorInicial: Fuerza bruta SSH
 Privesc: Sudo vim
 Fecha: 2026-02-04
 ---
-![[../../attachments/Pasted image 20260204102207.png]]
+![](..\attachments/Pasted%20image%2020260204102207.png)
 
 Lo primero que realizaremos sera un escaneo para ver que puertos y servicios tiene abiertos.
 
@@ -17,7 +17,7 @@ nmap -sSVC 172.18.0.2
 
 Con este comando obtenemos el siguiente resultado:
 
-![[../../attachments/Pasted image 20260204102554.png]]
+![](..\attachments/Pasted%20image%2020260204102554.png)
 
 Esto nos indica que tenemos 2 puertos abiertos
 
@@ -26,7 +26,7 @@ Esto nos indica que tenemos 2 puertos abiertos
 
 Por el momento miraremos que hay en la web.
 
-![[../../attachments/Pasted image 20260204102833.png]]
+![](..\attachments/Pasted%20image%2020260204102833.png)
 
 Vemos que solo hay una pagina por defecto de la instalación de Apache así que tendremos que realizar un descubrimiento de archivos y directorios la web.
 
@@ -48,11 +48,11 @@ gobuster dir -u http://172.18.0.2/ -w /usr/share/seclists/Discovery/Web-Content/
 
 Con este comando si encontramos algo mas.
 
-![[../../attachments/Pasted image 20260204104210.png]]
+![](..\attachments/Pasted%20image%2020260204104210.png)
 
 Pero no obtenemos nada al acceder a *secret.php*.
 
-![[../../attachments/Pasted image 20260204104332.png]]
+![](..\attachments/Pasted%20image%2020260204104332.png)
 
 Esto nos da a pensar que existe un usuario llamado *mario* y como el puerto 22 esta abierto es posible que podamos usar un ataque de diccionario para acceder al sistema.
 
@@ -62,7 +62,7 @@ hydra -l mario -P /usr/share/wordlists/rockyou.txt 172.18.0.2 -t 5 ssh
 
 Después de esperar un rato obtenemos el resultado esperado:
 
-![[../../attachments/Pasted image 20260204105015.png]]
+![](..\attachments/Pasted%20image%2020260204105015.png)
 
 Ahora solo tenemos que conectarnos al servidor para continuar con nuestra tarea.
 
@@ -70,13 +70,13 @@ Ahora solo tenemos que conectarnos al servidor para continuar con nuestra tarea.
 ssh mario@172.18.0.2
 ```
 
-![[../../attachments/Pasted image 20260204105158.png]]
+![](..\attachments/Pasted%20image%2020260204105158.png)
 
 Una vez dentro del sistema solo tenemos que buscar la forma de escalar privilegios para ser *root*.
 
 Con el comando ***sudo -l*** obtenemos un dato que nos puede facilitar la labor de escalar privilegios.
 
-![[../../attachments/Pasted image 20260204105726.png]]
+![](..\attachments/Pasted%20image%2020260204105726.png)
 
 Ahora buscaremos en la web https://gtfobins.org/ para encontrar el método correcto.
 
@@ -86,7 +86,7 @@ sudo vim -c ':!/bin/bash'
 
 Cabe destacar que este comando no es 100% de la web ya que en la web hacen referencia al uso de ***vi*** pero nosotros solo tenemos que cambiar el nombre del ejecutable para que funcione.
 
-![[../../attachments/Pasted image 20260204110501.png]]
+![](..\attachments/Pasted%20image%2020260204110501.png)
 
 ## Conclusión
 
@@ -95,3 +95,4 @@ Con este laboratorio aprendemos a buscar mas aya de lo evidente en los directori
 Así mismo vemos una mala gestión de los privilegios del comando **sudo** con la aplicación de **vim** nos da acceso a conseguir acceso como administrador.
 
 Este tipo de errores hay que evitarlos ya que pueden llevar a grandes problemas.
+

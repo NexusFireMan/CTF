@@ -35,7 +35,7 @@ Herramientas:
   - mysql
 Fecha: 2026-03-05
 ---
-![[../../attachments/Pasted image 20260305084513.png|697]]
+![](..\attachments/Pasted%20image%2020260305084513.png|697)
 
 Empezaremos con el descubrimiento de la red para ver donde se encuentra la maquina objetivo.
 

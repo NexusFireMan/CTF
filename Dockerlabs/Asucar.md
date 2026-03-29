@@ -7,7 +7,7 @@ VectorInicial: LFI en plugin vulnerable de WordPress (site-editor <= 1.1.1)
 Privesc: Abuso de sudo NOPASSWD con puttygen para escribir authorized_keys de root
 Fecha: 2026-02-12
 ---
-![[../../attachments/Pasted image 20260211154801.png]]
+![](..\attachments/Pasted%20image%2020260211154801.png)
 
 Lo primero que realizaremos sera un escaneo para identificar puertos y servicios abiertos:
 
@@ -29,11 +29,11 @@ Vemos que tenemos 2 puertos abiertos:
 
 Empecemos por la web a ver que tenemos.
 
-![[../../attachments/Pasted image 20260211161159.png]]
+![](..\attachments/Pasted%20image%2020260211161159.png)
 
 Nos encontramos con la pagina mal maquetada y sin imágenes, por consiguiente pasaremos el ratón por encima de algún enlace para ver si hay dominio al que apunten o usando CTR+U para ver el código de la web y comprobarlo.
 
-![[../../attachments/Pasted image 20260211161716.png]]
+![](..\attachments/Pasted%20image%2020260211161716.png)
 
 Efectivamente necesitamos indicar en nuestro **/etc/hosts** el dominio de esta web
 
@@ -60,7 +60,7 @@ Ahora al entrar por la url http://asucar.dl podremos ver la web, con algunos err
 
 Al navegar por la web no encontramos ningún dato útil que nos pueda servir, solo tienen una entrada típica de la primera instalación:
 
-![[../../attachments/Pasted image 20260211164454.png]]
+![](..\attachments/Pasted%20image%2020260211164454.png)
 
 Ahora usaremos una herramienta para el reconocimiento de usuarios y plugins para ver si encontramos algo interesante.
 

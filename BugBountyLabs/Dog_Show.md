@@ -7,7 +7,7 @@ VectorInicial: XSS
 Privesc: No
 Fecha: 2026-02-23
 ---
-![[../../attachments/Pasted image 20260223165234.png]]
+![](..\attachments/Pasted%20image%2020260223165234.png)
 
 Comenzaremos con una enumeración de puertos para hacernos una idea de lo que tenemos.
 
@@ -63,7 +63,7 @@ Finished
 
 Parece que en el directorio */beta/*  tenemos una web.
 
-![[../../attachments/Pasted image 20260223160032.png]]
+![](..\attachments/Pasted%20image%2020260223160032.png)
 
 Por lo que vemos es un formulario con una vulnerabilidad de XSS así que probaremos con lo primero.
 
@@ -91,7 +91,7 @@ Este payload permite el XSS y por consiguiente ya tenemos una vulnerabilidad y e
 
 Ahora vamos a por el puerto *5000* el cual tiene una web de perritos.
 
-![[../../attachments/Pasted image 20260223162627.png]]
+![](..\attachments/Pasted%20image%2020260223162627.png)
 
 Vamos a registrarnos a ver que podemos encontrar.
 

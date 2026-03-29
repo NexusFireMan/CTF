@@ -35,7 +35,7 @@ Herramientas:
  - penelope
 Fecha: 2026-03-10
 ---
-![[../../attachments/Pasted image 20260310082813.png]]
+![](..\attachments/Pasted%20image%2020260310082813.png)
 
 Vamos a empezar con un reconocimiento de la red para saber la *IP* de la maquina.
 

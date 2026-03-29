@@ -33,7 +33,7 @@ Herramientas:
   - evil-winrm
 Fecha: 2026-03-15
 ---
-![[../../attachments/Pasted image 20260315151219.png]]
+![](..\attachments/Pasted%20image%2020260315151219.png)
 
 Lo primero que realizaremos sera una enumeración de los puertos abiertos y de los servicios que corren en la maquina.
 

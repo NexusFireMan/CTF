@@ -7,7 +7,7 @@ VectorInicial: LFI (Path Traversal) → Log Poisoning → RCE
 Privesc: Sudo vim → Sudo python3 (script vulnerable)
 Fecha: 2026-02-05
 ---
-![[../../attachments/Pasted image 20260205084855.png]]
+![](..\attachments/Pasted%20image%2020260205084855.png)
 
 Lo primero que tenemos que hacer es encontrar la IP de la maquina dentro de la red con el siguiente comando.
 
@@ -60,7 +60,7 @@ Así mismo notamos que hay un posible dominio configurado **logan.hmv**, lo comp
 
 Al poner la IP en el navegador comprobamos que necesitamos indicar el dominio:
 
-![[../../attachments/Pasted image 20260205102034.png]]
+![](..\attachments/Pasted%20image%2020260205102034.png)
 
 Para esto editaremos el fichero **hosts** del sistema y añadiremos la IP y el dominio.
 
@@ -82,7 +82,7 @@ ff02::2 ip6-allrouters
 
 Ahora si podemos entrar a la web desde la url http://logan.hmv
 
-![[../../attachments/Pasted image 20260205102401.png]]
+![](..\attachments/Pasted%20image%2020260205102401.png)
 
 En la web no vemos ningún dato interesante que podamos utilizar, así que procederemos a buscar desde consola.
 
@@ -124,7 +124,7 @@ ff02::2 ip6-allrouters
 10.0.11.10 logan.hmv admin.logan.hmv
 ```
 
-![[../../attachments/Pasted image 20260205105010.png]]
+![](..\attachments/Pasted%20image%2020260205105010.png)
 
 Al ver que tenemos una opción para subir ficheros intentaremos realizar un RFI (Remote File Inclusion) para así obtener una Rever Shell.
 
@@ -136,7 +136,7 @@ penelope -p 443
 
 Con el pluging de navegador **Hack-Tools** descargamos el código de Reverse Shell de Pentestmonkey's.
 
-![[../../attachments/Pasted image 20260205105448.png]]
+![](..\attachments/Pasted%20image%2020260205105448.png)
 
 Una vez descargado probamos a subirlo desde el panel.
 
@@ -150,7 +150,7 @@ Pero tampoco encontramos nada, lo que nos indica que no hay subida de ficheros.
 
 En la sección de *logs* tampoco encontramos nada así que solo nos queda la opción de *payments*.
 
-![[../../attachments/Pasted image 20260205113247.png]]
+![](..\attachments/Pasted%20image%2020260205113247.png)
 
 Se intenta con SQLi pero no hay resultados, esto nos da a pensar que es posible que podamos obtener un Path Traversal ya que los datos los tiene que leer de un fichero.
 
@@ -160,7 +160,7 @@ Al probar a introducir la secuencia para ver el fichero *passwd* obtenemos el fi
 ....//....//....//....//....//etc/passwd
 ```
 
-![[../../attachments/Pasted image 20260205114041.png]]
+![](..\attachments/Pasted%20image%2020260205114041.png)
 
 Teniendo la opción de leer ficheros nos da mas posibilidades y teniendo en cuenta que el puerto 25 esta abierto y es usado para el correo veamos si podemos leer el fichero de log del correo para hacer un Log Poisoning.
 
@@ -168,7 +168,7 @@ Teniendo la opción de leer ficheros nos da mas posibilidades y teniendo en cuen
 ....//....//....//....//....//var/log/mail.log
 ```
 
-![[../../attachments/Pasted image 20260205122035.png]]
+![](..\attachments/Pasted%20image%2020260205122035.png)
 
 Bien, ahora solo nos queda intentar un Reverse Shell inyectando código.
 
@@ -348,7 +348,7 @@ Ahora solo tenemos que usar el campo de búsqueda para lanzar el *payload* y com
 ....//....//....//....//....//var/mail/www-data
 ```
 
-![[../../attachments/Pasted image 20260205124435.png]]
+![](..\attachments/Pasted%20image%2020260205124435.png)
 
 Ahora  tendremos que buscar flags y escalar privilegios.
 

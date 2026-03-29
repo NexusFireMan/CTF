@@ -27,7 +27,7 @@ Herramientas:
   - hydra
 Fecha: 2026-03-04
 ---
-![[../../attachments/Pasted image 20260304125815.png|697]]
+![](..\attachments/Pasted%20image%2020260304125815.png|697)
 
 Empezaremos con un descubrimiento de *IP* dentro de la red para ver donde se encuentra nuestro objetivo.
 
@@ -136,7 +136,7 @@ Empecemos con algo simple y veamos que ocurre.
 <test>test</test>
 ```
 
-![[../../attachments/Pasted image 20260304134200.png]]
+![](..\attachments/Pasted%20image%2020260304134200.png)
 
 El fichero `upload.php` procesa contenido XML sin deshabilitar la resolución de entidades externas.
 

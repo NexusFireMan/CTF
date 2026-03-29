@@ -7,7 +7,7 @@ VectorInicial: WordPress brute force (admin:rockyou) + subida plugin malicioso
 Privesc: SUID gawk → modificación /etc/passwd
 Fecha: 2026-02-18
 ---
-![[../../attachments/Pasted image 20260217124550.png]]
+![](..\attachments/Pasted%20image%2020260217124550.png)
 
 Empezaremos con un reconocimiento de la superficie para que encontramos.
 
@@ -238,7 +238,7 @@ Ya con los credenciales iniciaremos sesión y nos dirigiremos a los plugins vuln
 
 Cabe recordar que no es necesario el uso de las vulnerabilidades puesto que tenemos la opción de usar el editor de themes para inyectar código y conseguir un revershell.
 
-![[../../attachments/Pasted image 20260217170840.png]]
+![](..\attachments/Pasted%20image%2020260217170840.png)
 
 Pero como la finalidad de este laboratorio es la explotación de los pluging procederemos con los mismos.
 
@@ -270,7 +270,7 @@ Ahora que tenemos el **zip** creado nos pondremos a la escucha con *penelope* pa
 ➤  🏠 Main Menu (m) 💀 Payloads (p) 🔄 Clear (Ctrl-L) 🚫 Quit (q/Ctrl-C)
 ```
 
-![[../../attachments/Pasted image 20260218091957.png]]
+![](..\attachments/Pasted%20image%2020260218091957.png)
 
 Una vez activo el plugin obtendremos una revershell y estaremos dentro del servidor.
 

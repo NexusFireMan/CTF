@@ -7,7 +7,7 @@ VectorInicial: RFI
 Privesc: Sudo rename
 Fecha: 2026-02-23
 ---
-![[../../attachments/Pasted image 20260218113338.png]]
+![](..\attachments/Pasted%20image%2020260218113338.png)
 
 Empezaremos con un reconocimiento de red para ver la IP de este laboratorio.
 
@@ -78,7 +78,7 @@ GENERATED WORDS: 4612
 
 Bueno, parece que estamos frente a un *Wodpress* así que vamos a mirar la web a ver si podemos ver algo interesante que podamos usar.
 
-![[../../attachments/Pasted image 20260223110618.png]]
+![](..\attachments/Pasted%20image%2020260223110618.png)
 
 Curiosamente solo nos aparece texto de mala manera, esto indica que estamos frente a un dominio, al pasar el ratón por encima de *¡Hello World!* vemos que el dominio es **remote.nyx**. ahora tendremos que añadirlo a nuestro */etc/hosts*.
 
