@@ -54,10 +54,10 @@ Ending arp-scan 1.10.0: 256 hosts scanned in 1.869 seconds (136.97 hosts/sec). 3
 Sabiendo que la direcci├│n es **10.0.11.14** procederemos a la enumeraci├│n de puertos abiertos y ver posibles vectores de entrada e informaci├│n.
 
 ```bash
-é settarget 10.0.11.14
+settarget 10.0.11.14
 TARGET establecido: 10.0.11.14
 
-é gomap -p - $TARGET 
+gomap -p - $TARGET 
 
   ÔûêÔûêÔûêÔûêÔûêÔûêÔòù  ÔûêÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔòù   ÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔûêÔòù 
  ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔòÉÔòØ ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòù
@@ -77,7 +77,7 @@ Host Exposure Summary
 
 Ô£ô Completed scan in 40.912s | hosts: 1 | open ports: 2
 
-é gomap -s -p 22,80 $TARGET
+gomap -s -p 22,80 $TARGET
 
   ÔûêÔûêÔûêÔûêÔûêÔûêÔòù  ÔûêÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔòù   ÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔûêÔòù 
  ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔòÉÔòØ ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòù
@@ -499,7 +499,7 @@ sshd:x:101:65534::/run/sshd:/usr/sbin/nologin
 debian:x:1000:1000:debian,,,:/home/debian:/bin/bash
 mermeladita:x:1001:1001:mermeladita,,,:/home/mermeladita:/bin/bash
 mysql:x:102:110:MySQL Server,,,:/nonexistent:/bin/false
-┬é
+┬é
 ```
 
 Vemos 2 usuarios destacados, uno es *mermeladita* y el otro es *debian*.
@@ -752,4 +752,5 @@ congrats.txt  root.txt
 ```
 
 Y con esto obtenemos acceso como **root** y comprometemos la maquina.
+
 

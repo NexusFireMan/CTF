@@ -12,10 +12,10 @@ Fecha: 2026-02-16
 Para empezar realizaremos un reconocimiento para ver que podemos encontrar.
 
 ```bash
-é settarget 172.17.0.2                                              
+settarget 172.17.0.2                                              
 TARGET establecido: 172.17.0.2
 
-é gomap -s $TARGET                                                                                                         
+gomap -s $TARGET                                                                                                         
 ­ Scanning 172.17.0.2 (997 ports)
 
  PORT    STATE  SERVICE      VERSION
@@ -236,4 +236,5 @@ Aunque el plugin theme-editor presenta vulnerabilidades conocidas, en este caso 
 ---
 Si te gusto puedes invitarme a un cafe.
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C61UHTB1)
+
 

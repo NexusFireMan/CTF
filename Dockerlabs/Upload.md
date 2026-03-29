@@ -685,3 +685,4 @@ Con este CTF vemos como se puede realizar un RFI (Remote File Inclusion) al no e
 Si te gusto puedes invitarme a un cafe.
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C61UHTB1)
 
+

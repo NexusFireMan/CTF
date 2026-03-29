@@ -28,10 +28,10 @@ Ending arp-scan 1.10.0: 256 hosts scanned in 1.963 seconds (130.41 hosts/sec). 3
 Como podemos observar la IP es ***10.0.11.12*** as├¡ que empezaremos con el reconocimiento de puertos y servicios.
 
 ```bash
-é settarget 10.0.11.12            
+settarget 10.0.11.12            
 TARGET establecido: 10.0.11.12
 
-é gomap -s $TARGET
+gomap -s $TARGET
 ­ Scanning 10.0.11.12 (997 ports)
 
 PORT    STATE  SERVICE         VERSION
@@ -348,4 +348,5 @@ sudo rename -e 'system("/bin/bash")' test.txt
 ```
 
 Con esto ya tenemos comprometida la maquina.
+
 

@@ -12,10 +12,10 @@ Fecha: 2026-02-26
 Comenzaremos por realizar un escaneo a la maquina para ver los vectores de entrada.
 
 ```bash
-é settarget 172.17.0.2                                              
+settarget 172.17.0.2                                              
 TARGET establecido: 172.17.0.2
 
-é gomap -s $TARGET
+gomap -s $TARGET
 
   ÔûêÔûêÔûêÔûêÔûêÔûêÔòù  ÔûêÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔòù   ÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔûêÔòù 
  ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔòÉÔòØ ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòù
@@ -294,4 +294,5 @@ root@4cf1f32d9e59:/tmp#
 Con esto ya hemos comprometido el laboratorio y lo hemos finalizado.
 
 La verdad que has esta un poco liado el tema de acceder como root pero ha sido interesante el poder usar varias t├®cnicas hasta conseguirlo.
+
 

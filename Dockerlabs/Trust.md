@@ -100,3 +100,4 @@ Este tipo de errores hay que evitarlos ya que pueden llevar a grandes problemas.
 Si te gusto puedes invitarme a un cafe.
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C61UHTB1)
 
+

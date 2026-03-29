@@ -12,10 +12,10 @@ Fecha: 2026-02-23
 Comenzaremos con una enumeraci├│n de puertos para hacernos una idea de lo que tenemos.
 
 ```bash
-é settarget 172.17.0.2
+settarget 172.17.0.2
 TARGET establecido: 172.17.0.2
 
-é gomap -s $TARGET
+gomap -s $TARGET
 ­ Scanning 172.17.0.2 (997 ports)
 
 PORT    STATE  SERVICE         VERSION
@@ -120,4 +120,5 @@ Curiosamente al ver el c├│digo de la pagina nos encontramos con esto:
 Lo cual ya nos indica donde podremos inyectar el c├│digo.
 
 Esto es un gran fallo puesto que permite inyecciones sin la necesidad de hacer ataques a ciegas puesto que nos esta indicando en el lugar donde tenemos que atacar.
+
 

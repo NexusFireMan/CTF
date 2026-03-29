@@ -12,7 +12,7 @@ Fecha: 2026-02-18
 Empezaremos con un reconocimiento de la superficie para que encontramos.
 
 ```bash
-é gomap -s $TARGET
+gomap -s $TARGET
 ­ Scanning 192.168.1.100 (997 ports)
 
 PORT    STATE  SERVICE         VERSION
@@ -350,4 +350,5 @@ Esta contrase├▒a seguramente sea del usuario *ubuntu* o del *root* pero como
 ---
 Si te gusto puedes invitarme a un cafe.
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C61UHTB1)
+
 
