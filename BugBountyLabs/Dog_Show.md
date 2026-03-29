@@ -12,11 +12,11 @@ Fecha: 2026-02-23
 Comenzaremos con una enumeraci├│n de puertos para hacernos una idea de lo que tenemos.
 
 ```bash
-¯é░ settarget 172.17.0.2
+é settarget 172.17.0.2
 TARGET establecido: 172.17.0.2
 
-¯é░ gomap -s $TARGET
-­ƒÄ» Scanning 172.17.0.2 (997 ports)
+é gomap -s $TARGET
+­ Scanning 172.17.0.2 (997 ports)
 
 PORT    STATE  SERVICE         VERSION
 80      open   http            Apache 2.4.62 (Debian)
@@ -37,7 +37,7 @@ Empecemos con visitar la web directamente en el puerto 80 a ver que hay.
 Nos encontramos con la pagina por defecto de Apache, as├¡ que vamos a realizar una enumeraci├│n de directorios a ver si vemos algo.
 
 ```bash
-¯é░ gobuster dir -u http://$TARGET/ -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt
+é gobuster dir -u http://$TARGET/ -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt
 ===============================================================
 Gobuster v3.8.2
 by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
@@ -120,3 +120,4 @@ Curiosamente al ver el c├│digo de la pagina nos encontramos con esto:
 Lo cual ya nos indica donde podremos inyectar el c├│digo.
 
 Esto es un gran fallo puesto que permite inyecciones sin la necesidad de hacer ataques a ciegas puesto que nos esta indicando en el lugar donde tenemos que atacar.
+

