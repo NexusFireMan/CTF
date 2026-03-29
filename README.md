@@ -2,24 +2,14 @@
 
 Repositorio personal de writeups sobre máquinas y laboratorios de distintas plataformas.
 
-## Plataformas incluidas
+## Plataformas
 
-- Dockerlabs
-- HackMyVM
-- TryHackMe
-- TheHackersLabs
-- BugBountyLabs
-- Vulnix
-
-## Enfoque
-
-Los writeups siguen, en mayor o menor medida, este flujo:
-
-1. Reconocimiento
-2. Enumeración
-3. Explotación
-4. Escalada de privilegios
-5. Conclusiones
+- [Dockerlabs](Dockerlabs/README.md)
+- [HackMyVM](HackMyVM/README.md)
+- [TryHackMe](TryHackMe/README.md)
+- [TheHackersLabs](TheHackersLabs/README.md)
+- [BugBountyLabs](BugBountyLabs/README.md)
+- [Vulnix](Vulnix/README.md)
 
 ## Estructura
 
@@ -33,9 +23,19 @@ CTF/
 └── Vulnix/
 ```
 
-## Metadatos
+## Qué encontrarás aquí
 
-La mayoría de los writeups incluyen frontmatter con información como:
+Los writeups siguen, en mayor o menor medida, este flujo:
+
+1. Reconocimiento
+2. Enumeración
+3. Explotación
+4. Escalada de privilegios
+5. Conclusión
+
+## Metadatos habituales
+
+La mayoría de writeups incluyen información como:
 
 - estado
 - plataforma
@@ -47,9 +47,8 @@ La mayoría de los writeups incluyen frontmatter con información como:
 
 ## Nota
 
-Este repositorio está orientado a documentación técnica y aprendizaje. No pretende ser una colección de payloads mágicos sin contexto, que bastante daño ha hecho ya internet.
+Este repositorio está orientado a documentación técnica y aprendizaje. La idea es explicar el proceso real de resolución, no amontonar comandos sin contexto como si eso fuese una metodología.
 
 ## Autor
 
 Si algún writeup te resulta útil, puedes invitarme a un café desde los enlaces incluidos en algunos laboratorios.
-
