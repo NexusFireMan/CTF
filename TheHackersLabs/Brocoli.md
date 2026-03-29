@@ -423,3 +423,4 @@ Con esto ya hemos terminado el laboratorio.
 Ha sido interesante llegar a escalar los privilegios a través de los distintos usuarios y la posibilidad de tener directamente un `Web Shell`, lo cual es una falla de seguridad.
 
 
+

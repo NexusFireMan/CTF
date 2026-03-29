@@ -348,3 +348,4 @@ Ademas en la carpeta */tmp* nos encontramos un fichero curioso con una contrase√
 Esta contrase√±a seguramente sea del usuario *ubuntu* o del *root* pero como ya tenemos la escalada lo dejaremos estar.
 
 
+
