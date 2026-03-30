@@ -7,7 +7,7 @@ VectorInicial: WordPress brute force (admin:rockyou) + subida plugin malicioso
 Privesc: SUID gawk → modificación /etc/passwd
 Fecha: 2026-02-18
 ---
-![](..\attachments/Pasted%20image%2020260217124550.png)
+<img width="918" height="516" alt="Pasted image 20260217124550" src="https://github.com/user-attachments/assets/76afc7f1-689f-48fe-9a86-5249734c2675" />
 
 Empezaremos con un reconocimiento de la superficie para que encontramos.
 
@@ -211,7 +211,7 @@ Interesting Finding(s):
  <snip>
 ```
 
-Tenemos un usuario como **admin** y 2 plugings vulnerables, *astra-sites* y *elementor*.
+Tenemos un usuario como **admin** y 2 plugins vulnerables, *astra-sites* y *elementor*.
 
 Lo interesante de estos plugins son las vulnerabilidades:
 - astra-sites
@@ -238,13 +238,13 @@ Ya con los credenciales iniciaremos sesión y nos dirigiremos a los plugins vuln
 
 Cabe recordar que no es necesario el uso de las vulnerabilidades puesto que tenemos la opción de usar el editor de themes para inyectar código y conseguir un revershell.
 
-![](..\attachments/Pasted%20image%2020260217170840.png)
+<img width="1903" height="847" alt="Pasted image 20260217170840" src="https://github.com/user-attachments/assets/68aa3290-e425-4185-8ee2-5ec05588114c" />
 
-Pero como la finalidad de este laboratorio es la explotación de los pluging procederemos con los mismos.
+Pero como la finalidad de este laboratorio es la explotación de los plugin procederemos con los mismos.
 
-Primero usaremos un método de subida de un pluging malicioso, así que crearemos un fichero **PHP** con un revershell de pentestmonkey y luego lo comprimiremos en formato *zip* para poder subirlo a la web.
+Primero usaremos un método de subida de un plugin malicioso, así que crearemos un fichero **PHP** con un revershell de pentestmonkey y luego lo comprimiremos en formato *zip* para poder subirlo a la web.
 
-No olvidar que al principio del fichero hay  que indicar unos datos para que reconozca que es un pluging.
+No olvidar que al principio del fichero hay  que indicar unos datos para que reconozca que es un plugin.
 
 ```php
 /*
@@ -262,7 +262,7 @@ License: GPL2
  7z a ./shell.zip ./shell.php
 ```
 
-Ahora que tenemos el **zip** creado nos pondremos a la escucha con *penelope* para después subir el pluging y al activarlo conseguir un reversehell.
+Ahora que tenemos el **zip** creado nos pondremos a la escucha con *penelope* para después subir el plugin y al activarlo conseguir un reversehell.
 
 ```bash
  penelope -p 443
@@ -270,7 +270,7 @@ Ahora que tenemos el **zip** creado nos pondremos a la escucha con *penelope* pa
 ➤  🏠 Main Menu (m) 💀 Payloads (p) 🔄 Clear (Ctrl-L) 🚫 Quit (q/Ctrl-C)
 ```
 
-![](..\attachments/Pasted%20image%2020260218091957.png)
+<img width="1503" height="719" alt="Pasted image 20260218091957" src="https://github.com/user-attachments/assets/e77c5e9c-4139-4134-a44c-04d2c5f29edd" />
 
 Una vez activo el plugin obtendremos una revershell y estaremos dentro del servidor.
 
@@ -347,5 +347,6 @@ Ademas en la carpeta */tmp* nos encontramos un fichero curioso con una contrase�
 
 Esta contraseña seguramente sea del usuario *ubuntu* o del *root* pero como ya tenemos la escalada lo dejaremos estar.
 
-
-
+---
+Si te gusto puedes invitarme a un cafe.
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C61UHTB1)

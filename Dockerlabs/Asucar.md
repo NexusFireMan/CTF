@@ -7,7 +7,7 @@ VectorInicial: LFI en plugin vulnerable de WordPress (site-editor <= 1.1.1)
 Privesc: Abuso de sudo NOPASSWD con puttygen para escribir authorized_keys de root
 Fecha: 2026-02-12
 ---
-![](..\attachments/Pasted%20image%2020260211154801.png)
+<img width="913" height="530" alt="Pasted image 20260211154801" src="https://github.com/user-attachments/assets/3af77b1c-72e2-42e3-845d-dae5b840d97d" />
 
 Lo primero que realizaremos sera un escaneo para identificar puertos y servicios abiertos:
 
@@ -29,11 +29,11 @@ Vemos que tenemos 2 puertos abiertos:
 
 Empecemos por la web a ver que tenemos.
 
-![](..\attachments/Pasted%20image%2020260211161159.png)
+<img width="1797" height="826" alt="Pasted image 20260211161159" src="https://github.com/user-attachments/assets/9d649832-8f02-4d82-8aa3-2d7df3d445b6" />
 
 Nos encontramos con la pagina mal maquetada y sin imágenes, por consiguiente pasaremos el ratón por encima de algún enlace para ver si hay dominio al que apunten o usando CTR+U para ver el código de la web y comprobarlo.
 
-![](..\attachments/Pasted%20image%2020260211161716.png)
+<img width="1260" height="608" alt="Pasted image 20260211161716" src="https://github.com/user-attachments/assets/33bc3963-84ec-43d4-905e-886bac2d0191" />
 
 Efectivamente necesitamos indicar en nuestro **/etc/hosts** el dominio de esta web
 
@@ -60,7 +60,7 @@ Ahora al entrar por la url http://asucar.dl podremos ver la web, con algunos err
 
 Al navegar por la web no encontramos ningún dato útil que nos pueda servir, solo tienen una entrada típica de la primera instalación:
 
-![](..\attachments/Pasted%20image%2020260211164454.png)
+<img width="605" height="220" alt="Pasted image 20260211164454" src="https://github.com/user-attachments/assets/513b5d42-6bbb-46de-8546-03737ea7f696" />
 
 Ahora usaremos una herramienta para el reconocimiento de usuarios y plugins para ver si encontramos algo interesante.
 
@@ -178,7 +178,7 @@ Buscando en Internet este plugin y su versión damos con el CVE-2018-7422 el cua
 http://asucar.dl/wp-content/plugins/site-editor/editor/extensions/pagebuilder/includes/ajax_shortcode_pattern.php?ajax_path=/etc/passwd
 ```
 
-De esta manero podremos ver todos los usuarios del sistema.
+De esta manera podremos ver todos los usuarios del sistema.
 
 ```txt
 |root:x:0:0:root:/root:/bin/bash|
@@ -317,5 +317,6 @@ Posteriormente, una **configuración insegura de sudo**, permitiendo ejecutar bi
 - El riesgo de conceder permisos `NOPASSWD` a binarios no controlados.
 - Cómo el abuso de **authorized_keys** sigue siendo una técnica muy efectiva en entornos mal configurados.
 
-
-
+---
+Si te gusto puedes invitarme a un cafe.
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C61UHTB1)

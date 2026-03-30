@@ -1,5 +1,5 @@
 ---
-Estado: Completado
+Estado: En Curso
 Plataforma: The Hackers Labs
 SO: Linux
 Dificultad: Principiante
@@ -7,32 +7,32 @@ VectorInicial: Webshell discovery
 ServicioInicial: HTTP
 PuertoInicial: 80
 Credenciales:
-  - debian: 12345
-  - mermeladita: pepitU
-  - mysql root: 12345
+ - debian:12345
+ - mermeladita:pepitU
+ - mysql root:12345
 Usuarios:
-  - debian
-  - mermeladita
-  - root
+ - debian
+ - mermeladita
+ - root
 Privesc: sudo find
 Tecnicas:
-  - Network Discovery
-  - Directory Enumeration
-  - WordPress Enumeration
-  - Webshell Discovery
-  - Command Execution
-  - User Enumeration
-  - Password Brute Force
-  - Credential Reuse
-  - Database Enumeration
-  - Privilege Escalation
+ - Network Discovery
+ - Directory Enumeration
+ - WordPress Enumeration
+ - Webshell Discovery
+ - Command Execution
+ - User Enumeration
+ - Password Brute Force
+ - Credential Reuse
+ - Database Enumeration
+ - Privilege Escalation
 Herramientas:
-  - arp-scan
-  - gomap
-  - gobuster
-  - wpscan
-  - hydra
-  - mysql
+ - arp-scan
+ - gomap
+ - gobuster
+ - wpscan
+ - hydra
+ - mysql
 Fecha: 2026-03-05
 ---
 <img width="800" height="800" alt="Pasted image 20260305084513" src="https://github.com/user-attachments/assets/c5017655-7887-42c9-b1bd-8f8924da6b6a" />
@@ -752,6 +752,3 @@ congrats.txt  root.txt
 ```
 
 Y con esto obtenemos acceso como **root** y comprometemos la maquina.
-
-
-

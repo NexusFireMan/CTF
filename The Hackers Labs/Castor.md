@@ -136,7 +136,7 @@ Empecemos con algo simple y veamos que ocurre.
 <test>test</test>
 ```
 
-![](..\attachments/Pasted%20image%2020260304134200.png)
+<img width="1071" height="606" alt="Pasted image 20260304134200" src="https://github.com/user-attachments/assets/5d9c15dd-7b20-4ace-9134-66c46800a824" />
 
 El fichero `upload.php` procesa contenido XML sin deshabilitar la resolución de entidades externas.
 
@@ -263,6 +263,3 @@ congrats.txt  root.txt
 ```
 
 Y con esto hemos conseguido acceder como **root** al sistema y comprometerlo.
-
-
-

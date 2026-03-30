@@ -7,7 +7,7 @@ VectorInicial: Basic Auth Default Credentials → Login Bruteforce → SSH
 Privesc: Password reuse + su brute force
 Fecha: 2026-02-26
 ---
-![](..\attachments/Pasted%20image%2020260226125648.png)
+<img width="917" height="574" alt="Pasted image 20260226125648" src="https://github.com/user-attachments/assets/3355593f-be13-4f64-b174-e8389a961e5f" />
 
 Comenzaremos por realizar un escaneo a la maquina para ver los vectores de entrada.
 
@@ -112,19 +112,19 @@ Como este servidor tiene Basi Auth necesitamos indicar a Gobuster el usuario y l
 
 Observamos que hay un fichero llamado *login.php* así que vamos a ver que nos encontramos en el.
 
-![](..\attachments/Pasted%20image%2020260226154316.png)
+<img width="442" height="715" alt="Pasted image 20260226154316" src="https://github.com/user-attachments/assets/6d8483db-4c21-4154-a58b-bc15065f72d5" />
 
-No encontramos con este panel de inicio de sesión bastante curioso.
+Nos encontramos con este panel de inicio de sesión bastante curioso.
 
 Ahora es el paso de entrar en *Burp Suit* para capturar las peticiones y ver como podemos continuar.
 
 Lo primero sera fijar el Tarjet para que solo capture las peticiones de este servidor.
 
-![](..\attachments/Pasted%20image%2020260226160321.png)
+<img width="908" height="623" alt="Pasted image 20260226160725" src="https://github.com/user-attachments/assets/f6457bfc-6e65-42e4-a96b-f22583b25042" />
 
 Ahora capturamos las peticiones de la pagina para ver como solicita el ingreso, las cabeceras y lo que ocurre si ingresamos un usuario erróneo.
 
-![](..\attachments/Pasted%20image%2020260226160826.png)
+<img width="1439" height="944" alt="Pasted image 20260226160826" src="https://github.com/user-attachments/assets/9e333564-2f72-47f7-a0fe-5e9b21a644ba" />
 
 Como podemos ver la petición se hace con el método **POST**, en la cabecera se añade **Authorization: Basic aHR0cGFkbWluOmZodHRwYWRtaW4=**, los datos de inicio de sesión se pasan de manera muy clara **username=admin&password=admin** y al no ser correctos los datos nos indica el texto **Credenciales incorrectas.**.
 
@@ -154,7 +154,7 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2026-02-26 16:26:
 
 Bien, con estos credenciales vamos a por el siguiente paso.
 
-![](..\attachments/Pasted%20image%2020260226162857.png)
+<img width="351" height="115" alt="Pasted image 20260226162857" src="https://github.com/user-attachments/assets/4eda3f2d-8250-41f0-b3fe-33f222e528a1" />
 
 Después de iniciar sesión vemos este mensaje del usuario **balutin** y dicho esto, vamos por el *SSH* a ver si tenemos suerte.
 
@@ -294,6 +294,3 @@ root@4cf1f32d9e59:/tmp#
 Con esto ya hemos comprometido el laboratorio y lo hemos finalizado.
 
 La verdad que has esta un poco liado el tema de acceder como root pero ha sido interesante el poder usar varias técnicas hasta conseguirlo.
-
-
-

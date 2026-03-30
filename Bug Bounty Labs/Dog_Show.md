@@ -7,7 +7,7 @@ VectorInicial: XSS
 Privesc: No
 Fecha: 2026-02-23
 ---
-<img width="528" height="487" alt="Pasted image 20260223162627" src="https://github.com/user-attachments/assets/be11ffe8-c1d7-4e33-87c3-67bc598921d8" />
+<img width="400" height="245" alt="Pasted image 20260223165234" src="https://github.com/user-attachments/assets/ef2cc6db-96dc-4eab-b5f8-9e1da42c4a18" />
 
 Comenzaremos con una enumeración de puertos para hacernos una idea de lo que tenemos.
 
@@ -63,7 +63,7 @@ Finished
 
 Parece que en el directorio */beta/*  tenemos una web.
 
-![](..\attachments/Pasted%20image%2020260223160032.png)
+<img width="995" height="476" alt="Pasted image 20260223160032" src="https://github.com/user-attachments/assets/3deb43f5-8a86-4611-be81-bd501465d569" />
 
 Por lo que vemos es un formulario con una vulnerabilidad de XSS así que probaremos con lo primero.
 
@@ -91,7 +91,7 @@ Este payload permite el XSS y por consiguiente ya tenemos una vulnerabilidad y e
 
 Ahora vamos a por el puerto *5000* el cual tiene una web de perritos.
 
-![](..\attachments/Pasted%20image%2020260223162627.png)
+<img width="528" height="487" alt="Pasted image 20260223162627" src="https://github.com/user-attachments/assets/be11ffe8-c1d7-4e33-87c3-67bc598921d8" />
 
 Vamos a registrarnos a ver que podemos encontrar.
 
@@ -120,15 +120,3 @@ Curiosamente al ver el código de la pagina nos encontramos con esto:
 Lo cual ya nos indica donde podremos inyectar el código.
 
 Esto es un gran fallo puesto que permite inyecciones sin la necesidad de hacer ataques a ciegas puesto que nos esta indicando en el lugar donde tenemos que atacar.
-
-
-
-
-
-
-
-
-Laboratorios en https://github.com/CuriosidadesDeHackers/Bug-Bounty-Labs-Plataforma/
-
-
-
