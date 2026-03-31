@@ -6,9 +6,9 @@ Repositorio personal de writeups sobre máquinas y laboratorios de distintas pla
 
 - [Dockerlabs](Dockerlabs/README.md)
 - [HackMyVM](HackMyVM/README.md)
-- [TryHackMe](Try%20Hack%20Me/README.md)
-- [TheHackersLabs](The%20Hackers%20Labs/README.md)
-- [BugBountyLabs](Bug%20Bounty%20Labs/README.md)
+- [Try Hack Me](Try%20Hack%20Me)
+- [The Hackers Labs](The%20Hackers%20Labs)
+- [Bug Bounty Labs](Bug%20Bounty%20Labs)
 - [Vulnix](Vulnix/README.md)
 
 ## Estructura
