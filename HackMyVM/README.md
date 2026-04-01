@@ -2,4 +2,4 @@
 
 ## Writeups
 - [Logan](logan.md)
-- [Canto](canto.md)
+- [Canto](Canto.md)
