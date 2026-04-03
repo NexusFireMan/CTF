@@ -2,9 +2,23 @@
 Estado: Completado
 Plataforma: Bug Bounty Labs
 SO: Linux
-Dificultad: Facil
+Dificultad: Fácil
 VectorInicial: XSS
+ServicioInicial: HTTP
+PuertoInicial: 80
+Credenciales:
+ - No
+Usuarios:
+ - No aplica
 Privesc: No
+Tecnicas:
+ - Service Enumeration
+ - Reflected XSS
+ - Stored XSS
+Herramientas:
+ - gomap
+ - gobuster
+ - navegador
 Fecha: 2026-02-23
 ---
 <img width="400" height="245" alt="Pasted image 20260223165234" src="https://github.com/user-attachments/assets/ef2cc6db-96dc-4eab-b5f8-9e1da42c4a18" />
@@ -32,9 +46,9 @@ Nos encontramos con 2 puertos abiertos:
 - 80 - HTTP con servidor apache
 - 5000 - HTTP con posible aplicación en Python.
 
-Empecemos con visitar la web directamente en el puerto 80 a ver que hay.
+Empecemos visitando la web directamente en el puerto 80 a ver qué hay.
 
-Nos encontramos con la pagina por defecto de Apache, así que vamos a realizar una enumeración de directorios a ver si vemos algo.
+Nos encontramos con la página por defecto de Apache, así que vamos a realizar una enumeración de directorios a ver si encontramos algo.
 
 ```bash
  gobuster dir -u http://$TARGET/ -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt
@@ -61,17 +75,17 @@ Finished
 ===============================================================
 ```
 
-Parece que en el directorio */beta/*  tenemos una web.
+Parece que en el directorio `/beta/` tenemos una web.
 
 <img width="995" height="476" alt="Pasted image 20260223160032" src="https://github.com/user-attachments/assets/3deb43f5-8a86-4611-be81-bd501465d569" />
 
-Por lo que vemos es un formulario con una vulnerabilidad de XSS así que probaremos con lo primero.
+Por lo que vemos, es un formulario con una vulnerabilidad XSS, así que probaremos con lo más básico.
 
 ```javascript
 <script>alert(1)</script>
 ```
 
-Pero no ocurre nada, aunque al navegar por el código mediante *CTRL+U*  vemos que si esta ocurriendo algo:
+Pero no ocurre nada, aunque al revisar el código mediante `CTRL+U` vemos que sí está ocurriendo algo:
 
 ```html
 <p>
@@ -87,7 +101,7 @@ Hay un filtro para no mostrar las alertas, así que intentaremos otro método.
 " onmouseover=confirm(1) "
 ```
 
-Este payload permite el XSS y por consiguiente ya tenemos una vulnerabilidad y esta parte finaliza aquí.
+Este payload permite el XSS y, por consiguiente, ya tenemos una vulnerabilidad confirmada. Esta parte finaliza aquí.
 
 Ahora vamos a por el puerto *5000* el cual tiene una web de perritos.
 
@@ -95,9 +109,9 @@ Ahora vamos a por el puerto *5000* el cual tiene una web de perritos.
 
 Vamos a registrarnos a ver que podemos encontrar.
 
-Solo tenemos una pagina para añadir nuestras mascotas, esto da a pensar que puede ser un XSS almacenado.
+Solo tenemos una página para añadir nuestras mascotas; esto da a pensar que puede tratarse de un XSS almacenado.
 
-Curiosamente al ver el código de la pagina nos encontramos con esto:
+Curiosamente, al ver el código de la página nos encontramos con esto:
 
 ```html
             <li>
@@ -117,6 +131,6 @@ Curiosamente al ver el código de la pagina nos encontramos con esto:
             </li>
 ```
 
-Lo cual ya nos indica donde podremos inyectar el código.
+Lo cual ya nos indica dónde podremos inyectar el código.
 
-Esto es un gran fallo puesto que permite inyecciones sin la necesidad de hacer ataques a ciegas puesto que nos esta indicando en el lugar donde tenemos que atacar.
+Esto es un gran fallo, puesto que permite inyecciones sin necesidad de hacer ataques a ciegas, ya que nos está indicando exactamente el lugar donde tenemos que atacar.

