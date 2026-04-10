@@ -8,5 +8,5 @@
 - [Trust](Trust.md)
 - [Upload](Upload.md)
 - [WalikngCMS](WalikngCMS.md)
-
+- [Ejotapete](Ejotapete.md)
 
